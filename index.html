@@ -2,66 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1B211D">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Kin &amp; Rhythm</title>
   <link rel="icon" href="assets/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="site/site.css">
 </head>
 <body>
+  <header id="site-head"></header>
+  <main>
 
-  <aside class="demo" id="demo">
-    <div class="demo-head">
-      <img src="assets/logo.svg" alt="" class="demo-logo">
-      <div>
-        <p class="demo-title">Kin &amp; Rhythm</p>
-        <p class="demo-sub">Prototype. Nothing leaves this device.</p>
+    <div class="wrap">
+      <div class="hero split">
+        <div>
+          <p class="eyebrow">Working prototype · November 2026</p>
+          <h1 class="display d1">Kin &amp; Rhythm</h1>
+          <p class="lede">A wellness app for mothers that starts with her energy, not her food. It finds the pattern she has been getting through on, matches a path to her body's rhythm, and is built to be needed less over time.</p>
+          <p class="lede">This is the working hub for the project: the prototype itself, and the reasoning behind it.</p>
+        </div>
+        <figure class="device"><div class="device-frame"><iframe loading="lazy" title="The app, Today screen" src="app.html#as=maya&amp;tab=today&amp;chrome=0"></iframe></div><figcaption>The live prototype, shown as Maya, one of three demo moms.</figcaption></figure>
       </div>
-      <button class="demo-toggle" data-act="demoToggle" aria-label="Show or hide demo controls">Demo</button>
-    </div>
-    <div class="demo-body">
-      <p class="demo-label">Walk through as</p>
-      <div class="demo-row">
-        <button class="demo-btn" data-act="fresh">A new mom</button>
-        <button class="demo-btn" data-act="persona" data-arg="maya">Maya · Open Hearth</button>
-        <button class="demo-btn" data-act="persona" data-arg="elena">Elena · Ebb Tide</button>
-        <button class="demo-btn" data-act="persona" data-arg="casey">Casey · Restless Wind</button>
-      </div>
-      <p class="demo-label">Time travel</p>
-      <div class="demo-row">
-        <button class="demo-btn" data-act="day" data-arg="-1">− 1 day</button>
-        <button class="demo-btn" data-act="day" data-arg="0" id="demo-date">Today</button>
-        <button class="demo-btn" data-act="day" data-arg="1">+ 1 day</button>
-        <button class="demo-btn" data-act="day" data-arg="7">+ 1 week</button>
-        <button class="demo-btn" data-act="toRitual">Next moon ritual</button>
-      </div>
-      <p class="demo-label">Card deck</p>
-      <div class="demo-row">
-        <button class="demo-btn" data-act="deckArrive" id="demo-deck">Deliver the deck</button>
-      </div>
-    </div>
-  </aside>
 
-  <main class="phone unclaimed" id="phone">
-    <div class="statusbar"><span>9:41</span><span class="island"></span><span>5G</span></div>
-    <header class="top" id="top"></header>
-    <div class="view" id="view"></div>
-    <div class="foot" id="foot" hidden></div>
-    <nav class="tabs" id="tabs" hidden></nav>
-    <div class="sheet-wrap" id="sheet" hidden>
-      <div class="sheet" id="sheet-body"></div>
+      <div class="tiles">
+        <a class="tile tile-app" href="app.html">
+          <img src="assets/pattern-hearth.svg" alt="">
+          <span>
+            <span class="eyebrow">Start here</span>
+            <span class="display d2" role="heading" aria-level="2">Open the app</span>
+            <p>Walk through it from the first screen as a new mom. On a phone it fills the screen like a real app, and anything you enter stays on your device.</p>
+            <span class="go">Open the prototype</span>
+          </span>
+        </a>
+        <a class="tile" href="features.html"><span class="eyebrow">01</span><h2 class="display d4">Features</h2><p>What is in it, screen by screen, and why each piece exists.</p><span class="go">Read</span></a>
+        <a class="tile" href="loops.html"><span class="eyebrow">02</span><h2 class="display d4">Core loops</h2><p>The four rhythms that bring her back: a day, a hard moment, a moon, a season.</p><span class="go">Read</span></a>
+        <a class="tile" href="relationship.html"><span class="eyebrow">03</span><h2 class="display d4">The relationship</h2><p>What the app is to her, what it promises, and what it will never do.</p><span class="go">Read</span></a>
+        <a class="tile" href="thinking.html"><span class="eyebrow">04</span><h2 class="display d4">The thinking</h2><p>Energy, patterns, recovery, rewiring and kindness: the ideas underneath.</p><span class="go">Read</span></a>
+      </div>
+      <p class="as">Or skip ahead and open it as
+        <a href="app.html#as=maya">Maya, six weeks in</a>
+        <a href="app.html#as=elena">Elena, eleven days in</a>
+        <a href="app.html#as=casey">Casey, just started</a>
+      </p>
+
+      <section>
+        <div class="section-head">
+          <p class="eyebrow">In one minute</p>
+          <h2 class="display d3">What makes it different</h2>
+        </div>
+        <ul class="minute"><li><b>Energy, not weight</b><span>No scale and no goal number. Weight is optional, private and off by default.</span></li><li><b>A season, not an identity</b><span>Her stress pattern is named as something she is in, and she picks her own path out.</span></li><li><b>Ten seconds a day</b><span>One question, her anchors, then it tells her to put the phone down. The real ritual is twice a moon.</span></li><li><b>Built to be needed less</b><span>Anchors that become second nature leave the list. A card on the fridge and a friend who asks do the rest.</span></li></ul>
+      </section>
     </div>
-    <div class="toast" id="toast" hidden></div>
   </main>
-
-  <div id="print"></div>
-
-  <script src="data.js"></script>
-  <script src="rhythm.js"></script>
-  <script src="app.js"></script>
+  <footer id="site-foot"></footer>
+  <script src="site/site.js"></script>
 </body>
 </html>

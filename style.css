@@ -71,6 +71,8 @@ b { font-weight: 700; }
 .demo-btn { padding: 8px 12px; border-radius: 10px; background: #2A322D; border: 1px solid #39433D; font-size: 12.5px; font-weight: 600; color: #E9E4D6; transition: background .15s; }
 .demo-btn:hover { background: #343E38; }
 .demo-btn:disabled { opacity: .4; cursor: default; }
+.demo-home { display: inline-block; margin-top: 22px; font-size: 12.5px; font-weight: 600; color: #C9A85C; text-underline-offset: 3px; }
+body.embed .demo { display: none; }
 
 /* ---------- phone shell ---------- */
 .phone {

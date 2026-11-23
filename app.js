@@ -21,7 +21,7 @@
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch (e) {}
     return fresh();
   }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function save() { if (ui.ephemeral) return; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 
   /* ---------- helpers ---------- */
   function $(id) { return document.getElementById(id); }
@@ -1062,5 +1062,40 @@
     if (map[e.target.id]) acts[map[e.target.id]]();
   });
 
-  render();
+  /* ---------- showcase links ----------
+     app.html#as=maya&tab=rhythm&open=grid opens a demo mom on one screen, for the project pages.
+     Nothing is saved in this mode, so it never overwrites what a visitor has entered on this device. */
+  function showcase() {
+    var q = {};
+    location.hash.slice(1).split('&').forEach(function (kv) { var p = kv.split('='); if (p[0]) q[p[0]] = decodeURIComponent(p[1] || ''); });
+    if (!q.as) return false;
+    ui.ephemeral = true;
+    if (q.chrome === '0') document.body.classList.add('embed');
+    if (PERSONAS[q.as]) acts.persona(q.as);
+    else {
+      state = fresh();
+      if (q.step) {
+        Object.assign(state, { name: 'Maya', stage: 'cycling', cup: ['The family table', 'Fiction'], values: ['Calm evenings'], tender: 'crunch', quiz: ['hearth', 'hearth', 'tide', 'hearth', 'sun', 'hearth'], step: Math.max(0, STEPS.indexOf(q.step)) });
+        computeOptions(); ui.pick = state.options[0];
+        if (q.step === 'bloom') state.pattern = state.options[0];
+      }
+    }
+    if (q.day === 'ritual') { var ms = moonState(); if (!ms.due) state.dayOffset += ms.until; } else if (q.day) state.dayOffset = +q.day || 0;
+    if (q.cap) state.capacity[todayKey()] = q.cap;
+    if (q.tab) state.tab = q.tab;
+    render();
+    var open = {
+      pause: function () { acts.pauseOpen(); if (q.moment) acts.pauseMoment(q.moment); },
+      grid: sheetGrid, setting: function () { acts.ritual('new'); }, gathering: function () { acts.ritual('full'); },
+      card: function () { var m = currentMoon(); if (m) sheetKeepsake(m, false); }, kin: function () { acts.kinMsg('now'); },
+      anchor: function () { sheetAnchor(activeIds()[0]); }, savor: function () { sheetSavor(activeIds()[0]); }
+    }[q.open];
+    if (open) open();
+    var sel = { glimmer: '.card.glimmer', ritual: '.card.ritual', notes: '.card.insight', moons: '.moon-call, .card.row-card', kin: '.hold', touch: '.cap', phases: '.phases', tiles: '.tiles' }[q.focus];
+    var v = $('view'), t = sel && v.querySelector(sel);
+    if (t) v.scrollTop += t.getBoundingClientRect().top - v.getBoundingClientRect().top - 16;
+    return true;
+  }
+
+  if (!showcase()) render();
 })();

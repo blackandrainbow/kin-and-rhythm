@@ -1,4 +1,5 @@
-# Local build helper, not needed to serve the site
+# Local build helpers, not needed to serve the site
 brand/skins/build.py
+site/build_pages.py
 
 .DS_Store
