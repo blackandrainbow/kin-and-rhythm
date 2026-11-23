@@ -1133,6 +1133,15 @@
     pauseNext: function () { ui.pause.step++; pauseRender(); },
     pauseChoice: function () { ui.pause.step = 4; state.pauses++; state.pauseLog.push({ d: todayKey(), h: now().getHours(), m: ui.pause.moment.id }); save(); pauseRender(); },
 
+    /* a reviewer's note about whatever is on screen, sent to the private inbox */
+    note: function () {
+      var names = { today: 'Today', rhythm: 'Almanac', plan: 'Path', you: 'You' }, sheet = !$('sheet').hidden && $('sheet-body').querySelector('.label, h2');
+      var where = state.onboarded ? names[state.tab] + (state.tab === 'plan' ? ' › ' + cap1(ui.pathPart || 'anchors') : '') : 'First run › ' + STEPS[state.step];
+      if (sheet) where += ' › ' + sheet.textContent.trim();
+      var ctx = ['Page: ' + document.title, state.pattern ? 'Pattern: ' + pat().name : '', state.dayOffset ? 'Day offset: ' + state.dayOffset : ''].filter(Boolean).join(' · ');
+      window.open(noteUrl('App › ' + where, ctx), '_blank', 'noopener');
+    },
+
     /* presenter controls */
     demoToggle: function () { $('demo').classList.toggle('open'); },
     fresh: function () { closeSheet(); state = fresh(); ui.lastScreen = ''; render(); },
@@ -1212,6 +1221,14 @@
     if (t) v.scrollTop += t.getBoundingClientRect().top - v.getBoundingClientRect().top - 16;
     return true;
   }
+
+  /* the note buttons are added here so every entry page, skins included, gets them */
+  (function () {
+    var body = document.querySelector('.demo-body'), head = document.querySelector('.demo-head');
+    if (!body || typeof noteUrl !== 'function' || body.querySelector('[data-act="note"]')) return;
+    body.insertAdjacentHTML('beforeend', '<p class="demo-label">Reviewing</p><div class="demo-row"><button class="demo-btn" data-act="note">Leave a note on this screen</button></div>');
+    if (head) head.insertAdjacentHTML('beforeend', '<button class="demo-toggle note-pill" data-act="note">Note</button>');
+  })();
 
   if (!showcase()) render();
 })();

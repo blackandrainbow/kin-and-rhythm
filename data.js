@@ -3,8 +3,17 @@
 var APP = {
   name: 'Kin & Rhythm',
   line: 'Come back into rhythm.',
-  disclaimer: 'Kin & Rhythm is for education and inspiration. It is not medical advice and does not replace care from your doctor.'
+  disclaimer: 'Kin & Rhythm is for education and inspiration. It is not medical advice and does not replace care from your doctor.',
+  notes: 'https://github.com/blackandrainbow/kin-and-rhythm-notes'
 };
+
+/* Review notes go to a private inbox. The app and the project pages both build their links here.
+   where: the screen or section. context: extra detail for us. question: set when answering an open question. */
+function noteUrl(where, context, question) {
+  var e = encodeURIComponent;
+  return APP.notes + '/issues/new?template=note.yml&title=' + e(question ? 'Answer: ' + question : 'Note: ' + where) + '&where=' + e(question ? 'Open question: ' + question : where) +
+    (question ? '&kind=' + e('An answer to an open question') : '') + (context ? '&context=' + e(context) : '');
+}
 
 /* ---------- Patterns: a state she has been living in, never an identity ---------- */
 var PATTERNS = [

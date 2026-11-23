@@ -63,6 +63,22 @@ b, strong { font-weight: 700; }
 .next img { width: 26px; height: 26px; filter: invert(1) brightness(1.6); }
 .site-foot .note { margin-top: 26px; max-width: 70ch; }
 
+/* ---------- notes ---------- */
+.note-link { display: inline-block; margin-top: 18px; font-size: 13px; font-weight: 600; color: var(--ink-3); text-decoration-color: var(--line); }
+.note-link:hover { color: var(--primary); text-decoration-color: var(--gold); }
+.note-fab { position: fixed; right: 20px; bottom: 20px; z-index: 30; padding: 12px 20px; border-radius: 999px; background: var(--primary); color: var(--surface); font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 10px 26px rgba(38, 48, 42, .28); transition: background-color .2s, transform .2s var(--ease); }
+.note-fab:hover { background: var(--deep); transform: translateY(-2px); }
+.questions { margin-top: 28px; }
+.questions li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+.questions li:last-child { border-bottom: 1px solid var(--line); }
+.questions p { font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.2; max-width: 34ch; }
+.questions a { flex-shrink: 0; padding: 9px 16px; border-radius: 999px; border: 1.5px solid var(--primary); font-size: 13.5px; font-weight: 700; color: var(--primary); text-decoration: none; transition: background-color .2s, color .2s; }
+.questions a:hover { background: var(--primary); color: var(--surface); }
+.group { margin-top: 44px; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.links a { padding: 11px 18px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none; }
+.links a:hover { border-color: var(--primary); }
+
 /* ---------- page top ---------- */
 .hero { padding: 72px 0 30px; }
 .hero .display { margin-top: 16px; max-width: 20ch; }
@@ -233,5 +249,8 @@ section { padding-top: 84px; scroll-margin-top: 20px; }
   .loop li.loop-core b { font-size: 21px; }
   .table td, .table th { padding: 12px 14px; font-size: 14.5px; }
   .next { padding: 22px; }
+  .questions li { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .questions p { font-size: 21px; }
+  .note-fab { right: 14px; bottom: 14px; padding: 10px 16px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } html { scroll-behavior: auto; } }
