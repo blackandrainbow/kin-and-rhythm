@@ -3,6 +3,7 @@
   var PAGES = [
     ['index.html', 'Hub', ''],
     ['app.html', 'The app', 'Open the prototype and walk through it yourself.'],
+    ['concept.html', 'The concept', 'How it is put together, and what is still open.'],
     ['features.html', 'Features', 'What is in it, screen by screen, and why each piece exists.'],
     ['loops.html', 'Core loops', 'The four rhythms that bring her back.'],
     ['relationship.html', 'The relationship', 'What the app is to her, and what it will never do.'],
@@ -12,8 +13,8 @@
   var here = location.pathname.split('/').pop() || 'index.html';
   var at = 0;
   PAGES.forEach(function (p, i) { if (p[0] === here) at = i; });
-  /* reading order runs features, loops, relationship, thinking, and ends at the app */
-  var order = [2, 3, 4, 5, 1], next = PAGES[order.indexOf(at) < 0 ? 2 : order[(order.indexOf(at) + 1) % order.length]];
+  /* reading order runs concept, features, loops, relationship, thinking, and ends at the app */
+  var order = [2, 3, 4, 5, 6, 1], next = PAGES[order.indexOf(at) < 0 ? 2 : order[(order.indexOf(at) + 1) % order.length]];
 
   var head = document.getElementById('site-head'), foot = document.getElementById('site-foot');
   if (head) head.innerHTML = '<div class="wrap site-head"><a class="brand" href="index.html"><img src="assets/logo.svg" alt=""><span>Kin &amp; Rhythm</span></a><nav class="nav" aria-label="Project pages">' +
