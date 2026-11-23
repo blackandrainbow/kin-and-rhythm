@@ -166,8 +166,33 @@
     });
   }
 
+  /* ---------- skin hooks ----------
+     A brand skin (window.SKIN, set before this file loads) may reorder a view's blocks, add blocks of its own
+     and draw its own top bar. With no skin, every view renders in its default order. */
+  var SKIN = window.SKIN || {};
+  function arrange(view, blocks, order) {
+    var mine = (SKIN.blocks || {})[view] || {}, ctx;
+    return ((SKIN.layout || {})[view] || order).map(function (k) {
+      return mine[k] ? mine[k](ctx || (ctx = skinCtx())) : blocks[k] || '';
+    }).join('');
+  }
+  /* what a skin's own block is given to draw from */
+  function skinCtx() {
+    var d = now(), r = rhythmNow(), pl = place(), sun = Rhythm.sun(d, pl.lat, pl.lng), ms = moonState(), cm = currentMoon(), ins = insights();
+    return {
+      app: APP, date: d, name: state.name, pattern: pat(), season: SEASONS[r.season], rhythm: r, moon: r.moon,
+      sun: sun && { rise: time(sun.rise), golden: time(sun.golden), set: time(sun.set) },
+      ritual: { due: ms.due, next: MOON_RITUALS[ms.next.kind], kind: ms.next.kind, date: ms.next.date, until: ms.until },
+      kin: { witness: state.kin.name, word: cm && cm.witness ? cm.word : '', holding: state.kin.holding },
+      glimmers: state.glimmers.length, tiles: latestTiles, week: function () { return weekStrip(hasCycle() ? 'cycle' : 'moon'); },
+      kept: { days: ins.n, reps: state.reps.length, pauses: state.pauses }, insight: ins.list[0] || null,
+      values: state.values, esc: esc, lower: lower
+    };
+  }
+
   function renderTop() {
     var top = $('top');
+    if (state.onboarded && SKIN.top) { top.innerHTML = SKIN.top(skinCtx()); return; }
     if (state.onboarded) {
       top.innerHTML = '<div class="top-brand"><img src="assets/logo.svg" alt=""><span>' + APP.name + '</span></div><span class="top-date">' + now().toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) + '</span>';
       return;
@@ -346,15 +371,26 @@
       '<input class="field" id="f-glimmer" type="text" placeholder="' + (ui.draftImg ? 'A few words, if you like' : 'Snap it, or say it') + '"><button class="btn btn-small" data-act="glimmer">Keep</button></div>' +
       (state.glimmers.length ? '<button class="link" data-act="grid">Open your glimmer grid · ' + state.glimmers.length + '</button>' : '') + '</div>';
 
-    return '<div class="page">' +
-      '<div class="greet"><h1 class="display">' + hello + (state.name ? ', ' + esc(state.name) : '') + '.</h1><p class="lead">' + sunLine + '</p></div>' +
-      '<button class="rhythm-strip" data-act="tab" data-arg="rhythm"><img src="' + r.moon.art + '" alt=""><span><span class="label">' + s.name + ' · ' + (r.mode === 'cycle' ? r.label.toLowerCase() : r.moon.name.toLowerCase()) + '</span><span class="strip-text">Today asks for ' + lower(s.asks) + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>' +
-      (ms.due ? moonCall(ms) : '') + askKin + nudge +
-      '<p class="section-title">Today\'s touch <span>' + (state.moonLoad === 'low' ? 'One anchor this moon' : 'Ten seconds') + '</span></p>' + capRow + anchors + closing +
-      (cards ? '<p class="section-title">Ritual</p>' + cards : '') +
-      '<p class="section-title">Romance the ordinary</p>' + glimmer +
-      (state.values.length ? '<p class="why">You are here for <b>' + state.values.map(lower).join('</b> and <b>') + '</b>.</p>' : '') +
-      '</div>';
+    return '<div class="page">' + arrange('today', {
+      greet: '<div class="greet"><h1 class="display">' + hello + (state.name ? ', ' + esc(state.name) : '') + '.</h1><p class="lead">' + sunLine + '</p></div>',
+      strip: '<button class="rhythm-strip" data-act="tab" data-arg="rhythm"><img src="' + r.moon.art + '" alt=""><span><span class="label">' + s.name + ' · ' + (r.mode === 'cycle' ? r.label.toLowerCase() : r.moon.name.toLowerCase()) + '</span><span class="strip-text">Today asks for ' + lower(s.asks) + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>',
+      moon: ms.due ? moonCall(ms) : '',
+      kin: askKin,
+      nudge: nudge,
+      touch: '<p class="section-title">Today\'s touch <span>' + (state.moonLoad === 'low' ? 'One anchor this moon' : 'Ten seconds') + '</span></p>' + capRow + anchors + closing,
+      cards: cards ? '<p class="section-title">Ritual</p>' + cards : '',
+      glimmer: '<p class="section-title">Romance the ordinary</p>' + glimmer,
+      why: state.values.length ? '<p class="why">You are here for <b>' + state.values.map(lower).join('</b> and <b>') + '</b>.</p>' : ''
+    }, ['greet', 'strip', 'moon', 'kin', 'nudge', 'touch', 'cards', 'glimmer', 'why']) + '</div>';
+  }
+
+  function weekStrip(mode) {
+    var d = now(), set = mode === 'cycle' ? state.rhythm : { mode: 'moon' }, week = '<div class="week">';
+    for (var i = 0; i < 7; i++) {
+      var dd = Rhythm.addDays(d, i), rr = Rhythm.rhythm(set, dd);
+      week += '<div class="day' + (i === 0 ? ' today' : '') + '"><span>' + dd.toLocaleDateString([], { weekday: 'narrow' }) + '</span><b>' + dd.getDate() + '</b><i style="background:' + SEASONS[rr.season].color + '"></i><img src="' + rr.moon.art + '" alt=""></div>';
+    }
+    return week + '</div>';
   }
 
   /* ---------- Rhythm ---------- */
@@ -379,23 +415,22 @@
       (sun ? '<div class="kv"><span><img src="assets/icon-sunrise.svg" alt="">First light</span><b>' + time(sun.rise) + '</b></div><div class="kv"><span><img src="assets/icon-golden.svg" alt="">Golden hour</span><b>' + time(sun.golden) + '</b></div><div class="kv"><span><img src="assets/icon-sunset.svg" alt="">Sunset</span><b>' + time(sun.set) + '</b></div>' : '') +
       (pl.guessed ? '<p class="small muted">Estimated from your time zone. <button class="link" data-act="locate">Use my location</button></p>' : '<p class="small muted">Set for your location.</p>') + '</div>';
 
-    var week = '<div class="week">';
-    for (var i = 0; i < 7; i++) {
-      var dd = Rhythm.addDays(d, i), set2 = mode === 'cycle' ? state.rhythm : { mode: 'moon' }, rr = Rhythm.rhythm(set2, dd);
-      week += '<div class="day' + (i === 0 ? ' today' : '') + '"><span>' + dd.toLocaleDateString([], { weekday: 'narrow' }) + '</span><b>' + dd.getDate() + '</b><i style="background:' + SEASONS[rr.season].color + '"></i><img src="' + rr.moon.art + '" alt=""></div>';
-    }
-    week += '</div>';
-
-    var noticing = almanacNotes() + glimmerSection(), moons = moonSection();
     var actions = mode === 'cycle' ?
       (r.estimated ? '<p class="hint">We are estimating from your last logged period. Tell us when the next one starts and this stays true.</p>' : '') + el.btn('My period started today', 'periodToday', null, 'btn-outline') :
       ((state.stage === 'cycling' || state.stage === 'irregular') ? el.btn('Follow my cycle instead', 'rhythmSheet', null, 'btn-outline') : '');
 
-    return '<div class="page">' + '<h1 class="display">Your almanac</h1><p class="lead">A record of your own weather. It gets truer the longer you keep it.</p>' + seg + wheel + legend +
-      '<p class="hint">Each light on the ring is a day you checked in. Bigger means you had more to give.</p>' + noticing + moons +
-      '<p class="section-title">This season</p><div class="card season"><p class="label">' + (mode === 'cycle' ? s.cycle : s.moon) + '</p><p class="display sm">' + s.name + ' asks for ' + lower(s.asks) + '</p>' +
-      '<div class="fact"><p class="label">Energy</p><p>' + s.energy + '</p></div><div class="fact"><p class="label">Nourish</p><p>' + s.nourish + '</p></div><div class="fact"><p class="label">Move</p><p>' + s.move + '</p></div></div>' +
-      tenderNote + '<p class="section-title">The week ahead</p>' + week + '<p class="section-title">Sun and moon</p>' + sky + actions + '</div>';
+    return '<div class="page">' + arrange('rhythm', {
+      head: '<h1 class="display">Your almanac</h1><p class="lead">A record of your own weather. It gets truer the longer you keep it.</p>',
+      seg: seg,
+      wheel: wheel + legend + '<p class="hint">Each light on the ring is a day you checked in. Bigger means you had more to give.</p>',
+      notes: almanacNotes(),
+      glimmers: glimmerSection(),
+      moons: moonSection(),
+      season: '<p class="section-title">This season</p><div class="card season"><p class="label">' + (mode === 'cycle' ? s.cycle : s.moon) + '</p><p class="display sm">' + s.name + ' asks for ' + lower(s.asks) + '</p>' +
+        '<div class="fact"><p class="label">Energy</p><p>' + s.energy + '</p></div><div class="fact"><p class="label">Nourish</p><p>' + s.nourish + '</p></div><div class="fact"><p class="label">Move</p><p>' + s.move + '</p></div></div>' + tenderNote,
+      week: '<p class="section-title">The week ahead</p>' + weekStrip(mode),
+      sky: '<p class="section-title">Sun and moon</p>' + sky + actions
+    }, ['head', 'seg', 'wheel', 'notes', 'glimmers', 'moons', 'season', 'week', 'sky']) + '</div>';
   }
 
   /* ---------- Path ---------- */

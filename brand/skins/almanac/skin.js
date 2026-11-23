@@ -1,25 +1,58 @@
-/* Almanac play. Runs after data.js and kit.js, before rhythm.js and app.js. */
+/* Small Almanac: the almanac play. Runs after data.js and kit.js, before rhythm.js and app.js. */
 Skin.use({
   id: 'almanac',
   name: 'Small Almanac',
   line: 'Know your own weather.',
   fonts: 'https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap',
-  desk: '#1B1D1F',
+  desk: '#111214',
 
-  themes: {
-    sun: { canvas: '#F3EEE2', surface: '#FCF8EF', subtle: '#E8DFCB', primary: '#A83A12', deep: '#842B0B', accent: '#E0A21E', tint: '#F8E3BF' },
-    wind: { canvas: '#F0EEE6', surface: '#FAF9F3', subtle: '#E0DFD6', primary: '#2B4C7E', deep: '#1F3960', accent: '#C8321F', tint: '#DCE6F2' },
-    hearth: { canvas: '#F3EEE4', surface: '#FCF8F1', subtle: '#E8DDCF', primary: '#96301F', deep: '#74231A', accent: '#D98B2B', tint: '#F6DFD2' },
-    tide: { canvas: '#EFEFE6', surface: '#FAFAF3', subtle: '#DEE2D6', primary: '#12595A', deep: '#0C4344', accent: '#C8321F', tint: '#D5E9E3' },
-    frost: { canvas: '#F0EEE8', surface: '#FAF9F5', subtle: '#E1DFDA', primary: '#46407A', deep: '#332E5E', accent: '#C8321F', tint: '#E2E0F0' }
+  /* Pattern policy: one spot ink. Paper and black stay; her pattern swaps the single spot colour and its wash. */
+  patterns: {
+    sun: { accent: '#AE400D', tint: '#F6E4D6' },
+    wind: { accent: '#2B4C9A', tint: '#DFE6F4' },
+    hearth: { accent: '#A3271C', tint: '#F5DFDB' },
+    tide: { accent: '#0F6B62', tint: '#D9EBE7' },
+    frost: { accent: '#5B3FA8', tint: '#E6E0F3' }
   },
-  seasons: { winter: '#3E5C82', spring: '#55883A', summer: '#D69A1B', autumn: '#B24E26' },
+  seasons: { winter: '#2F5C9E', spring: '#3F8A3A', summer: '#D9A019', autumn: '#BE5A1E' },
 
-  art: ['logo.svg', 'icon-today.svg', 'icon-rhythm.svg', 'icon-pause.svg', 'icon-plan.svg', 'icon-you.svg', 'icon-spark.svg', 'sunburst.svg',
-    'moon-0.svg', 'moon-1.svg', 'moon-2.svg', 'moon-3.svg', 'moon-4.svg', 'moon-5.svg', 'moon-6.svg', 'moon-7.svg',
-    'pattern-sun.svg', 'pattern-wind.svg', 'pattern-hearth.svg', 'pattern-tide.svg', 'pattern-frost.svg',
-    'season-winter.svg', 'season-spring.svg', 'season-summer.svg', 'season-autumn.svg',
-    'deck-hedgerow.svg', 'deck-nightsky.svg', 'deck-hearth.svg'],
+  art: {
+    'logo.svg': 'logo.png', 'sunburst.svg': 'sunburst.png',
+    'pattern-sun.svg': 'pattern-sun.png', 'pattern-wind.svg': 'pattern-wind.png', 'pattern-hearth.svg': 'pattern-hearth.png', 'pattern-tide.svg': 'pattern-tide.png', 'pattern-frost.svg': 'pattern-frost.png',
+    'moon-0.svg': 'moon-0.svg', 'moon-1.svg': 'moon-1.svg', 'moon-2.svg': 'moon-2.svg', 'moon-3.svg': 'moon-3.svg', 'moon-4.svg': 'moon-4.svg', 'moon-5.svg': 'moon-5.svg', 'moon-6.svg': 'moon-6.svg', 'moon-7.svg': 'moon-7.svg',
+    'deck-hedgerow.svg': 'deck-hedgerow.png', 'deck-nightsky.svg': 'deck-nightsky.png', 'deck-hearth.svg': 'deck-hearth.png',
+    'season-winter.svg': 'season-winter.svg', 'season-spring.svg': 'season-spring.svg', 'season-summer.svg': 'season-summer.svg', 'season-autumn.svg': 'season-autumn.svg',
+    'icon-today.svg': 'icon-today.svg', 'icon-rhythm.svg': 'icon-rhythm.svg', 'icon-pause.svg': 'icon-pause.svg', 'icon-plan.svg': 'icon-plan.svg', 'icon-you.svg': 'icon-you.svg',
+    'icon-back.svg': 'icon-back.svg', 'icon-next.svg': 'icon-next.svg', 'icon-close.svg': 'icon-close.svg', 'icon-check.svg': 'icon-check.svg', 'icon-check-ink.svg': 'icon-check-ink.svg',
+    'icon-spark.svg': 'icon-spark.svg', 'icon-camera.svg': 'icon-camera.svg', 'icon-sunrise.svg': 'icon-sunrise.svg', 'icon-golden.svg': 'icon-golden.svg', 'icon-sunset.svg': 'icon-sunset.svg'
+  },
+
+  /* Today is a page of the almanac: the date, today's line and her data. The almanac tab opens on the record. */
+  layout: {
+    today: ['page', 'moon', 'kin', 'nudge', 'touch', 'glimmer', 'cards', 'why'],
+    rhythm: ['head', 'notes', 'week', 'sky', 'seg', 'wheel', 'moons', 'season', 'glimmers']
+  },
+  blocks: {
+    today: {
+      page: function (c) {
+        var d = c.date, n = c.ritual.until, r = c.rhythm;
+        var next = (c.ritual.kind === 'new' ? 'New' : 'Full') + ' moon ' + (c.ritual.due || n === 0 ? 'tonight' : 'in ' + n + ' d');
+        var you = r.mode === 'cycle' ? 'Day ' + r.day + ' of ' + r.len : 'By the moon';
+        return '<section class="alm"><div class="alm-head"><div class="alm-date"><b>' + d.getDate() + '</b><span>' + d.toLocaleDateString([], { weekday: 'long' }) + '<br>' + d.toLocaleDateString([], { month: 'long', year: 'numeric' }) + '</span></div>' +
+          '<img src="' + c.pattern.art + '" alt=""></div>' +
+          '<h1 class="alm-line"><b>' + c.season.name + '.</b> Today asks for ' + c.lower(c.season.asks) + '</h1>' +
+          '<table class="alm-table" aria-label="Today in numbers"><tbody>' +
+          (c.sun ? '<tr><th scope="row">Sun</th><td>Rises ' + c.sun.rise + '</td><td>Gold ' + c.sun.golden + '</td><td>Sets ' + c.sun.set + '</td></tr>' : '') +
+          '<tr><th scope="row">Moon</th><td>' + c.moon.name + '</td><td>' + c.moon.lit + '% lit</td><td>' + next + '</td></tr>' +
+          '<tr><th scope="row">You</th><td>' + you + '</td><td>' + c.kept.days + ' days kept</td><td>' + c.kept.reps + ' reps</td></tr></tbody></table>' +
+          (c.insight ? '<p class="alm-note"><b>The record shows.</b> ' + c.insight[1] + '</p>' : '') + '</section>';
+      }
+    }
+  },
+  top: function (c) {
+    return '<div class="mast"><div class="mast-row"><img src="assets/logo.svg" alt=""><span class="mast-name">' + c.app.name + '</span></div>' +
+      '<p class="mast-line"><span>' + c.date.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) + '</span><span>No. ' + c.kept.days + '</span><span>' + c.moon.name + '</span></p></div>';
+  },
 
   /* Lines held in data.js */
   copy: {
@@ -30,9 +63,9 @@ Skin.use({
         open: 'Bright enough to see by. Look at what the last two weeks actually held. Nothing here is graded.' }
     },
     DECKS: {
-      hedgerow: { note: 'Field notes. Leaves, berries and garden light.' },
-      nightsky: { note: 'Sky tables. Moons and stars on blue-black.' },
-      hearth: { note: 'Household. Hearths, bread and warm reds.' }
+      hedgerow: { note: 'Field notes. Branches, frost and garden light.' },
+      nightsky: { note: 'Sky tables. The moon and her ring of stars.' },
+      hearth: { note: 'Household. The hearth, the kettle, the fire.' }
     }
   },
 
@@ -45,7 +78,7 @@ Skin.use({
     'You paused.': 'Noted: you paused.',
     'That is the whole practice. Whatever comes next, you chose it.': 'That is the practice, on the record. What comes next is your call.',
     'Today\'s touch': 'Today\'s entry',
-    'How much do you have today?': 'Today\'s reading: how much do you have?',
+    'How much do you have today?': 'How much do you have?',
     'That is your ten seconds.': 'Entry made. Ten seconds.',
     'One tap is enough. Nothing here keeps score.': 'One tap makes the entry. Nothing here is graded.',
     'Romance the ordinary': 'Worth noting',

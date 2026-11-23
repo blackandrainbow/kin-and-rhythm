@@ -1,81 +1,159 @@
-/* Ritual play: block print on vellum. Evolves the Celtic celestial look: same cream, forest and gold,
-   with a sturdier book serif, a second ink (madder red) and cut-and-printed edges. */
+/* Moonkept: forest night.
+   Value: dark. A deep forest canvas, cream type, one luminous moon.
+   Shape: arches and circles, gold hairlines, no filled cards, everything centred.
+   Density: sparse. One idea per screen-height. The halo swells once, slowly, as Today opens.
+   Pattern policy: glow only (see skin.js). Her pattern colours the halo and the hairlines, never the night. */
 
 :root {
   --font-display: 'Alegreya', Georgia, serif;
   --font-sans: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --desk: #1C2620;
-  --ink: #25211B;
-  --ink-2: #574E42;
-  --ink-3: #6B6253;
-  --line: rgba(37, 33, 27, .16);
-  --cream: #FFFAF0;
-  --seal: #8A2F22;
-  --r-sm: 10px;
-  --r-md: 14px;
-  --r-lg: 16px;
-  --shadow: 0 1px 0 rgba(37, 33, 27, .08);
+  --desk: #081410;
+  --ink: #F3ECD9;
+  --ink-2: #CFCBB6;
+  --ink-3: #A9AE97;
+  --line: rgba(243, 236, 217, .16);
+  --cream: #102617;
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --shadow: none;
+  --tile-mix: 26%;
+  --bezel: #030806;
 
-  --desk-ink: #EDE6D4;
-  --desk-ink-2: #A3AC9F;
-  --desk-accent: #D2A652;
-  --desk-btn: #2A372F;
-  --desk-btn-line: #3B4A40;
+  --desk-ink: #F3ECD9;
+  --desk-ink-2: #9FAE9F;
+  --desk-accent: #D2A64B;
+  --desk-btn: #16291F;
+  --desk-btn-line: #2A4334;
 
-  --pill-nourish-bg: #DDEBD9; --pill-nourish-ink: #2A5E3F;
-  --pill-move-bg: #F6E6C6;    --pill-move-ink: #7D4F10;
-  --pill-rest-bg: #E6E0F0;    --pill-rest-ink: #51407F;
-  --pill-mind-bg: #D9EAE8;    --pill-mind-ink: #1F5F60;
+  --pill-nourish-bg: #1F4630; --pill-nourish-ink: #A9E0B4;
+  --pill-move-bg: #4A3A16;    --pill-move-ink: #F0CE7E;
+  --pill-rest-bg: #34305A;    --pill-rest-ink: #C9BDF5;
+  --pill-mind-bg: #173F44;    --pill-mind-ink: #9ADBD6;
 
-  --deck-hedgerow: #2C4A38;
-  --deck-nightsky: #2A3352;
-  --deck-hearth: #8A2F22;
-  --deck-ink: #FFFAF0;
+  --deck-hedgerow: #244D36;
+  --deck-nightsky: #1D2748;
+  --deck-hearth: #6E2A1F;
+  --deck-ink: #F3ECD9;
   --deck-word: #EBCB80;
 }
 
-.phone { --canvas: #F6EEDC; --surface: #FFFAF0; --subtle: #EBDFC6; --primary: #1F4A3A; --deep: #143328; --accent: #B7862B; --tint: #E2ECDF; }
-.phone.unclaimed { --canvas: #F1EEE7; --surface: #FBF9F4; --subtle: #E5E0D5; --primary: #47443E; --deep: #2F2D29; --accent: #8F8672; --tint: #E6E2D8; }
+.phone { --canvas: #102617; --surface: #183524; --subtle: #21402D; --primary: #EFD9A0; --deep: #F8E9C2; --accent: #D2A64B; --tint: #234632; }
+.phone.unclaimed { --canvas: #191C1A; --surface: #222624; --subtle: #2C312E; --primary: #CFCCC0; --deep: #E4E1D6; --accent: #8E8B80; --tint: #2F3431; }
+.phone { --glow: var(--accent); --hair: color-mix(in srgb, var(--accent) 44%, transparent); color-scheme: dark; }
 
-/* ---------- type: a book face that holds its weight ---------- */
-body { font-size: 16.5px; line-height: 1.45; }
-.display { font-weight: 700; font-size: 32px; line-height: 1.06; letter-spacing: -.012em; }
-.display.xl { font-size: 40px; line-height: 1.02; }
-.display.sm { font-size: 24px; }
+/* ---------- type: a book face, set light and large ---------- */
+body { font-size: 16.5px; line-height: 1.5; }
+.display { font-weight: 500; font-size: 33px; line-height: 1.08; letter-spacing: -.01em; }
+.display.xl { font-size: 42px; line-height: 1.02; }
+.display.sm { font-size: 24px; font-weight: 500; }
 .lead { font-size: 17px; }
 .small { font-size: 15px; }
-.label, .group-label, .section-title span { font-size: 11.5px; letter-spacing: .13em; }
+.label, .group-label { font-size: 11.5px; letter-spacing: .2em; font-weight: 500; color: var(--accent); }
+.unclaimed .label { color: var(--primary); }
 .hint, .fine, .anchor-sub, .foot-note, .trail-meta { font-size: 13.5px; }
 .option-sub, .path-line, .trio span { font-size: 14.5px; }
 .chip { font-size: 15px; }
-.btn { font-size: 16.5px; letter-spacing: .01em; }
-.tab, .tab-pause { font-size: 11.5px; }
-.quote, .mantra { font-weight: 500; }
-.mantra { font-size: 23px; }
-.top-brand, .demo-title { font-weight: 700; letter-spacing: -.01em; }
-.path-name { font-weight: 700; }
-.keep-word { font-weight: 800; letter-spacing: -.02em; }
+.btn { font-size: 16.5px; letter-spacing: .02em; font-weight: 700; }
+.quote, .mantra { font-weight: 400; }
+.mantra { font-size: 24px; color: var(--primary); }
+.path-name, .keep-word, .top-brand, .demo-title { font-weight: 500; }
+.field::placeholder { color: var(--ink-3); }
+.match { color: var(--ink-3); }
 
-/* a printer's lozenge opens each section */
-.section-title { justify-content: flex-start; gap: 10px; font-weight: 700; font-size: 22px; }
-.section-title::before { content: ''; width: 7px; height: 7px; flex-shrink: 0; align-self: center; background: var(--accent); transform: rotate(45deg); }
-.section-title span { margin-left: auto; }
+/* ---------- header: the mark and the name, centred ---------- */
+.top { justify-content: center; padding-top: 12px; }
+.top-brand { gap: 10px; font-size: 21px; letter-spacing: .01em; }
+.top-brand img { width: 30px; height: 30px; }
+.icon-btn img { opacity: .9; }
 
-/* ---------- surfaces: printed card, inner keyline ---------- */
-.card { border-color: color-mix(in srgb, var(--primary) 22%, transparent); }
-.card.tinted, .moon-call, .keepsake { outline: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); outline-offset: -6px; }
-.moon-call { border-radius: var(--r-lg); padding: 22px 20px; }
-.card.insight { border-left: 4px solid var(--seal); }
-.rhythm-strip { border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent); }
-.option.on, .path.on, .deck.on { box-shadow: inset 0 0 0 1px var(--primary); }
-.anchor-check { border-width: 1.5px; }
-.trio li::before { background: none; border: 1.5px solid var(--accent); color: var(--primary); font-weight: 700; }
-.phase.current::after { background: var(--seal); }
-.btn-primary { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent), inset 0 0 0 4px var(--primary); }
-.btn-primary:hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent), inset 0 0 0 4px var(--deep); }
-.btn.is-done { box-shadow: none; }
-.btn-small { box-shadow: none; }
-.tab-pause img { outline: 1.5px solid var(--accent); outline-offset: -7px; }
-.tarot { border-radius: 52px 52px 10px 10px; padding-top: 18px; }
-.keepsake { border-radius: 110px 110px 18px 18px; padding-top: 46px; }
-.toast { letter-spacing: .01em; }
+/* ---------- Today's hero: the moon and the next rite ---------- */
+.view { padding: 8px 24px 124px; }
+.moon-hero { text-align: center; padding: 4px 0 6px; }
+.moon-halo { position: relative; width: 206px; height: 206px; margin: 26px auto 26px; }
+.moon-halo::before { content: ''; position: absolute; inset: -58px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--glow) 40%, transparent) 0, color-mix(in srgb, var(--glow) 13%, transparent) 44%, transparent 68%); animation: halo 4.8s ease-out both; }
+.moon-halo img { position: relative; width: 100%; height: 100%; }
+@keyframes halo { from { opacity: .35; transform: scale(.86); } to { opacity: 1; transform: none; } }
+.moon-hero .lead { max-width: 30ch; margin: 12px auto 0; color: var(--ink-2); }
+.moon-next { margin-top: 20px; padding: 10px 20px; border: 1px solid var(--hair); border-radius: 999px; font-size: 14.5px; color: var(--ink-2); }
+.moon-next b { color: var(--accent); font-weight: 700; }
+.view.enter > * { animation-duration: .9s; }
+
+/* ---------- sections: a small-caps line above an italic title, centred ---------- */
+.section-title { flex-direction: column; align-items: center; gap: 6px; margin: 52px 0 16px; text-align: center; font-weight: 400; font-style: italic; font-size: 27px; }
+.section-title span { order: -1; font-style: normal; font-size: 11.5px; letter-spacing: .2em; font-weight: 500; color: var(--accent); }
+.section-title::after { content: ''; width: 34px; height: 1px; margin-top: 6px; background: var(--hair); }
+.sheet .section-title { margin-top: 34px; }
+
+/* ---------- surfaces: hairlines, not boxes ---------- */
+.card { background: none; border: 1px solid var(--hair); padding: 22px 20px; }
+.card.tinted { background: var(--tint); border-color: transparent; }
+.card.soft { background: var(--subtle); border-color: transparent; }
+.card.insight { border-left: 1px solid var(--hair); border-top: 2px solid var(--accent); }
+.card.flush { padding: 0; }
+.cap { text-align: center; }
+.cap .small { color: var(--ink-2); }
+.seg { background: none; border: 1px solid var(--hair); }
+.seg button.on { background: var(--primary); color: var(--surface); box-shadow: none; }
+.anchor { margin-top: 0; padding: 18px 2px; background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+.anchor.done { background: none; }
+.cap + .anchor { margin-top: 10px; border-top: 1px solid var(--line); }
+.anchor-check { width: 34px; height: 34px; border: 1px solid var(--accent); --reach: -5px; }
+.anchor.done .anchor-check { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 20px color-mix(in srgb, var(--glow) 60%, transparent); }
+.closing { border: 0; justify-content: center; flex-direction: column; text-align: center; gap: 10px; margin-top: 22px; }
+.closing img { width: 54px; height: 54px; }
+.nudge { border: 1px solid var(--hair); border-radius: 999px; }
+.option { background: none; border: 1px solid var(--line); }
+.option.on, .path.on, .deck.on { background: var(--tint); border-color: var(--accent); }
+.chip { background: none; border: 1px solid var(--line); }
+.field { background: var(--surface); border: 1px solid color-mix(in srgb, var(--accent) 62%, transparent); }
+.path { background: none; border: 1px solid var(--line); }
+.day { background: none; }
+.day.today { background: var(--tint); border-color: var(--accent); }
+.stepper { background: none; }
+.trio li::before { background: none; border: 1px solid var(--accent); color: var(--primary); }
+.phase.on { background: var(--tint); border: 1px solid var(--accent); }
+.legend-item.on { background: var(--tint); box-shadow: none; }
+.btn-outline { border-width: 1px; border-color: var(--hair); }
+.btn-ghost { color: var(--ink-2); }
+.link { color: var(--primary); }
+.moon-call { border-radius: 28px; padding: 22px 20px; }
+.moon-call .label, .moon-call .small { color: var(--surface); }
+.sheet-wrap { background: rgba(3, 8, 6, .66); }
+.sheet { border-top: 1px solid var(--hair); }
+.foot { border-top-color: var(--line); }
+.wheel-dot i { background: var(--ink); box-shadow: none; }
+.wheel-marker i { border-color: var(--primary); background: var(--canvas); }
+.bubble { border-radius: 24px 24px 6px 24px; }
+
+/* the breath is a moon that swells */
+.breath-ring { border: 0; color: var(--surface); background: radial-gradient(circle at 34% 30%, #FFF8DE, var(--primary) 72%); box-shadow: 0 0 46px 8px color-mix(in srgb, var(--glow) 50%, transparent); }
+.savor-ring { border: 1px solid var(--accent); background: none; color: var(--primary); }
+
+/* ---------- tab bar: a floating pill, the pause is a small moon ---------- */
+.tabs { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 20; align-items: center; padding: 9px 8px 8px; border: 1px solid var(--hair); border-radius: 999px; background: color-mix(in srgb, var(--surface) 84%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+.tab, .tab-pause { gap: 2px; font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.tab img { width: 22px; height: 22px; opacity: .6; }
+.tab.on { color: var(--primary); font-weight: 500; }
+.tab-pause { color: var(--primary); font-weight: 500; }
+.tab-pause img { width: 56px; height: 56px; padding: 16px; margin-top: -28px; border: 0; background: radial-gradient(circle at 34% 30%, #FFF8DE, var(--primary) 72%); box-shadow: 0 0 0 1px var(--hair), 0 0 26px 3px color-mix(in srgb, var(--glow) 55%, transparent); }
+
+/* ---------- illustration: block prints in arches ---------- */
+.hero-art { width: 196px; filter: drop-shadow(0 0 34px color-mix(in srgb, var(--glow) 42%, transparent)); }
+.path-art { width: 76px; height: 99px; }
+.plan-head img, .profile img { width: 96px; }
+.sprig-l, .sprig-r { display: none; }
+.welcome-logo { width: 148px; height: 148px; }
+.deck img, .deck-back { box-shadow: 0 0 0 1px var(--hair); border-radius: 10px; }
+.tarot { border-radius: 54px 54px 10px 10px; padding-top: 18px; outline-color: var(--hair); box-shadow: none; }
+.pause-end img { width: 104px; }
+.tile { border-radius: 16px; }
+
+/* the moon card: an arch, dark on screen and plain on paper */
+.keepsake { border-radius: 124px 124px 18px 18px; padding-top: 52px; border: 1px solid var(--accent); outline: 1px solid var(--hair); outline-offset: -7px; }
+.keep-moon { width: 58px; height: 58px; }
+.keep-anchor span, .keepsake .label { color: var(--accent); }
+@media print {
+  #print { --ink: #1F2D24; --ink-2: #44524A; --ink-3: #5A665E; --line: rgba(31, 45, 36, .2); color: #1F2D24; }
+  #print .keepsake { --primary: #1F2D24 !important; --accent: #8A6A1E !important; --surface: #FFFDF6 !important; --hair: #8A6A1E; }
+}

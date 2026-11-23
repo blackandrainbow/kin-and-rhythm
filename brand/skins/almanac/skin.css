@@ -1,134 +1,224 @@
-/* Almanac play: ink on newsprint, one spot colour, ruled like a ledger.
-   Square corners, hairlines instead of shadows, a Clarendon for headings and a mono for readings. */
+/* Small Almanac: print.
+   Value: paper-white, black ink, one spot colour.
+   Shape: squares, rules and columns. No radius, no shadow, left-aligned.
+   Density: dense. Tables, tabular numerals, small mono labels.
+   Pattern policy: one spot ink (see skin.js). Her pattern swaps the spot colour; paper and black never move. */
 
 :root {
   --font-display: 'Besley', Georgia, serif;
   --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --desk: #1B1D1F;
-  --ink: #1B1D1F;
-  --ink-2: #494C4F;
-  --ink-3: #5C5F63;
-  --line: rgba(27, 29, 31, .2);
-  --rule: rgba(27, 29, 31, .55);
-  --cream: #FBF8F0;
-  --r-sm: 3px;
-  --r-md: 5px;
-  --r-lg: 6px;
+  --desk: #111214;
+  --ink: #111214;
+  --ink-2: #3F4246;
+  --ink-3: #595C61;
+  --line: rgba(17, 18, 20, .24);
+  --cream: #FCFBF7;
+  --r-sm: 0px;
+  --r-md: 0px;
+  --r-lg: 0px;
   --shadow: none;
-  --tile-mix: 20%;
+  --tile-mix: 18%;
 
-  --desk-ink: #F2EEE3;
+  --desk-ink: #F7F5EE;
   --desk-ink-2: #A9A69E;
   --desk-accent: #E8B93A;
-  --desk-btn: #2A2D30;
-  --desk-btn-line: #3E4246;
+  --desk-btn: #24262A;
+  --desk-btn-line: #3A3D42;
 
   --pill-nourish-bg: #E1EBD6; --pill-nourish-ink: #2F5B22;
   --pill-move-bg: #F6E6C0;    --pill-move-ink: #7A4E0C;
   --pill-rest-bg: #E3E1F0;    --pill-rest-ink: #46407A;
   --pill-mind-bg: #D8EAE6;    --pill-mind-ink: #12595A;
 
-  --deck-hedgerow: #2F4A33;
-  --deck-nightsky: #1F2A44;
-  --deck-hearth: #96301F;
-  --deck-ink: #FBF8F0;
+  --deck-hedgerow: #1F4A2E;
+  --deck-nightsky: #17223F;
+  --deck-hearth: #8A2A1B;
+  --deck-ink: #FCFBF7;
   --deck-word: #F0D272;
 }
 
-.phone { --canvas: #F2EEE3; --surface: #FBF8F0; --subtle: #E4DECF; --primary: #1F2A44; --deep: #141C30; --accent: #C8321F; --tint: #F3E7B5; }
-.phone.unclaimed { --canvas: #EFEDE8; --surface: #F9F8F4; --subtle: #E2DFD8; --primary: #3D3F42; --deep: #27292B; --accent: #8C8A84; --tint: #E6E3DB; }
+.phone { --canvas: #F7F5EE; --surface: #FCFBF7; --subtle: #ECE9DF; --primary: #111214; --deep: #000000; --accent: #C8321F; --tint: #F4E3DD; }
+.phone.unclaimed { --canvas: #F4F3EF; --surface: #FBFAF7; --subtle: #E8E6E0; --primary: #3A3C40; --deep: #232528; --accent: #6F6D68; --tint: #EAE8E2; }
 
-/* ---------- type ---------- */
-body { font-size: 15px; }
-.display { font-weight: 600; font-size: 26px; line-height: 1.14; letter-spacing: -.02em; }
-.display.xl { font-size: 32px; line-height: 1.1; }
-.display.sm { font-size: 19.5px; line-height: 1.2; }
-.top-brand, .demo-title { font-weight: 700; letter-spacing: -.02em; }
-.top-brand { font-size: 16px; white-space: nowrap; }
-.top-date { white-space: nowrap; letter-spacing: -.02em; }
-.demo-title { font-size: 22px; }
-.section-title { font-size: 17.5px; font-weight: 700; letter-spacing: -.01em; margin-top: 30px; padding-top: 11px; border-top: 1.5px solid var(--ink); }
-.path-name { font-size: 21px; font-weight: 700; letter-spacing: -.02em; }
-.step-text { font-size: 21px; font-weight: 500; }
-.quote, .mantra { font-weight: 500; font-size: 17.5px; }
-.quote.big { font-size: 24px; }
-.keep-word { font-size: 42px; font-weight: 700; letter-spacing: -.03em; }
-.tarot-name { font-size: 15.5px; font-weight: 700; }
-
-/* readings, labels and anything counted are set in mono */
-.label, .group-label, .section-title span, .pill, .top-date, .match, .anchor-sub, .trail-meta, .tarot-where, .tarot-word,
-.keep-foot, .keep-anchor span, .lens b, .demo-label, .tab, .tab-pause, .foot-note, .fine, .toast, .legend-item, .day {
+/* ---------- type: a Clarendon for headings, a mono for anything counted ---------- */
+body { font-size: 14px; line-height: 1.45; }
+.display { font-weight: 600; font-size: 24px; line-height: 1.14; letter-spacing: -.02em; }
+.display.xl { font-size: 30px; line-height: 1.08; }
+.display.sm { font-size: 18px; line-height: 1.2; }
+.lead { font-size: 14.5px; margin-top: 8px; }
+.small { font-size: 13px; }
+.label, .group-label, .section-title span, .pill, .match, .anchor-sub, .trail-meta, .tarot-where, .tarot-word, .keep-foot, .keep-anchor span,
+.lens b, .demo-label, .tab, .tab-pause, .foot-note, .fine, .toast, .legend-item, .day, .hint, .btn, .seg button, .chip {
   font-family: var(--font-mono);
 }
-.label, .group-label, .section-title span, .keep-anchor span, .lens b { font-size: 10.5px; font-weight: 500; letter-spacing: .07em; }
-.tab, .tab-pause { font-size: 9.5px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
-.tab.on, .tab-pause { font-weight: 600; }
-.anchor-sub, .trail-meta, .top-date, .match { font-size: 11.5px; letter-spacing: 0; }
+.label, .group-label, .section-title span, .keep-anchor span, .lens b { font-size: 10px; font-weight: 600; letter-spacing: .1em; color: var(--accent); }
+.card.tinted .label, .path.on .label, .rhythm-strip .label, .alm-note b { color: var(--ink); }
+.hint, .fine, .foot-note, .anchor-sub, .trail-meta, .match { font-size: 11px; letter-spacing: 0; }
 .kv b, .stats b, .day b, .stepper b, .savor-ring, .breath-ring, .trio li::before, .hold b, .wheel-center .small { font-family: var(--font-mono); font-weight: 500; font-style: normal; }
-.stats b { font-size: 24px; }
-.day b { font-size: 16px; }
-.stepper b { font-size: 20px; }
-.savor-ring { font-size: 34px; }
-.breath-ring { font-size: 15px; letter-spacing: .02em; }
-.hold b { font-size: 14px; }
-.trio li::before { font-size: 14px; border-radius: var(--r-sm); background: none; border: 1.5px solid var(--ink); }
+.stats b { font-size: 22px; }
+.day b { font-size: 15px; }
+.stepper b { font-size: 18px; }
+.savor-ring { font-size: 30px; }
+.breath-ring { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.hold b { font-size: 13px; }
+.quote, .mantra { font-weight: 500; font-size: 16.5px; }
+.quote.big { font-size: 22px; }
+.step-text { font-size: 20px; font-weight: 500; }
+.path-name { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+.keep-word { font-size: 40px; font-weight: 700; letter-spacing: -.03em; }
+.tarot-name { font-size: 15px; font-weight: 700; }
+.card-title, .option-title, .anchor-title { font-size: 14px; }
+.option-sub, .path-line, .trio span { font-size: 12.5px; }
 
-/* ---------- controls: square, ruled ---------- */
-.btn { border-radius: var(--r-md); min-height: 50px; letter-spacing: .01em; }
-.btn-small { border-radius: var(--r-sm); }
-.chip { border-radius: var(--r-sm); border-width: 1px; border-color: var(--rule); }
-.option { border-width: 1px; border-color: var(--rule); }
-.option.on { border-color: var(--primary); box-shadow: inset 5px 0 0 var(--primary); }
-.seg, .seg button, .stepper, .stepper button, .icon-btn, .sheet-close, .snap { border-radius: var(--r-sm); }
-.seg button.on { box-shadow: inset 0 0 0 1px var(--primary); }
-.field { border-width: 1px; border-color: var(--rule); }
-.pill { border-radius: 2px; border: 1px solid currentColor; padding: 2px 7px; font-weight: 500; letter-spacing: .05em; }
-.link { text-decoration-thickness: 1px; }
-.progress-seg, .progress-seg i, .trail-bar, .trail-bar i, .gather, .gather i { border-radius: 0; }
+/* ---------- header: a masthead with a dateline ---------- */
+.view { padding: 0 16px 20px; }
+.top { padding: 10px 16px 0; }
+.mast { flex: 1; min-width: 0; }
+.mast-row { display: flex; align-items: center; gap: 10px; }
+.mast-row img { width: 34px; height: 34px; }
+.mast-name { font: 700 22px/1 var(--font-display); letter-spacing: -.025em; }
+.mast-line { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; padding: 5px 0 4px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); font: 500 9.5px/1.3 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+
+/* ---------- Today's hero: the page for the day ---------- */
+.alm { padding-top: 14px; }
+.alm-head { display: grid; grid-template-columns: 1fr 112px; gap: 12px; align-items: end; }
+.alm-date b { display: block; font: 700 84px/.8 var(--font-display); letter-spacing: -.06em; }
+.alm-date span { display: block; margin-top: 12px; font: 500 10.5px/1.45 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.alm-head img { width: 112px; height: 112px; object-fit: contain; }
+.alm-line { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--ink); font: 500 italic 17px/1.32 var(--font-display); }
+.alm-line b { font-style: normal; font-weight: 700; }
+.alm-table { width: 100%; margin-top: 12px; border-collapse: collapse; border-bottom: 1px solid var(--ink); font: 400 11px/1.3 var(--font-mono); }
+.alm-table th, .alm-table td { padding: 6px 0; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+.alm-table tr:first-child th, .alm-table tr:first-child td { border-top: 1px solid var(--ink); }
+.alm-table th { width: 46px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.alm-table td { padding-left: 8px; border-left: 1px solid var(--line); }
+.alm-note { margin-top: 10px; padding: 10px 12px; background: var(--tint); font-size: 13px; }
+.alm-note b:first-child { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 3px; }
+
+/* ---------- sections: ruled headings ---------- */
+.section-title { margin: 22px 0 0; padding: 7px 0 6px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; align-items: center; }
+.page { padding-top: 0; }
+.page > .display:first-child { margin-top: 16px; }
+.page > .plan-head, .page > .profile { margin-top: 16px; }
+
+/* ---------- controls: square, inked ---------- */
+.btn { min-height: 44px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.btn-outline { border: 1.5px solid var(--ink); color: var(--ink); }
+.btn-ghost { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; min-height: 38px; }
+.btn-small { min-height: 34px; padding: 0 12px; font-size: 11px; }
+.btn.is-done { background: var(--tint); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.options { gap: 0; margin-top: 16px; border-top: 1px solid var(--ink); }
+.option { padding: 11px 12px 11px 14px; background: none; border: 0; border-bottom: 1px solid var(--line); }
+.options.tight { gap: 0; }
+.option.on { background: var(--tint); box-shadow: inset 4px 0 0 var(--accent); }
+.chips { gap: 6px; }
+.chip { padding: 6px 10px; font-size: 11.5px; background: none; border: 1px solid var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.seg { padding: 0; background: none; border: 1px solid var(--ink); }
+.seg button { padding: 7px 8px; font-size: 10.5px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.seg button + button { border-left: 1px solid var(--ink); }
+.seg button.on { background: var(--ink); color: var(--surface); box-shadow: none; }
+.field { min-height: 44px; padding: 0 12px; font-size: 14px; border: 1px solid var(--ink); background: var(--surface); }
+.field:focus { box-shadow: inset 0 -3px 0 var(--accent); }
+.stepper { border: 1px solid var(--ink); }
+.stepper button, .icon-btn, .sheet-close, .snap { background: none; border: 1px solid var(--ink); }
+.pill { padding: 0; background: none; font-size: 9.5px; font-weight: 600; letter-spacing: .1em; }
+.link { color: var(--ink); text-decoration-thickness: 1px; }
 .progress-seg { height: 3px; }
+.progress-seg i { background: var(--ink); }
 
-/* ---------- surfaces: a rule on top, no shadow ---------- */
-.card { border: 1px solid var(--line); border-top: 2px solid var(--ink); }
-.card.tinted, .card.soft { border: 0; border-top: 2px solid var(--primary); }
-.card.insight { border-left: 1px solid var(--line); background: var(--tint); }
-.card.insight .label { color: var(--ink); }
-.kv, .hold { border-top: 1px dotted var(--rule); }
-.rhythm-strip { border-left: 5px solid var(--primary); }
-.nudge, .closing { border-width: 1px; border-color: var(--accent); }
-.anchor { border-color: var(--rule); }
-.anchor-check { border-radius: var(--r-sm); border-width: 1.5px; }
-.path, .deck { border-width: 1px; }
-.path { border-color: var(--rule); }
-.phase, .day, .tile, .legend-item { border-radius: var(--r-sm); }
-.phase.on { border-width: 1px; }
-.day { border-color: var(--rule); }
-.legend-item.on { box-shadow: inset 0 0 0 1px var(--rule); }
-.stats span { border-radius: var(--r-sm); border-top: 2px solid var(--primary); }
-.bubble { border-radius: var(--r-lg) var(--r-lg) 0 var(--r-lg); }
-.sheet { border-radius: 10px 10px 0 0; border-top: 3px solid var(--ink); }
-.toast { border-radius: var(--r-sm); font-size: 12px; }
-.tabs { border-top: 1.5px solid var(--ink); }
-.foot { border-top-color: var(--rule); }
-.tab-pause img { border-radius: 14px; box-shadow: none; outline: 1.5px solid var(--ink); outline-offset: 2px; }
-.deck img, .deck-back { border-radius: 4px; box-shadow: 0 0 0 1px var(--ink); }
-.tarot { border-radius: 4px; outline-offset: -5px; box-shadow: none; }
-.draft img, .glim-img { border-radius: var(--r-lg); }
-
-/* gauges */
-.breath-ring { box-shadow: none; outline: 1px dashed var(--primary); outline-offset: 12px; border-width: 1.5px; }
-.savor-ring { border-width: 1.5px; }
-.wheel-marker i { border-width: 3px; }
-.wheel-center { box-shadow: 0 0 0 1.5px var(--ink); }
-.wheel-ring { box-shadow: 0 0 0 1.5px var(--ink); }
-
-/* the moon card as a printed slip */
-.keepsake { border-radius: 4px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -8px; padding-top: 30px; }
-
-/* the welcome reads as a masthead */
-.sprig-l, .sprig-r { display: none; }
-.welcome-art { justify-content: flex-start; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); }
-.welcome-logo { width: 72px; height: 72px; }
-.moon-call { border-radius: var(--r-lg); }
+/* ---------- surfaces: no cards, only rules ---------- */
+.card { margin-top: 10px; padding: 10px 0 2px; background: none; border: 0; border-top: 1px solid var(--line); }
+.section-title + .card, .card.flush { border-top: 0; margin-top: 0; }
+.card.tinted, .card.soft { padding: 12px; border-top: 2px solid var(--accent); }
+.card.tinted { background: var(--tint); }
+.card.soft { background: var(--subtle); }
+.card.insight { padding: 10px 0 10px 12px; border-top: 0; border-left: 3px solid var(--accent); }
+.card.flush { padding: 0; }
+.card-pad { padding: 10px 0 8px; }
+.cap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; margin-top: 10px; }
+.cap .seg { margin: 0; }
+.cap .small { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.anchor { margin-top: 0; padding: 10px 0; gap: 10px; background: none; border: 0; border-bottom: 1px solid var(--line); }
+.cap + .anchor { margin-top: 10px; border-top: 1px solid var(--ink); }
+.anchor.done { background: none; }
+.anchor-body { gap: 2px; }
+.anchor-check { width: 24px; height: 24px; border: 1.5px solid var(--ink); --reach: -10px; }
+.anchor-check img { width: 16px; height: 16px; }
+.anchor.done .anchor-check { background: var(--ink); }
+.card.flush .anchor { border-top: 0; }
+.closing { margin-top: 10px; padding: 10px 12px; border: 0; background: var(--tint); gap: 10px; }
+.closing img { width: 46px; height: 30px; animation: none; }
+.nudge { margin-top: 8px; padding: 9px 12px; border: 1px solid var(--accent); font-size: 12.5px; }
+.kv, .hold { border-top: 1px dotted var(--ink-3); font-size: 13px; }
+.kv img { width: 16px; height: 16px; }
+.list-row, .practice { padding: 11px 0; }
+.mini-anchor { padding: 10px 0; }
+.rhythm-strip { border-left: 4px solid var(--accent); }
+.path { padding: 12px 0; background: none; border: 0; border-bottom: 1px solid var(--line); }
+.paths { gap: 0; border-top: 1px solid var(--ink); }
+.path.on { background: var(--tint); box-shadow: inset 4px 0 0 var(--accent); padding-left: 12px; }
+.deck { border: 1px solid transparent; }
+.deck.on { border-color: var(--ink); }
+.phase { border: 1px solid transparent; }
+.phase.on { border-color: var(--ink); background: none; }
+.day { padding: 7px 0; border-color: var(--line); background: none; }
+.day.today { border: 1.5px solid var(--ink); }
+.week { gap: 0; }
+.week .day + .day { border-left: 0; }
 .legend { gap: 2px; }
-.legend-item { font-size: 10.5px; gap: 4px; padding: 4px 6px 4px 4px; letter-spacing: -.01em; white-space: nowrap; }
+.legend-item { font-size: 10px; gap: 4px; padding: 4px 6px 4px 4px; white-space: nowrap; }
+.legend-item.on { background: none; box-shadow: inset 0 0 0 1px var(--ink); }
+.stats { gap: 0; border: 1px solid var(--ink); }
+.stats span { background: none; padding: 9px 4px; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+.stats span + span { border-left: 1px solid var(--ink); }
+.stats b { color: var(--ink); }
+.trio li::before { font-size: 13px; background: none; border: 1.5px solid var(--ink); }
+.moon-call { padding: 14px; }
+.sheet { padding: 22px 16px 24px; border-top: 3px solid var(--ink); }
+.toast { font-size: 11.5px; }
+.foot { padding: 10px 16px 16px; border-top: 1px solid var(--ink); }
+.bubble { font-family: var(--font-mono); font-size: 12.5px; }
+.tile span { font-size: 13px; }
+.draft img { width: 88px; height: 88px; }
+
+/* gauges are drawn in ink */
+.breath-ring { background: none; border: 1.5px solid var(--ink); color: var(--ink); box-shadow: none; outline: 1px dashed var(--accent); outline-offset: 12px; }
+.savor-ring { background: none; border: 1.5px solid var(--ink); color: var(--ink); }
+.wheel { width: 220px; height: 220px; margin: 18px auto 12px; }
+.wheel-ring, .wheel-center { box-shadow: 0 0 0 1.5px var(--ink); }
+.wheel-marker i { border-width: 3px; }
+.trail-bar { height: 6px; }
+.trail-bar i { background: var(--ink); }
+.gather i { background: var(--ink); }
+
+/* ---------- tab bar: a ruled strip, the pause is the spot colour ---------- */
+.tabs { align-items: stretch; padding: 0; border-top: 2px solid var(--ink); background: var(--canvas); }
+.tab, .tab-pause { justify-content: center; gap: 4px; padding: 9px 0 max(10px, env(safe-area-inset-bottom)); font-size: 9px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.tab + .tab, .tab-pause, .tab-pause + .tab { border-left: 1px solid var(--line); }
+.tab img { width: 20px; height: 20px; opacity: .6; }
+.tab.on { background: var(--ink); color: var(--surface); font-weight: 600; }
+.tab.on img { filter: invert(1); }
+.tab-pause { background: var(--accent); color: #FFFFFF; font-weight: 600; }
+.tab-pause img { width: 20px; height: 20px; padding: 0; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+
+/* ---------- illustration: engravings, with one screened disc of the spot colour ---------- */
+.hero-art { width: 190px; }
+.path-art { width: 78px; height: 78px; }
+.plan-head, .profile { gap: 12px; }
+.plan-head img, .profile img { width: 96px; }
+.deck img, .deck-back { box-shadow: none; border-radius: 0; }
+.deck-back { transform: none; width: 70px; }
+.tarot { outline-offset: -5px; box-shadow: none; }
+.pause-end img { width: 170px; animation: none; }
+.tarot img { width: 60px; height: 38px; filter: invert(1); }
+.sprig-l, .sprig-r { display: none; }
+.welcome-art { justify-content: flex-start; margin: 4px 0 14px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+.welcome-logo { width: 84px; height: 84px; }
+.moon-xl { width: 120px; height: 120px; }
+
+/* the moon card is a printed slip */
+.keepsake { padding: 24px 18px 16px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -7px; }
+.keepsake .label, .keep-anchor span { color: var(--ink); }
+.keep-word { color: var(--accent); }

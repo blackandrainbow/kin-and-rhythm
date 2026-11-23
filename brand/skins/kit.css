@@ -65,3 +65,20 @@
 /* inactive legend items stay readable: dim the icon, not the word */
 .legend-item { opacity: 1; color: var(--ink-3); }
 .legend-item:not(.on) img { opacity: .5; }
+
+/* illustration may be raster and of any proportion */
+.path-art, .plan-head img, .profile img, .hero-art, .tarot img, .closing img, .pause-end img, .deck img, .deck-back, .keep-moon, .wheel-center img { object-fit: contain; }
+
+/* text links are still buttons: give them a 28px target */
+.link { padding: 4px 0; margin-top: 6px; }
+.hold .link { margin: 0; }
+
+/* a still: the prototype as a picture, for thumbnails */
+[data-still] .demo { display: none; }
+[data-still] *, [data-still] *::before, [data-still] *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+
+/* accessibility floor for every skin */
+#phone :focus-visible { outline: 2px solid var(--focus, var(--primary)); outline-offset: 2px; }
+.field::placeholder { color: var(--ink-3); opacity: 1; }
+.anchor-check, .icon-btn { position: relative; }
+.anchor-check::after, .icon-btn::after, .sheet-close::after { content: ''; position: absolute; inset: var(--reach, -6px); }

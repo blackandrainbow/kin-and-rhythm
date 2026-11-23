@@ -45,12 +45,16 @@ var Skin = { use: function (cfg) { BRAND[cfg.id] = cfg; } };
     else f.title = name + ' ' + hex.toUpperCase();
     return f;
   }
-  function row(theme) { var r = el('div', 'swatch-row'); TOKENS.forEach(function (k) { r.appendChild(swatch(k, theme[k], true)); }); return r; }
   function checks(theme, ink, ink3) {
     return 'Text on canvas ' + ratio(ink, theme.canvas) + ' · muted text on subtle ' + ratio(ink3, theme.subtle) + ' · primary on surface ' + ratio(theme.primary, theme.surface) + ' · button text ' + ratio(theme.surface, theme.primary);
   }
 
-  function art(cfg, name) { return (cfg.art.indexOf(name + '.svg') >= 0 ? 'skins/' + cfg.id + '/' : '../assets/') + name + '.svg'; }
+  /* Where a piece of art lives: the skin's own file when it has one, the shared asset otherwise. */
+  function art(cfg, name) {
+    if (/\.\w+$/.test(name)) return 'skins/' + cfg.id + '/' + name;
+    var own = cfg.art[name + '.svg'];
+    return own ? 'skins/' + cfg.id + '/' + own : '../assets/' + name + '.svg';
+  }
 
   var seen = {};
   function tokens(cfg) {
@@ -80,10 +84,13 @@ var Skin = { use: function (cfg) { BRAND[cfg.id] = cfg; } };
         [['ink', ink], ['ink-2', t.root['--ink-2']], ['ink-3', ink3]].forEach(function (p) { box.appendChild(swatch(p[0], p[1])); });
       } else if (kind === 'patterns') {
         Object.keys(PATTERNS).forEach(function (p) {
-          var line = el('div', 'pattern-row'), pic = el('img'), th = cfg.themes[p];
+          /* a pattern may change only what the skin's policy lists; everything else stays the skin's own */
+          var line = el('div', 'pattern-row'), pic = el('img'), change = cfg.patterns[p], th = Object.assign({}, t.base, change);
           pic.src = art(cfg, 'pattern-' + p); pic.alt = '';
           line.appendChild(pic);
-          var body = el('div'); body.appendChild(el('b', '', PATTERNS[p])); body.appendChild(row(th)); body.appendChild(el('p', 'checks', checks(th, ink, ink3)));
+          var body = el('div'), chips = el('div', 'swatch-row policy');
+          Object.keys(change).forEach(function (k) { chips.appendChild(swatch(k, change[k])); });
+          body.appendChild(el('b', '', PATTERNS[p])); body.appendChild(chips); body.appendChild(el('p', 'checks', checks(th, ink, ink3)));
           line.appendChild(body); box.appendChild(line);
         });
       } else if (kind === 'seasons') {
@@ -93,7 +100,7 @@ var Skin = { use: function (cfg) { BRAND[cfg.id] = cfg; } };
 
     each(section.querySelectorAll('[data-art]'), function (box) {
       box.getAttribute('data-art').split(' ').forEach(function (name) {
-        var pic = el('img', name.split('-')[0]); pic.src = art(cfg, name); pic.alt = ''; box.appendChild(pic);
+        var pic = el('img', name.replace(/\..*$/, '').split('-')[0]); pic.src = art(cfg, name); pic.alt = ''; box.appendChild(pic);
       });
     });
   }

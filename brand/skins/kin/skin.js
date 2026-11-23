@@ -1,27 +1,58 @@
-/* Kin play. Runs after data.js and kit.js, before rhythm.js and app.js. */
+/* Kinhold: the kin play. Runs after data.js and kit.js, before rhythm.js and app.js. */
 Skin.use({
   id: 'kin',
   name: 'Kinhold',
   line: 'Ten seconds for you. One friend who asks.',
   fonts: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700;800&display=swap',
-  desk: '#1D1A22',
+  desk: '#17151C',
 
-  themes: {
-    sun: { canvas: '#FFF4E8', surface: '#FFFFFF', subtle: '#FCE4CC', primary: '#B8301A', deep: '#94240F', accent: '#F5B21A', tint: '#FFE3B3' },
-    wind: { canvas: '#F1F6FF', surface: '#FFFFFF', subtle: '#DCE8FB', primary: '#2540C4', deep: '#1A2F99', accent: '#F2542D', tint: '#D7E4FF' },
-    hearth: { canvas: '#FFF3F3', surface: '#FFFFFF', subtle: '#FBDFE2', primary: '#B4245C', deep: '#8C1A46', accent: '#F28A2E', tint: '#FFDDE6' },
-    tide: { canvas: '#EFFAF5', surface: '#FFFFFF', subtle: '#D5EFE4', primary: '#0E6B63', deep: '#0A524C', accent: '#F2542D', tint: '#C9F0E2' },
-    frost: { canvas: '#F7F3FF', surface: '#FFFFFF', subtle: '#E6DDF7', primary: '#5B34B0', deep: '#45278A', accent: '#F5B21A', tint: '#E6DCFB' }
+  /* Pattern policy: one element. Cobalt, tomato and butter stay; her pattern colours her own chip and her sticker's block. */
+  patterns: {
+    sun: { accent: '#FFC233' },
+    wind: { accent: '#7FB2FF' },
+    hearth: { accent: '#FF7FA6' },
+    tide: { accent: '#3CCFAE' },
+    frost: { accent: '#B79CFF' }
   },
   seasons: { winter: '#4B6FD6', spring: '#2FA36B', summer: '#F2B01E', autumn: '#E8642C' },
 
-  art: ['logo.svg', 'sunburst.svg',
-    'icon-today.svg', 'icon-rhythm.svg', 'icon-pause.svg', 'icon-plan.svg', 'icon-you.svg', 'icon-back.svg', 'icon-next.svg', 'icon-close.svg',
-    'icon-check.svg', 'icon-check-ink.svg', 'icon-spark.svg', 'icon-camera.svg', 'icon-sunrise.svg', 'icon-golden.svg', 'icon-sunset.svg',
-    'moon-0.svg', 'moon-1.svg', 'moon-2.svg', 'moon-3.svg', 'moon-4.svg', 'moon-5.svg', 'moon-6.svg', 'moon-7.svg',
-    'pattern-sun.svg', 'pattern-wind.svg', 'pattern-hearth.svg', 'pattern-tide.svg', 'pattern-frost.svg',
-    'season-winter.svg', 'season-spring.svg', 'season-summer.svg', 'season-autumn.svg',
-    'deck-hedgerow.svg', 'deck-nightsky.svg', 'deck-hearth.svg'],
+  art: {
+    'logo.svg': 'logo.png', 'sunburst.svg': 'sunburst.png',
+    'pattern-sun.svg': 'pattern-sun.png', 'pattern-wind.svg': 'pattern-wind.png', 'pattern-hearth.svg': 'pattern-hearth.png', 'pattern-tide.svg': 'pattern-tide.png', 'pattern-frost.svg': 'pattern-frost.png',
+    'moon-0.svg': 'moon-0.svg', 'moon-1.svg': 'moon-1.svg', 'moon-2.svg': 'moon-2.svg', 'moon-3.svg': 'moon-3.svg', 'moon-4.svg': 'moon-4.svg', 'moon-5.svg': 'moon-5.svg', 'moon-6.svg': 'moon-6.svg', 'moon-7.svg': 'moon-7.svg',
+    'deck-hedgerow.svg': 'deck-hedgerow.png', 'deck-nightsky.svg': 'deck-nightsky.png', 'deck-hearth.svg': 'deck-hearth.png',
+    'season-winter.svg': 'season-winter.svg', 'season-spring.svg': 'season-spring.svg', 'season-summer.svg': 'season-summer.svg', 'season-autumn.svg': 'season-autumn.svg',
+    'icon-today.svg': 'icon-today.svg', 'icon-rhythm.svg': 'icon-rhythm.svg', 'icon-pause.svg': 'icon-pause.svg', 'icon-plan.svg': 'icon-plan.svg', 'icon-you.svg': 'icon-you.svg',
+    'icon-back.svg': 'icon-back.svg', 'icon-next.svg': 'icon-next.svg', 'icon-close.svg': 'icon-close.svg', 'icon-check.svg': 'icon-check.svg', 'icon-check-ink.svg': 'icon-check-ink.svg',
+    'icon-spark.svg': 'icon-spark.svg', 'icon-camera.svg': 'icon-camera.svg', 'icon-sunrise.svg': 'icon-sunrise.svg', 'icon-golden.svg': 'icon-golden.svg', 'icon-sunset.svg': 'icon-sunset.svg'
+  },
+
+  /* Today leads with her people and her tiny good things. The almanac opens on the glimmer grid. */
+  layout: {
+    today: ['people', 'good', 'moon', 'kin', 'nudge', 'touch', 'glimmer', 'cards', 'why'],
+    rhythm: ['head', 'glimmers', 'notes', 'seg', 'wheel', 'moons', 'season', 'week', 'sky']
+  },
+  blocks: {
+    today: {
+      people: function (c) {
+        var k = c.kin, chips = '';
+        function chip(name, line, cls) { return '<button class="kin-chip ' + cls + '" data-act="tab" data-arg="you"><span class="av" aria-hidden="true">' + c.esc(name.charAt(0).toUpperCase()) + '</span><span><b>' + c.esc(name) + '</b><i>' + line + '</i></span></button>'; }
+        if (k.witness) chips += chip(k.witness, k.word ? 'holds “' + c.esc(k.word) + '”' : 'your person', 'a');
+        k.holding.forEach(function (h) { chips += chip(h.name, 'you hold “' + c.esc(h.word) + '”', 'b'); });
+        chips += '<button class="kin-chip add" data-act="tab" data-arg="you"><span class="av" aria-hidden="true">+</span><span><b>' + (k.witness ? 'Add' : 'Pick your person') + '</b><i>one is plenty</i></span></button>';
+        return '<section class="kin-hero"><p class="label">Your people</p><h1 class="display">' +
+          (k.witness ? c.esc(k.witness) + '\'s got you.' : 'Who\'s got you?') + '</h1><div class="kin-row">' + chips + '</div></section>';
+      },
+      good: function (c) {
+        return '<section class="good"><div class="good-head"><p class="label">Tiny good things</p><button class="good-count" data-act="grid">' + c.glimmers + ' kept</button></div>' +
+          (c.glimmers ? '<div class="tiles">' + c.tiles(4) + '</div>' : '<p class="small">Snap one small good thing today. It starts your grid.</p>') + '</section>';
+      }
+    }
+  },
+  top: function (c) {
+    return '<div class="hey"><span class="hey-me" aria-hidden="true">' + c.esc((c.name || 'You').charAt(0).toUpperCase()) + '</span><span class="hey-txt"><b>Hey' + (c.name ? ' ' + c.esc(c.name) : '') + '</b><i>' +
+      c.date.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' }) + '</i></span><img src="assets/logo.svg" alt=""></div>';
+  },
 
   /* Lines held in data.js */
   copy: {
@@ -40,8 +71,8 @@ Skin.use({
     },
     DECKS: {
       hedgerow: { note: 'Garden. Leaves, sprouts and fresh air.' },
-      nightsky: { note: 'Night. Moons, stars and a deep blue.' },
-      hearth: { note: 'Kitchen. Flames, warmth and red enamel.' }
+      nightsky: { note: 'Night. A moon, a star and a deep blue.' },
+      hearth: { note: 'Kitchen. A lit window and a warm house.' }
     }
   },
 
@@ -60,7 +91,7 @@ Skin.use({
     'That is your ten seconds.': 'That\'s your ten seconds. Done.',
     'The rest happens out there, not in here.': 'Now go live your day. It\'s out there, not in here.',
     'One tap is enough. Nothing here keeps score.': 'One tap. Nobody\'s keeping score.',
-    'Romance the ordinary': 'Tiny good things',
+    'Romance the ordinary': 'Add one',
     'One small beautiful thing': 'One tiny good thing',
     'Choose a witness': 'Pick your person',
     'Who you are holding': 'Who you\'re holding',

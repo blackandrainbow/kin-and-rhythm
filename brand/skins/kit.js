@@ -1,9 +1,14 @@
-/* Skin kit. Lets a brand skin restyle the prototype from outside, without touching the shared files.
+/* Skin kit. Lets a brand skin restyle and rearrange the prototype without forking it.
    Load order: style.css, kit.css, <skin>/skin.css, data.js, kit.js, <skin>/skin.js, rhythm.js, app.js.
-   A skin calls Skin.use({ id, name, line, themes, seasons, art, copy, text }) once. */
+   A skin calls Skin.use({ id, name, line, patterns, seasons, art, layout, blocks, top, copy, text }) once.
+
+   - patterns: what each pattern is allowed to change, laid over the skin's own tokens from skin.css.
+     A skin that lists only accent and tint keeps its own canvas and primary whatever her pattern is.
+   - layout / blocks / top: handed to app.js through window.SKIN (see "skin hooks" there). */
 var Skin = (function () {
   'use strict';
-  var art = {}, text = {};
+  var art = {}, text = {}, base = '';
+  var TOKENS = ['canvas', 'surface', 'subtle', 'primary', 'deep', 'accent', 'tint'];
   var DATA = ['PATTERNS', 'SEASONS', 'DECKS', 'MOON_RITUALS', 'SEED_GLIMMER_ART'];
   var ATTRS = ['placeholder', 'aria-label'];
 
@@ -45,34 +50,54 @@ var Skin = (function () {
     while ((n = walk.nextNode())) fixText(n);
   }
 
-  /* skin-x.html#maya opens on that demo mom, unless a mom is already saved in this browser. */
+  /* The skin's own seven tokens, read from skin.css so they are written once. */
+  function ownTokens() {
+    var phone = document.getElementById('phone'), was = phone.className, out = {};
+    phone.className = 'phone';
+    var cs = getComputedStyle(phone);
+    TOKENS.forEach(function (k) { out[k] = cs.getPropertyValue('--' + k).trim(); });
+    phone.className = was;
+    return out;
+  }
+
+  /* Demo links. skin-x.html#maya opens on that demo mom, unless a mom is already saved in this browser.
+     skin-x.html#maya/almanac, /patterns, /card or /pause then opens that screen; /still also hides the Demo pill. */
+  var SCREENS = { today: [['tab', 'today']], almanac: [['tab', 'rhythm']], patterns: [['tab', 'today'], ['pathsSheet'], ['allPaths']], card: [['tab', 'today'], ['ritualPage']], pause: [['tab', 'today'], ['pauseOpen']] };
+  function saved() { try { return JSON.parse(localStorage.getItem('kin-rhythm-v1')) || {}; } catch (e) { return {}; } }
+  function newMoon(s) { var i = -1; (s.rituals || []).forEach(function (r, n) { if (r.kind === 'new') i = n; }); return i; }
+  function press(act, arg) {
+    var b = document.createElement('button');
+    b.setAttribute('data-act', act); if (arg != null) b.setAttribute('data-arg', arg);
+    b.hidden = true; document.body.appendChild(b); b.click(); b.remove();
+  }
   function demoLink() {
-    var who = location.hash.slice(1), saved = null;
+    var parts = location.hash.slice(1).split('/'), who = parts[0], screen = parts[1], was = saved();
     if (!/^[a-z]+$/.test(who)) return;
-    try { saved = JSON.parse(localStorage.getItem('kin-rhythm-v1')); } catch (e) {}
-    if (saved && saved.onboarded) return;
+    if (parts.indexOf('still') > 0) document.documentElement.setAttribute('data-still', '');
     window.addEventListener('load', function () {
-      var btn = document.querySelector('.demo [data-act="persona"][data-arg="' + who + '"]');
-      if (btn) btn.click();
+      if (!was.onboarded || (screen === 'card' && newMoon(was) < 0)) press('persona', who);     /* the moon card needs a mom who has set a moon */
+      (SCREENS[screen] || []).forEach(function (step) { press(step[0], step[0] === 'ritualPage' ? String(newMoon(saved())) : step[1]); });
     });
   }
 
   function use(cfg) {
-    var base = 'brand/skins/' + cfg.id + '/', was = APP.name, root = document.documentElement;
-    (cfg.art || []).forEach(function (file) { art['assets/' + file] = base + file; });
+    var was = APP.name, root = document.documentElement, own = ownTokens();
+    base = 'brand/skins/' + cfg.id + '/';
+    Object.keys(cfg.art || {}).forEach(function (k) { art['assets/' + k] = base + cfg.art[k]; });
     text = Object.assign({}, cfg.text);
     text[was] = cfg.name;
 
     APP.name = cfg.name;
     APP.line = cfg.line;
     APP.disclaimer = APP.disclaimer.split(was).join(cfg.name);
-    PATTERNS.forEach(function (p) { if (cfg.themes && cfg.themes[p.id]) p.theme = cfg.themes[p.id]; });
+    PATTERNS.forEach(function (p) { p.theme = Object.assign({}, own, (cfg.patterns || {})[p.id]); });
     Object.keys(cfg.seasons || {}).forEach(function (k) {
       SEASONS[k].color = cfg.seasons[k];
       root.style.setProperty('--season-' + k, cfg.seasons[k]);
     });
     if (cfg.copy) patch(window, cfg.copy);
     DATA.forEach(function (name) { remap(window[name]); });
+    window.SKIN = { layout: cfg.layout, blocks: cfg.blocks, top: cfg.top };
 
     demoLink();
     root.setAttribute('data-skin', cfg.id);
@@ -83,5 +108,11 @@ var Skin = (function () {
     }).observe(document.body, { childList: true, subtree: true });
   }
 
-  return { use: use };
+  /* A skin's own file, for use inside its blocks. */
+  function file(name) { return base + name; }
+
+  /* The greeting app.js would give at this hour, for skins that draw their own header. */
+  function hello(date) { var h = date.getHours(); return h < 5 ? 'Still up' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; }
+
+  return { use: use, file: file, hello: hello };
 })();
