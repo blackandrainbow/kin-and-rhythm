@@ -1,0 +1,129 @@
+/* Kin play: enamel brights on milk. Everything is a sticker: a fat ink outline, a hard shadow on what you can press,
+   a loud grotesque for headings. No pastel, no serif, no moonlight. */
+
+:root {
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --desk: #1D1A22;
+  --ink: #1D1A22;
+  --ink-2: #4B4653;
+  --ink-3: #645E6C;
+  --line: rgba(29, 26, 34, .18);
+  --cream: #FFFFFF;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --shadow: none;
+  --edge: 2px solid var(--ink);
+  --press: 3px 3px 0 var(--ink);
+  --tile-mix: 30%;
+
+  --desk-ink: #FFF7EA;
+  --desk-ink-2: #B3ADBA;
+  --desk-accent: #FFC94A;
+  --desk-btn: #2E2A35;
+  --desk-btn-line: #443F4D;
+
+  --pill-nourish-bg: #CDEFD9; --pill-nourish-ink: #14603A;
+  --pill-move-bg: #FFE3B3;    --pill-move-ink: #7F4A00;
+  --pill-rest-bg: #E6DCFB;    --pill-rest-ink: #4B2A96;
+  --pill-mind-bg: #D7E4FF;    --pill-mind-ink: #1D37A8;
+
+  --deck-hedgerow: #0E6B63;
+  --deck-nightsky: #2540C4;
+  --deck-hearth: #B8301A;
+  --deck-ink: #FFFFFF;
+  --deck-word: #FFE08A;
+}
+
+.phone { --canvas: #FFF7EA; --surface: #FFFFFF; --subtle: #F6EAD6; --primary: #2540C4; --deep: #1A2F99; --accent: #F2542D; --tint: #FFEBAE; }
+.phone.unclaimed { --canvas: #F5F3EF; --surface: #FFFFFF; --subtle: #E9E6E0; --primary: #4A4750; --deep: #2E2C33; --accent: #9A96A0; --tint: #ECE9E3; }
+
+/* ---------- type ---------- */
+body { font-size: 15.5px; }
+.display { font-weight: 700; font-size: 30px; line-height: 1.04; letter-spacing: -.025em; }
+.display.xl { font-size: 38px; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
+.display.sm { font-size: 22px; line-height: 1.1; }
+.top-brand, .demo-title { font-weight: 800; letter-spacing: -.03em; }
+.section-title { font-size: 21px; font-weight: 800; letter-spacing: -.02em; }
+.label, .group-label, .section-title span { font-weight: 800; font-size: 11px; letter-spacing: .09em; }
+.path-name { font-size: 24px; font-weight: 800; letter-spacing: -.03em; }
+.step-text { font-weight: 600; font-size: 24px; letter-spacing: -.015em; line-height: 1.15; }
+.quote, .mantra, .hold b { font-style: normal; font-weight: 600; letter-spacing: -.01em; }
+.mantra { font-size: 20px; }
+.quote { font-size: 18px; }
+.quote.big { font-size: 27px; font-weight: 700; }
+.keep-word { font-weight: 800; letter-spacing: -.04em; }
+.stats b, .day b, .stepper b, .savor-ring, .breath-ring, .trio li::before, .tarot-name { font-weight: 800; }
+.tab, .tab-pause { font-size: 11px; font-weight: 700; }
+.tab.on, .tab-pause { font-weight: 800; }
+.option-title, .anchor-title, .card-title { font-weight: 700; }
+.chip { font-weight: 600; }
+.btn { font-weight: 800; font-size: 16px; }
+.pill { font-weight: 800; }
+
+/* ---------- controls: press them ---------- */
+.btn-primary, .btn-outline, .btn-small, .btn.is-done { border: var(--edge); box-shadow: var(--press); }
+.btn-outline { background: var(--surface); color: var(--ink); border-width: 2px; }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.btn-ghost, .btn-ghost:active { border: 0; box-shadow: none; }
+.btn.is-quiet { box-shadow: none; }
+.foot .btn-primary, .page > .btn, .sheet > .btn, .pause > .btn { margin-bottom: 3px; }
+.moon-call .btn-small { color: var(--ink); }
+
+.option, .chip, .field, .path, .stepper, .seg { border: var(--edge); }
+.option.on, .path.on { box-shadow: var(--press); }
+.chip.on { box-shadow: 2px 2px 0 var(--ink); }
+.field:focus { border-color: var(--ink); box-shadow: 3px 3px 0 var(--primary); }
+.seg { background: var(--surface); padding: 3px; }
+.seg button.on { background: var(--primary); color: var(--surface); box-shadow: none; }
+.stepper button, .icon-btn, .sheet-close, .snap { border: var(--edge); background: var(--surface); }
+.deck { border-width: 2px; }
+.deck.on { border-color: var(--ink); }
+.pill { border: 1.5px solid var(--ink); }
+.link { text-decoration-thickness: 2px; }
+.progress-seg { height: 6px; border-radius: 6px; }
+
+/* ---------- surfaces: stickers on a sheet ---------- */
+.card, .rhythm-strip, .moon-call, .bubble, .day, .tile, .stats span, .keepsake, .tarot { border: var(--edge); }
+.card.tinted, .card.soft { border: var(--edge); }
+.card.insight { border-left: var(--edge); background: var(--tint); }
+.card.flush .anchor { border-top: var(--edge); }
+.anchor { border: var(--edge); box-shadow: var(--press); }
+.card.flush .anchor { box-shadow: none; }
+.anchor-check { border: 2.5px solid var(--ink); background: var(--surface); }
+.nudge, .closing { border: 2px dashed var(--ink); }
+.nudge.still { border-style: solid; }
+.moon-call { box-shadow: 4px 4px 0 var(--ink); margin-right: 4px; }
+.phase { border-width: 2px; }
+.phase.on { border-color: var(--ink); box-shadow: var(--press); }
+.phase.current::after { width: 10px; height: 10px; border: 2px solid var(--ink); }
+.day.today { border: var(--edge); box-shadow: 2px 2px 0 var(--ink); }
+.legend-item.on { box-shadow: inset 0 0 0 2px var(--ink); }
+.trio li::before { background: var(--tint); border: var(--edge); font-size: 15px; }
+.sheet { border-top: 3px solid var(--ink); }
+.tabs { border-top: var(--edge); }
+.foot { border-top: var(--edge); }
+.toast { background: var(--tint); color: var(--ink); border: var(--edge); box-shadow: var(--press); font-weight: 700; }
+.tab-pause img { border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 13px; }
+.tab-pause:active img { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.deck img, .deck-back { box-shadow: none; border-radius: 0; }
+.tarot { outline: 0; border-width: 3px; border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); }
+.draft img, .glim-img { border: var(--edge); }
+
+/* gauges */
+.trail-bar { height: 12px; background: var(--surface); border: var(--edge); }
+.trail-bar i { border-radius: 0; }
+.trail-bar span { background: var(--ink); opacity: .35; }
+.gather { height: 10px; border: var(--edge); }
+.breath-ring { border: 3px solid var(--ink); box-shadow: 0 0 0 10px var(--tint), 0 0 0 12.5px var(--ink); }
+.savor-ring { border: 3px solid var(--ink); }
+.wheel-ring, .wheel-center { box-shadow: 0 0 0 3px var(--ink); }
+.wheel-marker i { border-width: 4px; box-shadow: 2px 2px 0 var(--ink); }
+.wheel-dot i { background: var(--surface); box-shadow: 0 0 0 1.5px var(--ink); }
+
+/* the moon card is a note for the fridge */
+.keepsake { border-width: 3px; outline: 0; border-radius: 24px; box-shadow: 6px 6px 0 var(--ink); margin-right: 6px; transform: rotate(-.6deg); }
+
+.sprig-l, .sprig-r { display: none; }
+.welcome-logo { width: 108px; height: 108px; }

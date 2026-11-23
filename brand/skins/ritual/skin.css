@@ -1,0 +1,81 @@
+/* Ritual play: block print on vellum. Evolves the Celtic celestial look: same cream, forest and gold,
+   with a sturdier book serif, a second ink (madder red) and cut-and-printed edges. */
+
+:root {
+  --font-display: 'Alegreya', Georgia, serif;
+  --font-sans: 'Alegreya Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --desk: #1C2620;
+  --ink: #25211B;
+  --ink-2: #574E42;
+  --ink-3: #6B6253;
+  --line: rgba(37, 33, 27, .16);
+  --cream: #FFFAF0;
+  --seal: #8A2F22;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 16px;
+  --shadow: 0 1px 0 rgba(37, 33, 27, .08);
+
+  --desk-ink: #EDE6D4;
+  --desk-ink-2: #A3AC9F;
+  --desk-accent: #D2A652;
+  --desk-btn: #2A372F;
+  --desk-btn-line: #3B4A40;
+
+  --pill-nourish-bg: #DDEBD9; --pill-nourish-ink: #2A5E3F;
+  --pill-move-bg: #F6E6C6;    --pill-move-ink: #7D4F10;
+  --pill-rest-bg: #E6E0F0;    --pill-rest-ink: #51407F;
+  --pill-mind-bg: #D9EAE8;    --pill-mind-ink: #1F5F60;
+
+  --deck-hedgerow: #2C4A38;
+  --deck-nightsky: #2A3352;
+  --deck-hearth: #8A2F22;
+  --deck-ink: #FFFAF0;
+  --deck-word: #EBCB80;
+}
+
+.phone { --canvas: #F6EEDC; --surface: #FFFAF0; --subtle: #EBDFC6; --primary: #1F4A3A; --deep: #143328; --accent: #B7862B; --tint: #E2ECDF; }
+.phone.unclaimed { --canvas: #F1EEE7; --surface: #FBF9F4; --subtle: #E5E0D5; --primary: #47443E; --deep: #2F2D29; --accent: #8F8672; --tint: #E6E2D8; }
+
+/* ---------- type: a book face that holds its weight ---------- */
+body { font-size: 16.5px; line-height: 1.45; }
+.display { font-weight: 700; font-size: 32px; line-height: 1.06; letter-spacing: -.012em; }
+.display.xl { font-size: 40px; line-height: 1.02; }
+.display.sm { font-size: 24px; }
+.lead { font-size: 17px; }
+.small { font-size: 15px; }
+.label, .group-label, .section-title span { font-size: 11.5px; letter-spacing: .13em; }
+.hint, .fine, .anchor-sub, .foot-note, .trail-meta { font-size: 13.5px; }
+.option-sub, .path-line, .trio span { font-size: 14.5px; }
+.chip { font-size: 15px; }
+.btn { font-size: 16.5px; letter-spacing: .01em; }
+.tab, .tab-pause { font-size: 11.5px; }
+.quote, .mantra { font-weight: 500; }
+.mantra { font-size: 23px; }
+.top-brand, .demo-title { font-weight: 700; letter-spacing: -.01em; }
+.path-name { font-weight: 700; }
+.keep-word { font-weight: 800; letter-spacing: -.02em; }
+
+/* a printer's lozenge opens each section */
+.section-title { justify-content: flex-start; gap: 10px; font-weight: 700; font-size: 22px; }
+.section-title::before { content: ''; width: 7px; height: 7px; flex-shrink: 0; align-self: center; background: var(--accent); transform: rotate(45deg); }
+.section-title span { margin-left: auto; }
+
+/* ---------- surfaces: printed card, inner keyline ---------- */
+.card { border-color: color-mix(in srgb, var(--primary) 22%, transparent); }
+.card.tinted, .moon-call, .keepsake { outline: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); outline-offset: -6px; }
+.moon-call { border-radius: var(--r-lg); padding: 22px 20px; }
+.card.insight { border-left: 4px solid var(--seal); }
+.rhythm-strip { border: 1px solid color-mix(in srgb, var(--primary) 22%, transparent); }
+.option.on, .path.on, .deck.on { box-shadow: inset 0 0 0 1px var(--primary); }
+.anchor-check { border-width: 1.5px; }
+.trio li::before { background: none; border: 1.5px solid var(--accent); color: var(--primary); font-weight: 700; }
+.phase.current::after { background: var(--seal); }
+.btn-primary { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent), inset 0 0 0 4px var(--primary); }
+.btn-primary:hover { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent), inset 0 0 0 4px var(--deep); }
+.btn.is-done { box-shadow: none; }
+.btn-small { box-shadow: none; }
+.tab-pause img { outline: 1.5px solid var(--accent); outline-offset: -7px; }
+.tarot { border-radius: 52px 52px 10px 10px; padding-top: 18px; }
+.keepsake { border-radius: 110px 110px 18px 18px; padding-top: 46px; }
+.toast { letter-spacing: .01em; }

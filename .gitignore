@@ -1,5 +1,4 @@
-# Brand exploration is still in progress and is not part of the review build
-brand/
-skin-*.html
+# Local build helper, not needed to serve the site
+brand/skins/build.py
 
 .DS_Store

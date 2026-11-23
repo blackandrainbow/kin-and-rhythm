@@ -1,0 +1,67 @@
+/* Skin kit. Lifts the colours style.css writes by hand into tokens, so a skin only sets values.
+   Defaults repeat the base look. Season colours are published by kit.js from the skin's SEASONS. */
+
+:root {
+  --bezel: #0E110F;
+  --desk-ink: #E9E4D6;
+  --desk-ink-2: #9CA59D;
+  --desk-accent: #C9A85C;
+  --desk-btn: #2A322D;
+  --desk-btn-line: #39433D;
+
+  --pill-nourish-bg: #E3EEE4; --pill-nourish-ink: #2D6A4F;
+  --pill-move-bg: #F8EBD6;    --pill-move-ink: #8A5A16;
+  --pill-rest-bg: #ECE7F5;    --pill-rest-ink: #5B4A8E;
+  --pill-mind-bg: #E0EEEC;    --pill-mind-ink: #276B6B;
+
+  --deck-hedgerow: #2F4A3A;
+  --deck-nightsky: #2B3350;
+  --deck-hearth: #8A3F2B;
+  --deck-ink: var(--cream);
+  --deck-word: #E8C87A;
+
+  --season-winter: #586A8E;
+  --season-spring: #6C9660;
+  --season-summer: #D29A36;
+  --season-autumn: #B4623C;
+  --tile-mix: 24%;
+}
+
+/* presenter panel */
+.demo { color: var(--desk-ink); }
+.demo-sub { color: var(--desk-ink-2); }
+.demo-label { color: var(--desk-accent); }
+.demo-btn { background: var(--desk-btn); border-color: var(--desk-btn-line); color: var(--desk-ink); }
+.demo-btn:hover { background: var(--desk-btn-line); }
+
+/* phone shell */
+.phone { border-color: var(--bezel); }
+.island { background: var(--bezel); }
+
+/* pillars */
+.pill-nourish { background: var(--pill-nourish-bg); color: var(--pill-nourish-ink); }
+.pill-move { background: var(--pill-move-bg); color: var(--pill-move-ink); }
+.pill-rest { background: var(--pill-rest-bg); color: var(--pill-rest-ink); }
+.pill-mind { background: var(--pill-mind-bg); color: var(--pill-mind-ink); }
+
+/* card faces */
+.tarot { color: var(--deck-ink); }
+.tarot-word { color: var(--deck-word); }
+.tarot-where { opacity: 1; }
+.deck-hedgerow { background: var(--deck-hedgerow); }
+.deck-nightsky { background: var(--deck-nightsky); }
+.deck-hearth { background: var(--deck-hearth); }
+
+/* glimmer tiles take their wash from the season colours */
+.tile.winter { background: color-mix(in srgb, var(--season-winter) var(--tile-mix), var(--surface)); }
+.tile.spring { background: color-mix(in srgb, var(--season-spring) var(--tile-mix), var(--surface)); }
+.tile.summer { background: color-mix(in srgb, var(--season-summer) var(--tile-mix), var(--surface)); }
+.tile.autumn { background: color-mix(in srgb, var(--season-autumn) var(--tile-mix), var(--surface)); }
+
+@media (max-width: 760px) {
+  .demo-toggle { color: var(--desk-ink); }
+}
+
+/* inactive legend items stay readable: dim the icon, not the word */
+.legend-item { opacity: 1; color: var(--ink-3); }
+.legend-item:not(.on) img { opacity: .5; }

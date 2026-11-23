@@ -1,0 +1,134 @@
+/* Almanac play: ink on newsprint, one spot colour, ruled like a ledger.
+   Square corners, hairlines instead of shadows, a Clarendon for headings and a mono for readings. */
+
+:root {
+  --font-display: 'Besley', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --desk: #1B1D1F;
+  --ink: #1B1D1F;
+  --ink-2: #494C4F;
+  --ink-3: #5C5F63;
+  --line: rgba(27, 29, 31, .2);
+  --rule: rgba(27, 29, 31, .55);
+  --cream: #FBF8F0;
+  --r-sm: 3px;
+  --r-md: 5px;
+  --r-lg: 6px;
+  --shadow: none;
+  --tile-mix: 20%;
+
+  --desk-ink: #F2EEE3;
+  --desk-ink-2: #A9A69E;
+  --desk-accent: #E8B93A;
+  --desk-btn: #2A2D30;
+  --desk-btn-line: #3E4246;
+
+  --pill-nourish-bg: #E1EBD6; --pill-nourish-ink: #2F5B22;
+  --pill-move-bg: #F6E6C0;    --pill-move-ink: #7A4E0C;
+  --pill-rest-bg: #E3E1F0;    --pill-rest-ink: #46407A;
+  --pill-mind-bg: #D8EAE6;    --pill-mind-ink: #12595A;
+
+  --deck-hedgerow: #2F4A33;
+  --deck-nightsky: #1F2A44;
+  --deck-hearth: #96301F;
+  --deck-ink: #FBF8F0;
+  --deck-word: #F0D272;
+}
+
+.phone { --canvas: #F2EEE3; --surface: #FBF8F0; --subtle: #E4DECF; --primary: #1F2A44; --deep: #141C30; --accent: #C8321F; --tint: #F3E7B5; }
+.phone.unclaimed { --canvas: #EFEDE8; --surface: #F9F8F4; --subtle: #E2DFD8; --primary: #3D3F42; --deep: #27292B; --accent: #8C8A84; --tint: #E6E3DB; }
+
+/* ---------- type ---------- */
+body { font-size: 15px; }
+.display { font-weight: 600; font-size: 26px; line-height: 1.14; letter-spacing: -.02em; }
+.display.xl { font-size: 32px; line-height: 1.1; }
+.display.sm { font-size: 19.5px; line-height: 1.2; }
+.top-brand, .demo-title { font-weight: 700; letter-spacing: -.02em; }
+.top-brand { font-size: 16px; white-space: nowrap; }
+.top-date { white-space: nowrap; letter-spacing: -.02em; }
+.demo-title { font-size: 22px; }
+.section-title { font-size: 17.5px; font-weight: 700; letter-spacing: -.01em; margin-top: 30px; padding-top: 11px; border-top: 1.5px solid var(--ink); }
+.path-name { font-size: 21px; font-weight: 700; letter-spacing: -.02em; }
+.step-text { font-size: 21px; font-weight: 500; }
+.quote, .mantra { font-weight: 500; font-size: 17.5px; }
+.quote.big { font-size: 24px; }
+.keep-word { font-size: 42px; font-weight: 700; letter-spacing: -.03em; }
+.tarot-name { font-size: 15.5px; font-weight: 700; }
+
+/* readings, labels and anything counted are set in mono */
+.label, .group-label, .section-title span, .pill, .top-date, .match, .anchor-sub, .trail-meta, .tarot-where, .tarot-word,
+.keep-foot, .keep-anchor span, .lens b, .demo-label, .tab, .tab-pause, .foot-note, .fine, .toast, .legend-item, .day {
+  font-family: var(--font-mono);
+}
+.label, .group-label, .section-title span, .keep-anchor span, .lens b { font-size: 10.5px; font-weight: 500; letter-spacing: .07em; }
+.tab, .tab-pause { font-size: 9.5px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+.tab.on, .tab-pause { font-weight: 600; }
+.anchor-sub, .trail-meta, .top-date, .match { font-size: 11.5px; letter-spacing: 0; }
+.kv b, .stats b, .day b, .stepper b, .savor-ring, .breath-ring, .trio li::before, .hold b, .wheel-center .small { font-family: var(--font-mono); font-weight: 500; font-style: normal; }
+.stats b { font-size: 24px; }
+.day b { font-size: 16px; }
+.stepper b { font-size: 20px; }
+.savor-ring { font-size: 34px; }
+.breath-ring { font-size: 15px; letter-spacing: .02em; }
+.hold b { font-size: 14px; }
+.trio li::before { font-size: 14px; border-radius: var(--r-sm); background: none; border: 1.5px solid var(--ink); }
+
+/* ---------- controls: square, ruled ---------- */
+.btn { border-radius: var(--r-md); min-height: 50px; letter-spacing: .01em; }
+.btn-small { border-radius: var(--r-sm); }
+.chip { border-radius: var(--r-sm); border-width: 1px; border-color: var(--rule); }
+.option { border-width: 1px; border-color: var(--rule); }
+.option.on { border-color: var(--primary); box-shadow: inset 5px 0 0 var(--primary); }
+.seg, .seg button, .stepper, .stepper button, .icon-btn, .sheet-close, .snap { border-radius: var(--r-sm); }
+.seg button.on { box-shadow: inset 0 0 0 1px var(--primary); }
+.field { border-width: 1px; border-color: var(--rule); }
+.pill { border-radius: 2px; border: 1px solid currentColor; padding: 2px 7px; font-weight: 500; letter-spacing: .05em; }
+.link { text-decoration-thickness: 1px; }
+.progress-seg, .progress-seg i, .trail-bar, .trail-bar i, .gather, .gather i { border-radius: 0; }
+.progress-seg { height: 3px; }
+
+/* ---------- surfaces: a rule on top, no shadow ---------- */
+.card { border: 1px solid var(--line); border-top: 2px solid var(--ink); }
+.card.tinted, .card.soft { border: 0; border-top: 2px solid var(--primary); }
+.card.insight { border-left: 1px solid var(--line); background: var(--tint); }
+.card.insight .label { color: var(--ink); }
+.kv, .hold { border-top: 1px dotted var(--rule); }
+.rhythm-strip { border-left: 5px solid var(--primary); }
+.nudge, .closing { border-width: 1px; border-color: var(--accent); }
+.anchor { border-color: var(--rule); }
+.anchor-check { border-radius: var(--r-sm); border-width: 1.5px; }
+.path, .deck { border-width: 1px; }
+.path { border-color: var(--rule); }
+.phase, .day, .tile, .legend-item { border-radius: var(--r-sm); }
+.phase.on { border-width: 1px; }
+.day { border-color: var(--rule); }
+.legend-item.on { box-shadow: inset 0 0 0 1px var(--rule); }
+.stats span { border-radius: var(--r-sm); border-top: 2px solid var(--primary); }
+.bubble { border-radius: var(--r-lg) var(--r-lg) 0 var(--r-lg); }
+.sheet { border-radius: 10px 10px 0 0; border-top: 3px solid var(--ink); }
+.toast { border-radius: var(--r-sm); font-size: 12px; }
+.tabs { border-top: 1.5px solid var(--ink); }
+.foot { border-top-color: var(--rule); }
+.tab-pause img { border-radius: 14px; box-shadow: none; outline: 1.5px solid var(--ink); outline-offset: 2px; }
+.deck img, .deck-back { border-radius: 4px; box-shadow: 0 0 0 1px var(--ink); }
+.tarot { border-radius: 4px; outline-offset: -5px; box-shadow: none; }
+.draft img, .glim-img { border-radius: var(--r-lg); }
+
+/* gauges */
+.breath-ring { box-shadow: none; outline: 1px dashed var(--primary); outline-offset: 12px; border-width: 1.5px; }
+.savor-ring { border-width: 1.5px; }
+.wheel-marker i { border-width: 3px; }
+.wheel-center { box-shadow: 0 0 0 1.5px var(--ink); }
+.wheel-ring { box-shadow: 0 0 0 1.5px var(--ink); }
+
+/* the moon card as a printed slip */
+.keepsake { border-radius: 4px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -8px; padding-top: 30px; }
+
+/* the welcome reads as a masthead */
+.sprig-l, .sprig-r { display: none; }
+.welcome-art { justify-content: flex-start; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); }
+.welcome-logo { width: 72px; height: 72px; }
+.moon-call { border-radius: var(--r-lg); }
+.legend { gap: 2px; }
+.legend-item { font-size: 10.5px; gap: 4px; padding: 4px 6px 4px 4px; letter-spacing: -.01em; white-space: nowrap; }
