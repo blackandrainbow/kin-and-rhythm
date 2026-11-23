@@ -378,14 +378,90 @@ var SEED_GLIMMERS = ['The steam coming off my first cup', 'Her hand finding mine
 
 var SEED_GLIMMER_ART = { 0: 'assets/glimmer-cup.svg', 2: 'assets/glimmer-light.svg', 4: 'assets/glimmer-sheets.svg', 6: 'assets/glimmer-basil.svg' };
 
+/* ---------- The table: a small rotation of go-to meals ----------
+   usual: what she might already eat, each with a tweak [title, description, tag] that keeps it and adds to it.
+   ideas: [title, description, minutes, tag, flags, contains, cuisine]. Flags: b pantry budget, k kids will eat it, w warm. */
+var MEALS = [
+  { id: 'breakfast', name: 'Breakfast', ask: 'for breakfast', hint: 'Before ten', color: '#7A3050', tint: '#F6E6EC',
+    usual: [
+      { id: 'coffee', label: 'Coffee or tea, and not much else', tweak: ['Coffee plus protein', 'Keep the coffee ritual. Pair it with two eggs, or cottage cheese and berries.', 'Protein'] },
+      { id: 'cereal', label: 'A bowl of cereal or oats', tweak: ['Upgraded oat and chia bowl', 'Keep your bowl. Stir in chia seeds, Greek yogurt and a spoon of nut butter.', 'Fibre + fat'] },
+      { id: 'toast', label: 'Toast or a pastry', tweak: ['Toast with something on it', 'Keep the toast. Add an egg, avocado or nut butter so it lasts until lunch.', 'Protein + fat'] },
+      { id: 'kids', label: 'Whatever the kids leave', tweak: ['Your own plate of theirs', 'Make one more portion of what they are having, and sit down with it.', 'Your own plate'] },
+      { id: 'skip', label: 'I usually skip it', tweak: ['Something small before ten', 'A yogurt, a boiled egg, or a banana with nut butter. Small counts.', 'A start'] }
+    ],
+    ideas: [
+      ['Five-minute skillet eggs and greens', 'Two eggs in olive oil or butter with a handful of spinach.', 5, 'Protein', 'kw', ['Eggs']],
+      ['Greek yogurt and chia parfait', 'Full-fat Greek yogurt, chia seeds, walnuts and fruit.', 2, 'Protein + fibre', 'k', ['Dairy', 'Nuts']],
+      ['Smashed avocado and egg toast', 'Sourdough, half an avocado, a fried egg and flaky salt.', 10, 'Staying power', '', ['Eggs', 'Gluten']],
+      ['Warm spiced oatmeal', 'Rolled oats with cinnamon, ground flax, berries and a spoon of butter.', 10, 'Fibre + fat', 'bkw', ['Dairy']],
+      ['Overnight oats, two jars', 'Oats, milk, chia and fruit, made the night before for two mornings.', 2, 'Made ahead', 'bk', ['Dairy']],
+      ['Blender smoothie for the car', 'Frozen berries, spinach, yogurt or protein, and nut butter.', 5, 'Drinkable', 'k', ['Dairy', 'Nuts']],
+      ['Last night\'s dinner, warmed up', 'Breakfast does not have to look like breakfast.', 2, 'No effort', 'bw', []],
+      ['Eggs, beans and a warm tortilla', 'Scrambled eggs, black beans, salsa and a corn tortilla.', 10, 'Protein + fibre', 'bw', ['Eggs'], 'Latin American']
+    ] },
+  { id: 'lunch', name: 'Lunch', ask: 'for lunch', hint: 'Sitting down', color: '#27473A', tint: '#E3EEE8',
+    usual: [
+      { id: 'sandwich', label: 'A sandwich or wrap', tweak: ['The sandwich, built up', 'Keep the sandwich. Add a second filling with protein and something crunchy beside it.', 'Protein + plants'] },
+      { id: 'takeout', label: 'Takeout or the drive-through', tweak: ['Your usual order, plus one', 'Keep the order. Add a side with protein or vegetables, and eat it sitting down.', 'Add one thing'] },
+      { id: 'kids', label: 'Whatever the kids leave', tweak: ['Your own plate at their lunch', 'Make their lunch twice and put yours on a real plate.', 'Your own plate'] },
+      { id: 'graze', label: 'Grazing from the pantry', tweak: ['A snack-plate lunch', 'Put the grazing on one plate: cheese, crackers, fruit, nuts. Then sit.', 'One plate'] },
+      { id: 'skip', label: 'I usually skip it', tweak: ['A bridge at midday', 'Something small before two: soup, yogurt, or leftovers.', 'A start'] }
+    ],
+    ideas: [
+      ['Dinner leftovers, on purpose', 'Cook one more portion at dinner and box it before you serve.', 2, 'No effort', 'bw', []],
+      ['Tuna, white bean and lemon bowl', 'A tin of tuna, a tin of white beans, olive oil, lemon and any greens.', 5, 'Protein + fibre', 'b', [], 'Mediterranean'],
+      ['Egg and avocado wrap', 'Two scrambled eggs, avocado and salsa in a warm wrap.', 10, 'Staying power', 'kw', ['Eggs', 'Gluten']],
+      ['Big soup, small bread', 'A pot of lentil or chicken soup made once and eaten three times.', 20, 'Made ahead', 'bw', []],
+      ['Snack-plate lunch', 'Cheese, crackers, fruit, nuts, something pickled. Sit down with it.', 2, 'One plate', 'k', ['Dairy', 'Gluten', 'Nuts']],
+      ['Rice bowl with a fried egg', 'Leftover rice, a fried egg, frozen edamame, soy sauce and sesame.', 10, 'Protein', 'bw', ['Eggs', 'Soy'], 'East Asian'],
+      ['Chicken salad with crunch', 'Shop-bought roast chicken, bagged slaw, olive oil and vinegar.', 5, 'Protein + plants', '', []]
+    ] },
+  { id: 'dinner', name: 'Dinner', ask: 'for dinner', hint: 'The family table', color: '#8E4420', tint: '#F5E6DA',
+    usual: [
+      { id: 'pasta', label: 'Pasta or rice with the family', tweak: ['Pasta night, with extras', 'Keep pasta night. Stir beans or meatballs into the sauce and a bag of spinach through it.', 'Protein + plants'] },
+      { id: 'takeout', label: 'Takeout or pizza', tweak: ['Pizza night, plus a plate', 'Keep pizza night. Put salad or cut vegetables on the table first.', 'Add one thing'] },
+      { id: 'fast', label: 'Whatever is fastest', tweak: ['Two fast dinners you trust', 'Pick two ten-minute dinners and keep what they need in the house.', 'Less deciding'] },
+      { id: 'cooked', label: 'A proper cooked meal', tweak: ['Cook once, eat twice', 'Keep cooking. Make one more portion for tomorrow\'s lunch.', 'Made ahead'] },
+      { id: 'pick', label: 'Picking while I cook, then not much', tweak: ['A plate of your own', 'Serve yourself first, and sit for the first three bites.', 'Your own plate'] }
+    ],
+    ideas: [
+      ['Sheet-pan chicken and vegetables', 'Chicken thighs and whatever vegetables you have, one tray, one oven.', 20, 'Protein + plants', 'kw', []],
+      ['Pasta night, with extras', 'Your usual pasta with beans or meatballs in the sauce and spinach stirred through.', 20, 'Protein + plants', 'bkw', ['Gluten'], 'Italian-American'],
+      ['Taco night, built your way', 'Seasoned meat or beans, slaw, salsa and avocado. Everyone builds their own.', 20, 'Everyone eats', 'kw', [], 'Latin American'],
+      ['Lemon garlic salmon and couscous', 'Salmon, lemon, garlic and oregano with couscous, cucumber and tomato.', 15, 'Protein', 'w', ['Gluten'], 'Mediterranean'],
+      ['Breakfast for dinner', 'Eggs, toast and fruit. Ten minutes and everyone eats.', 10, 'No deciding', 'bkw', ['Eggs', 'Gluten']],
+      ['Slow-cooker stew', 'Ten minutes in the morning, and dinner makes itself by six.', 10, 'Made ahead', 'bw', []],
+      ['Dal and rice', 'Red lentils simmered with onion, garlic and turmeric, over rice.', 20, 'Protein + fibre', 'bw', [], 'South Asian'],
+      ['Roast chicken plate, no cooking', 'A shop-bought chicken, bagged salad and good bread.', 2, 'No effort', 'k', ['Gluten']]
+    ] },
+  { id: 'snack', name: 'The three o\'clock bridge', ask: 'around three', hint: 'Before the crash', color: '#8A6412', tint: '#F6EBCF',
+    usual: [
+      { id: 'crunch', label: 'Chips or crackers', tweak: ['Crunch with company', 'Keep the crunch. Put cheese, hummus or nuts next to it.', 'Add one thing'] },
+      { id: 'sweet', label: 'Something sweet', tweak: ['Sweet, with a partner', 'Keep the sweet thing. Have it with yogurt, nuts or a glass of milk.', 'Add one thing'] },
+      { id: 'coffee', label: 'A second coffee', tweak: ['Coffee and a bite', 'Keep the coffee. Have something with protein alongside.', 'Protein'] },
+      { id: 'nothing', label: 'Nothing, and then I crash', tweak: ['A real snack at three', 'Choose one thing and put it where you will see it at three.', 'A start'] }
+    ],
+    ideas: [
+      ['Apple and cheese', 'One apple, a few slices of cheese, a plate.', 2, 'Protein + fibre', 'k', ['Dairy']],
+      ['Yogurt with seeds', 'Greek yogurt with pumpkin or sunflower seeds and honey.', 2, 'Protein', '', ['Dairy']],
+      ['Toast with nut butter', 'One slice, thick with peanut or almond butter.', 5, 'Staying power', 'bkw', ['Gluten', 'Nuts']],
+      ['Boiled eggs, made on Sunday', 'A bowl of them in the fridge, with salt.', 2, 'Protein', 'b', ['Eggs']],
+      ['Hummus and whatever crunches', 'Carrots, cucumber, crackers or pita.', 2, 'Fibre', 'bk', [], 'Middle Eastern'],
+      ['Nuts and something sweet you like', 'A handful of each, on a plate, sitting down.', 2, 'Staying power', '', ['Nuts']],
+      ['Warm milk or cocoa and a banana', 'Five quiet minutes with a mug.', 5, 'Warmth', 'kw', ['Dairy']]
+    ] }
+];
+
 /* Demo mothers for the presenter bar */
 var PERSONAS = {
   maya: { name: 'Maya', stage: 'cycling', pattern: 'hearth', options: ['hearth', 'sun', 'tide'], cup: ['The family table', 'Voice notes with a friend', 'Cooking for fun'],
     values: ['Calm evenings', 'An easy relationship with food'], tender: 'crunch', rhythm: { mode: 'cycle', len: 28, dayAgo: 21 },
-    cards: { on: true, deck: 'hearth', arrived: true }, weight: false, phase: 1, heritage: ['Italian-American', 'Mediterranean'], history: 44, kin: 'Jess', holding: [{ name: 'Priya', word: 'Brave' }] },
+    cards: { on: true, deck: 'hearth', arrived: true }, weight: false, phase: 1, heritage: ['Italian-American', 'Mediterranean'], history: 44, kin: 'Jess', holding: [{ name: 'Priya', word: 'Brave' }],
+    tableStart: 'empty', eats: { breakfast: ['cereal'], lunch: ['kids'], dinner: ['pasta'] }, table: { breakfast: ['u:cereal'], lunch: ['u:kids'], dinner: ['u:pasta', 'i:0'] } },
   elena: { name: 'Elena', stage: 'irregular', pattern: 'tide', options: ['tide', 'frost'], cup: ['Sitting outside', 'Fiction'],
     values: ['Feeling like myself again', 'Steady energy for my kids'], tender: 'slump', rhythm: { mode: 'moon' },
-    cards: { on: true, deck: 'nightsky', arrived: false }, weight: false, phase: 0, heritage: ['Latin American'], history: 11 },
+    cards: { on: true, deck: 'nightsky', arrived: false }, weight: false, phase: 0, heritage: ['Latin American'], history: 11, eats: { breakfast: ['coffee', 'cereal'] } },
   casey: { name: 'Casey', stage: 'postpartum', pattern: 'wind', options: ['wind', 'sun', 'hearth'], cup: [],
     values: ['Being present, not just there'], tender: 'after', rhythm: { mode: 'moon' },
     cards: { on: false, deck: '', arrived: false }, weight: true, phase: 0, heritage: ['Southern'], history: 2 }

@@ -15,7 +15,8 @@
       weight: { on: false, entries: [] }, cards: { on: false, deck: '', arrived: false, pulls: {}, notes: {} },
       pattern: '', options: [], phase: 0, tended: {}, capacity: {}, second: [], glimmers: [], pauses: 0,
       staples: {}, heritage: [], allergies: [], coachNotify: false, place: null, dayOffset: 0,
-      cues: {}, reps: [], pauseLog: [], rituals: [], moonLoad: '', kin: { name: '', holding: [] } };
+      cues: {}, reps: [], pauseLog: [], rituals: [], moonLoad: '', kin: { name: '', holding: [] },
+      table: {}, eats: {}, tableStart: '' };
   }
   function load() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch (e) {}
@@ -435,6 +436,16 @@
 
   /* ---------- Path ---------- */
   function viewPlan() {
+    var part = ui.pathPart || 'anchors';
+    var seg = '<div class="seg wide path-parts">' + [['anchors', 'Anchors'], ['table', 'Table'], ['practices', 'Practices']].map(function (x) { return '<button class="' + (part === x[0] ? 'on' : '') + '" data-act="pathPart" data-arg="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    return '<div class="page">' + seg + (part === 'table' ? tableView() : part === 'practices' ? practicesView() : anchorsView()) + '</div>';
+  }
+  function practicesView() {
+    return '<h1 class="display">Practices</h1><p class="lead">Small experiments that loosen old rules. Try one when you are curious, not when you are struggling.</p><div class="card flush">' + PRACTICES.map(function (x) {
+      return '<details class="practice"><summary>' + x.title + '</summary><p class="small">' + x.summary + '</p><ul>' + x.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul></details>';
+    }).join('') + '</div><div class="card tinted"><p class="label">In a hard moment</p><p>Practices are for calm days. When the evening goes sideways, the Pause button is the place to go.</p></div>';
+  }
+  function anchorsView() {
     var p = pat(), view = ui.phaseView == null ? state.phase : ui.phaseView, ph = PHASES[view];
     var phases = '<div class="phases">' + PHASES.map(function (x, i) {
       return '<button class="phase' + (i === view ? ' on' : '') + (i === state.phase ? ' current' : '') + '" data-act="phaseView" data-arg="' + i + '"><img src="' + SEASONS[x.season].art + '" alt=""><span>' + x.name + '</span></button>';
@@ -445,24 +456,14 @@
       anchorIds(view).map(function (id) { return anchorRow(id); }).join('') + '</div>' +
       (isCurrent ? el.btn(state.phase === 3 ? 'Begin the circle again' : 'I am ready for ' + next.name, 'phaseNext', null, 'btn-outline') + '<p class="hint">Most of the time this is decided at the full moon gathering. There is no rush.</p>' : '');
 
-    var staples = STAPLES.map(function (st) {
-      var n = (state.staples[st.id] || []).length;
-      return '<button class="list-row" data-act="stapleSheet" data-arg="' + st.id + '"><span><b>' + st.title + '</b><span class="small muted">' + (n ? n + ' things in it now' : 'Tap to build yours') + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>';
-    }).join('');
-    var practices = PRACTICES.map(function (x) {
-      return '<details class="practice"><summary>' + x.title + '</summary><p class="small">' + x.summary + '</p><ul>' + x.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul></details>';
-    }).join('');
     var second = state.second.length ? state.second.map(function (id) { return '<div class="mini-anchor"><span class="pill pill-' + ANCHORS[id].pillar + '">' + PILLARS[ANCHORS[id].pillar] + '</span><span>' + esc(anchor(id).title) + '</span></div>'; }).join('') : '<p class="small muted pad">When an anchor stops needing effort, it moves here. That is the whole goal: needing us less.</p>';
 
-    return '<div class="page">' +
-      '<div class="plan-head"><img src="' + p.art + '" alt=""><div>' + el.label('Your path') + '<h1 class="display">' + p.direction + '</h1><p class="small">You have been living in <b>' + p.name + '</b>. ' + p.asks + '</p></div></div>' +
+    return '<div class="plan-head"><img src="' + p.art + '" alt=""><div>' + el.label('Your path') + '<h1 class="display">' + p.direction + '</h1><p class="small">You have been living in <b>' + p.name + '</b>. ' + p.asks + '</p></div></div>' +
       '<div class="card"><div class="fact"><p class="label">The old path</p><p>' + p.looks + '</p></div><div class="fact"><p class="label">The one you are wearing in</p><p>' + p.vision + '</p></div><p class="small muted pad-top">Every rep wears the new path in a little more. A missed day does not grow it over.</p></div>' +
       '<p class="section-title">The recovery circle</p>' + phases + phaseCard +
       '<p class="section-title">How to eat and move, for now</p><div class="card"><div class="fact"><p class="label">Nourish</p><p>' + p.nourish + '</p></div><div class="fact"><p class="label">Move</p><p>' + p.move + '</p></div></div>' +
-      '<p class="section-title">Add before you take away</p><div class="card flush">' + staples + '</div>' +
-      '<p class="section-title">Practices</p><div class="card flush">' + practices + '</div>' +
       '<p class="section-title">Second nature</p><div class="card flush">' + second + '</div>' +
-      el.btn('See my other paths', 'pathsSheet', null, 'btn-ghost') + '</div>';
+      el.btn('See my other paths', 'pathsSheet', null, 'btn-ghost');
   }
 
   /* ---------- You ---------- */
@@ -636,6 +637,83 @@
       return '<button class="list-row" data-act="ritualPage" data-arg="' + i + '"><span><b>' + (r.kind === 'new' ? 'New moon' : 'Full moon') + ' · ' + fmt(r.date) + '</b><span class="small muted">' + (r.kind === 'new' ? '“' + esc(r.word || 'Begin') + '” · for ' + esc(lower(r.wish)) : 'Gathered' + (r.notice ? ' · “' + esc(r.notice) + '”' : '')) + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>';
     }).reverse().slice(0, 6).join('');
     return html + '<div class="card flush">' + (pages || '<p class="small muted pad">Your moon pages collect here, one at each new and full moon. Each new moon leaves you a card to print and keep.</p>') + '</div>';
+  }
+
+  /* ---------- the table: a small rotation of go-to meals ---------- */
+  function mealOf(id) { return MEALS.filter(function (m) { return m.id === id; })[0]; }
+  function slots(id) { var a = state.table[id] || (state.table[id] = []); while (a.length < 4) a.push(null); return a; }
+  function ideaObj(m, i) { var a = m.ideas[i]; return { i: i, title: a[0], desc: a[1], mins: a[2], tag: a[3], b: a[4].indexOf('b') >= 0, k: a[4].indexOf('k') >= 0, w: a[4].indexOf('w') >= 0, contains: a[5] || [], cuisine: a[6] || '' }; }
+  function ideaGo(x, seed) { return { title: x.title, desc: x.desc, tag: (x.mins <= 2 ? 'Zero-cook' : x.mins + ' min') + ' · ' + x.tag, from: '', seed: !!seed }; }
+  function tweakGo(m, uid) { var u = m.usual.filter(function (x) { return x.id === uid; })[0]; return { title: u.tweak[0], desc: u.tweak[1], tag: u.tweak[2], from: u.label, seed: false }; }
+  /* ideas that fit her allergies and filters, with her own table and warmer food ranked first when it suits */
+  function rankedIdeas(m, f) {
+    var have = slots(m.id).filter(Boolean).map(function (g) { return g.title; }), r = rhythmNow().season, cold = r === 'winter' || r === 'autumn', warm = cold || state.pattern === 'tide' || state.pattern === 'frost';
+    var cap = { zero: 2, ten: 10, twenty: 20 }[f ? f.time : 'twenty'];
+    return m.ideas.map(function (a, i) { return ideaObj(m, i); }).filter(function (x) {
+      return have.indexOf(x.title) < 0 && x.mins <= cap && (!f || !f.budget || x.b) && (!f || !f.kid || x.k) && !x.contains.some(function (c) { return state.allergies.indexOf(c) >= 0; });
+    }).map(function (x) {
+      var mine = state.heritage.indexOf(x.cuisine) >= 0;
+      x.score = (mine ? 2 : 0) + (warm && x.w ? 1 : 0);
+      x.why = mine ? 'From your table' : warm && x.w ? 'Warm, for ' + (cold ? SEASONS[r].name.toLowerCase() : pat().name) : '';
+      return x;
+    }).sort(function (a, b) { return b.score - a.score || a.i - b.i; });
+  }
+  /* blank, one go-to per meal, or a full example. Only suggested boxes are replaced; anything she chose stays. */
+  function tableStart(mode) {
+    state.tableStart = mode;
+    MEALS.forEach(function (m) {
+      var s = slots(m.id), want = mode === 'full' ? 4 : mode === 'one' && m.id !== 'snack' ? 1 : 0;
+      for (var i = 0; i < 4; i++) if (s[i] && s[i].seed) s[i] = null;
+      for (var j = 0; j < 4 && s.filter(Boolean).length < want; j++) if (!s[j]) { var pick = rankedIdeas(m)[0]; if (!pick) break; s[j] = ideaGo(pick, true); }
+    });
+  }
+  function tableView() {
+    var p = pat(), mode = state.tableStart, done = ['breakfast', 'lunch', 'dinner'].filter(function (id) { return slots(id).some(Boolean); }).length;
+    var starts = [['empty', 'Blank', 'Blank boxes', 'I will build it myself, one box at a time.'], ['one', '1-1-1 start', 'A 1-1-1 start', 'One go-to each for breakfast, lunch and dinner, picked for me.'], ['full', 'Full example', 'A full example', 'Every box filled, so I can see where it goes and swap what does not fit.']];
+    var chooser = mode ?
+      '<div class="card start"><p class="label">Start from</p><div class="seg wide">' + starts.map(function (s) { return '<button class="' + (mode === s[0] ? 'on' : '') + '" data-act="tableStart" data-arg="' + s[0] + '">' + s[1] + '</button>'; }).join('') + '</div><p class="small">' +
+        (done === 3 ? 'You have a first rotation: one each for breakfast, lunch and dinner. Add more only if it makes life easier.' : 'Tap any open box to adjust something you already eat, or to find something new that fits your time, budget and table.') + '</p></div>' :
+      '<div class="card start"><p class="label">How do you want to start?</p><div class="options tight">' + starts.map(function (s) { return el.option(s[2], s[3], 'tableStart', s[0], false); }).join('') + '</div></div>';
+    var meals = MEALS.map(function (m) {
+      var s = slots(m.id), n = s.filter(Boolean).length;
+      return '<div class="meal" style="--meal:' + m.color + ';--meal-tint:' + m.tint + '"><div class="meal-head"><span>' + m.name + '</span><span>' + (n ? n + ' of 4' : m.hint) + '</span></div><div class="meal-grid">' + s.map(function (g, i) {
+        return g ? '<button class="goto' + (g.seed ? ' seed' : '') + '" data-act="goOpen" data-arg="' + m.id + '|' + i + '"><b>' + esc(g.title) + '</b><span>' + esc(g.desc) + '</span><em>' + esc(g.tag) + '</em></button>' :
+          '<button class="goto open" data-act="slot" data-arg="' + m.id + '|' + i + '"><i>+</i><b>Open go-to</b><span>Tap to build</span></button>';
+      }).join('') + '</div></div>';
+    }).join('');
+    var staples = STAPLES.map(function (st) {
+      var n = (state.staples[st.id] || []).length;
+      return '<button class="list-row" data-act="stapleSheet" data-arg="' + st.id + '"><span><b>' + st.title + '</b><span class="small muted">' + (n ? n + ' things in it now' : 'Tap to build yours') + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>';
+    }).join('');
+    return '<h1 class="display">Your table</h1><p class="lead">A few go-to meals you never have to think about. One each for breakfast, lunch and dinner is a full rotation.</p>' + chooser + meals +
+      '<div class="card tinted"><p class="label">How to eat, for now</p><p>' + p.nourish + '</p></div>' +
+      '<p class="section-title">Add before you take away</p><div class="card flush">' + staples + '</div>';
+  }
+  function sheetUsual() {
+    var m = mealOf(ui.slot.meal), pick = ui.usual;
+    openSheet(el.label(m.name) + '<h2 class="display">What do you usually have ' + m.ask + '?</h2><p class="small">No right answer. It is only where we start from. Pick up to two.</p><div class="options">' +
+      m.usual.map(function (u) { return el.option(u.label, '', 'usualPick', u.id, pick.indexOf(u.id) >= 0); }).join('') + el.option('Nothing regular yet', '', 'usualPick', 'none', pick.indexOf('none') >= 0) + '</div>' + el.btn('Continue', 'usualDone'), true);
+  }
+  function sheetFill() {
+    var m = mealOf(ui.slot.meal), f = ui.tf, eats = (state.eats[m.id] || []).filter(function (x) { return x !== 'none'; });
+    var have = slots(m.id).filter(Boolean).map(function (g) { return g.title; });
+    var tweaks = eats.map(function (uid) { return m.usual.filter(function (u) { return u.id === uid; })[0]; }).filter(function (u) { return u && have.indexOf(u.tweak[0]) < 0; });
+    var adjust = '<p class="step-h">1. Adjust what you already eat</p>' + (tweaks.length ? tweaks.map(function (u) {
+      return '<div class="tweak"><div><p class="small muted">Based on: “' + u.label + '”</p><p class="card-title">' + u.tweak[0] + '</p><p class="small">' + u.tweak[1] + '</p></div>' + el.btn('Use this', 'goTweak', u.id, 'btn-small') + '</div>';
+    }).join('') : '<p class="small muted">' + (eats.length ? 'Your tweaks are already on the table.' : 'Nothing regular yet, so we start fresh below.') + '</p>') + '<button class="link" data-act="usualChange">Change what I usually have</button>';
+    var ideas = rankedIdeas(m, f);
+    var discover = '<p class="step-h">2. Discover a new go-to <span>' + (state.allergies.length ? 'leaving out ' + state.allergies.join(', ').toLowerCase() : 'nothing left out') + '</span></p>' + (ui.tfNote ? '<p class="small">' + ui.tfNote + '</p>' : '') +
+      '<div class="chips">' + [['zero', 'Zero-cook'], ['ten', '10 minutes'], ['twenty', '20 minutes']].map(function (c) { return el.chip(c[1], 'tfTime', c[0], f.time === c[0]); }).join('') + el.chip('Pantry budget', 'tfFlag', 'budget', f.budget) + el.chip('Kids will eat it', 'tfFlag', 'kid', f.kid) + '</div>' +
+      (ideas.length ? ideas.map(function (x) {
+        return '<button class="idea-row" data-act="goIdea" data-arg="' + x.i + '"><span class="idea-time">' + x.mins + '<small>min</small></span><span class="idea-main"><b>' + x.title + '</b><span>' + x.desc + '</span><em>' + x.tag + (x.why ? ' · ' + x.why : '') + '</em></span></button>';
+      }).join('') : '<p class="small muted pad-top">Nothing fits those filters. Loosen one, or add your own below.</p>');
+    openSheet(el.label(m.name + ' · box ' + (ui.slot.i + 1)) + '<h2 class="display">Fill this box</h2>' + adjust + discover +
+      '<p class="step-h">3. Or add one your family already loves</p><div class="inline-form"><input class="field" id="f-own" type="text" autocomplete="off" placeholder="Sunday meatballs"><button class="btn btn-small" data-act="goOwn">Add</button></div>', true);
+  }
+  function placeGo(g) {
+    slots(ui.slot.meal)[ui.slot.i] = g;
+    if (!state.tableStart) state.tableStart = 'empty';
+    closeSheet(); toast('On your table.'); render();
   }
 
   /* ---------- glimmers: a photo or a line, gathered into a grid ---------- */
@@ -845,7 +923,7 @@
       html = id.charAt(0) === 'q' && id.length === 2 ? ob.quiz(+id.charAt(1)) : ob[id]();
     } else {
       setFoot('');
-      screen = state.tab;
+      screen = state.tab + (state.tab === 'plan' ? ui.pathPart || '' : '');
       html = state.tab === 'today' ? viewToday() : state.tab === 'rhythm' ? viewRhythm() : state.tab === 'plan' ? viewPlan() : viewYou();
     }
     var keep = screen === ui.lastScreen ? view.scrollTop : 0;
@@ -1001,6 +1079,38 @@
 
     phaseView: function (i) { ui.phaseView = +i; render(); },
     phaseNext: function () { state.phase = (state.phase + 1) % 4; ui.phaseView = null; toast(state.phase === 0 ? 'The circle turns. Back to rest.' : 'Welcome to ' + PHASES[state.phase].name + '.'); render(); },
+    pathPart: function (p) { ui.pathPart = p; render(); },
+    tableStart: function (mode) { tableStart(mode); toast(mode === 'empty' ? 'Blank boxes. Yours to fill.' : mode === 'one' ? 'One each, picked for you. Swap anything.' : 'A full example. Keep what fits.'); render(); },
+    slot: function (arg) {
+      var p = arg.split('|'), low = capacity() === 'low';
+      ui.slot = { meal: p[0], i: +p[1] };
+      ui.tf = { time: low ? 'zero' : 'twenty', budget: false, kid: false };
+      ui.tfNote = low ? 'Showing zero-cook ideas, because you said you do not have much today.' : '';
+      if (!state.eats[p[0]]) { ui.usual = []; sheetUsual(); } else sheetFill();
+    },
+    usualPick: function (id) {
+      if (id === 'none') ui.usual = ['none'];
+      else { ui.usual = ui.usual.filter(function (x) { return x !== 'none'; }); toggle(ui.usual, id, 2); }
+      sheetUsual();
+    },
+    usualDone: function () { if (!ui.usual.length) return toast('Pick one, or “nothing regular yet”'); state.eats[ui.slot.meal] = ui.usual.slice(); save(); sheetFill(); },
+    usualChange: function () { ui.usual = (state.eats[ui.slot.meal] || []).slice(); sheetUsual(); },
+    tfTime: function (v) { var y = $('sheet-body').scrollTop; ui.tf.time = v; ui.tfNote = ''; sheetFill(); $('sheet-body').scrollTop = y; },
+    tfFlag: function (k) { var y = $('sheet-body').scrollTop; ui.tf[k] = !ui.tf[k]; sheetFill(); $('sheet-body').scrollTop = y; },
+    goTweak: function (uid) { placeGo(tweakGo(mealOf(ui.slot.meal), uid)); },
+    goIdea: function (i) { var m = mealOf(ui.slot.meal); placeGo(ideaGo(ideaObj(m, +i), false)); },
+    goOwn: function () { var f = $('f-own'); if (!f || !f.value.trim()) return toast('Give it a name'); placeGo({ title: f.value.trim(), desc: 'A family favourite.', tag: 'Yours', from: '', seed: false }); },
+    goOpen: function (arg) {
+      var p = arg.split('|'), m = mealOf(p[0]), g = slots(p[0])[+p[1]];
+      ui.slot = { meal: p[0], i: +p[1] };
+      openSheet(el.label(m.name + ' · box ' + (+p[1] + 1)) + '<h2 class="display">' + esc(g.title) + '</h2><p>' + esc(g.desc) + '</p><p class="small muted pad-top">' + esc(g.tag) + (g.from ? ' · based on “' + esc(g.from) + '”' : '') + '</p>' +
+        (g.seed ? '<div class="card tinted"><p class="small">We picked this one as a starting point. Keep it if it fits, or swap it for something that does.</p></div>' + el.btn('Keep it on my table', 'goKeep') : '') +
+        el.btn('Swap it for something else', 'goSwap', null, g.seed ? 'btn-outline' : 'btn-primary') + el.btn('Take it off my table', 'goDrop', null, 'btn-ghost'));
+    },
+    goKeep: function () { slots(ui.slot.meal)[ui.slot.i].seed = false; closeSheet(); toast('Yours now.'); render(); },
+    goSwap: function () { slots(ui.slot.meal)[ui.slot.i] = null; acts.slot(ui.slot.meal + '|' + ui.slot.i); },
+    goDrop: function () { slots(ui.slot.meal)[ui.slot.i] = null; closeSheet(); render(); },
+
     stapleSheet: function (id) { sheetStaple(id); },
     stapleBlock: function (arg) { var p = arg.split('|'); state.staples[p[0]] = state.staples[p[0]] || []; toggle(state.staples[p[0]], p[1]); save(); sheetStaple(p[0]); },
     pathsSheet: function () { sheetPaths(); },
@@ -1036,8 +1146,11 @@
       s.cards = { on: p.cards.on, deck: p.cards.deck, arrived: p.cards.arrived, pulls: {}, notes: {} };
       s.weight = { on: p.weight, entries: [] };
       seedHistory(s, p.history);
+      s.eats = p.eats || {}; s.tableStart = p.tableStart || '';
       if (p.kin) { s.kin = { name: p.kin, holding: p.holding.slice() }; s.rituals.forEach(function (r) { if (r.kind === 'new') r.witness = p.kin; }); }
-      state = s; ui.lastScreen = ''; ui.rhythmView = null; render();
+      state = s;
+      Object.keys(p.table || {}).forEach(function (id) { var m = mealOf(id), sl = slots(id); p.table[id].forEach(function (ref, i) { var r = ref.split(':'); sl[i] = r[0] === 'u' ? tweakGo(m, r[1]) : ideaGo(ideaObj(m, +r[1]), false); }); });
+      ui.lastScreen = ''; ui.rhythmView = null; render();
     }
   };
 
@@ -1057,6 +1170,7 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+    if (e.target.id === 'f-own') return acts.goOwn();
     var map = { 'f-name': 'next', 'f-glimmer': 'glimmer', 'f-cardnote': 'cardNote', 'f-weight': 'weightAdd', 'f-kin': 'kinSet', 'f-hword': 'holdAdd' };
     if (e.target.id === 'f-rit' && ui.ritual) { var st = RITUAL_STEPS[ui.ritual.kind][ui.ritual.i]; return st === 'witness' ? acts.ritWitness() : acts.ritText(st); }
     if (map[e.target.id]) acts[map[e.target.id]]();
@@ -1083,11 +1197,13 @@
     if (q.day === 'ritual') { var ms = moonState(); if (!ms.due) state.dayOffset += ms.until; } else if (q.day) state.dayOffset = +q.day || 0;
     if (q.cap) state.capacity[todayKey()] = q.cap;
     if (q.tab) state.tab = q.tab;
+    if (q.part) ui.pathPart = q.part;
     render();
     var open = {
       pause: function () { acts.pauseOpen(); if (q.moment) acts.pauseMoment(q.moment); },
       grid: sheetGrid, setting: function () { acts.ritual('new'); }, gathering: function () { acts.ritual('full'); },
       card: function () { var m = currentMoon(); if (m) sheetKeepsake(m, false); }, kin: function () { acts.kinMsg('now'); },
+      slot: function () { acts.slot((q.meal || 'breakfast') + '|' + ((+q.box || 1) - 1)); },
       anchor: function () { sheetAnchor(activeIds()[0]); }, savor: function () { sheetSavor(activeIds()[0]); }
     }[q.open];
     if (open) open();

@@ -404,6 +404,36 @@ body.embed .demo { display: none; }
 .stats b { font-family: var(--font-display); font-size: 28px; line-height: 1; color: var(--primary); }
 .kv.first { border-top: 0; padding-top: 0; }
 
+/* ---------- the table: a rotation of go-to meals ---------- */
+.path-parts { margin-top: 0; margin-bottom: 22px; }
+.card.start .seg { margin-top: 10px; }
+.card.start .small { margin-top: 12px; }
+.meal { margin-top: 16px; border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
+.meal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 12px 18px; background: var(--meal); color: #FFFDF8; font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.1; }
+.meal-head span:last-child { font-family: var(--font-sans); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .85; white-space: nowrap; }
+.meal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+.goto { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 152px; padding: 16px 10px 14px; border-radius: 18px; background: var(--meal-tint); border: 1.5px solid transparent; text-align: center; transition: transform .2s var(--ease); }
+.goto:active { transform: scale(.97); }
+.goto b { font-size: 14.5px; line-height: 1.2; color: var(--meal); }
+.goto span { font-size: 12px; line-height: 1.3; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.goto em { font-style: normal; font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--surface); color: var(--ink); }
+.goto.seed { background: none; border-color: var(--meal-tint); }
+.goto.seed::before { content: 'Picked for you'; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--meal); opacity: .75; }
+.goto.open { background: none; border: 2px dashed color-mix(in srgb, var(--meal) 34%, transparent); }
+.goto.open i { width: 36px; height: 36px; border-radius: 50%; background: var(--meal-tint); display: grid; place-items: center; font-style: normal; font-size: 21px; line-height: 1; color: var(--meal); }
+.goto.open span { font-size: 11.5px; color: var(--ink-3); }
+.step-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin: 26px 0 10px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); }
+.step-h span { letter-spacing: .06em; color: var(--ink-3); }
+.tweak { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px; margin-top: 8px; border-radius: 18px; background: var(--subtle); }
+.tweak .btn-small { margin: 0; white-space: nowrap; }
+.idea-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px; margin-top: 8px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); }
+.idea-time { width: 48px; height: 48px; flex-shrink: 0; border-radius: 14px; background: var(--tint); display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 21px; font-weight: 600; line-height: .9; color: var(--primary); }
+.idea-time small { font-family: var(--font-sans); font-size: 8.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.idea-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.idea-main b { font-size: 14.5px; line-height: 1.25; }
+.idea-main span { font-size: 12.5px; line-height: 1.35; color: var(--ink-2); }
+.idea-main em { font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--primary); margin-top: 3px; }
+
 /* ---------- glimmer grid ---------- */
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
 .tiles.mini { grid-template-columns: repeat(4, 1fr); }
