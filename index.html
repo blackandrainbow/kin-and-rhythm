@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1B211D">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Kin &amp; Rhythm</title>
+  <link rel="icon" href="assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="demo" id="demo">
+    <div class="demo-head">
+      <img src="assets/logo.svg" alt="" class="demo-logo">
+      <div>
+        <p class="demo-title">Kin &amp; Rhythm</p>
+        <p class="demo-sub">Prototype. Nothing leaves this device.</p>
+      </div>
+      <button class="demo-toggle" data-act="demoToggle" aria-label="Show or hide demo controls">Demo</button>
+    </div>
+    <div class="demo-body">
+      <p class="demo-label">Walk through as</p>
+      <div class="demo-row">
+        <button class="demo-btn" data-act="fresh">A new mom</button>
+        <button class="demo-btn" data-act="persona" data-arg="maya">Maya · Open Hearth</button>
+        <button class="demo-btn" data-act="persona" data-arg="elena">Elena · Ebb Tide</button>
+        <button class="demo-btn" data-act="persona" data-arg="casey">Casey · Restless Wind</button>
+      </div>
+      <p class="demo-label">Time travel</p>
+      <div class="demo-row">
+        <button class="demo-btn" data-act="day" data-arg="-1">− 1 day</button>
+        <button class="demo-btn" data-act="day" data-arg="0" id="demo-date">Today</button>
+        <button class="demo-btn" data-act="day" data-arg="1">+ 1 day</button>
+        <button class="demo-btn" data-act="day" data-arg="7">+ 1 week</button>
+        <button class="demo-btn" data-act="toRitual">Next moon ritual</button>
+      </div>
+      <p class="demo-label">Card deck</p>
+      <div class="demo-row">
+        <button class="demo-btn" data-act="deckArrive" id="demo-deck">Deliver the deck</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="phone unclaimed" id="phone">
+    <div class="statusbar"><span>9:41</span><span class="island"></span><span>5G</span></div>
+    <header class="top" id="top"></header>
+    <div class="view" id="view"></div>
+    <div class="foot" id="foot" hidden></div>
+    <nav class="tabs" id="tabs" hidden></nav>
+    <div class="sheet-wrap" id="sheet" hidden>
+      <div class="sheet" id="sheet-body"></div>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+  </main>
+
+  <div id="print"></div>
+
+  <script src="data.js"></script>
+  <script src="rhythm.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
