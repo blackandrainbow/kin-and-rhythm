@@ -1208,9 +1208,18 @@
     if (q.tab) state.tab = q.tab;
     if (q.part) ui.pathPart = q.part;
     render();
+    /* jump a moon ritual to a later step, with sample answers filled in */
+    function ritualAt() {
+      if (!q.rstep) return;
+      Object.assign(ui.ritual.d, { wish: state.values[0] || VALUES[3], obstacle: OBSTACLES[1], plan: PLANS[0], load: 'okay', word: 'Steady' });
+      ui.ritual.i = +q.rstep; ritualRender();
+    }
     var open = {
-      pause: function () { acts.pauseOpen(); if (q.moment) acts.pauseMoment(q.moment); },
-      grid: sheetGrid, setting: function () { acts.ritual('new'); }, gathering: function () { acts.ritual('full'); },
+      pause: function () {
+        acts.pauseOpen(); if (q.moment) acts.pauseMoment(q.moment);
+        if (q.pstep) { ui.pause.thought = q.thought || ''; ui.pause.step = +q.pstep; pauseRender(); }
+      },
+      grid: sheetGrid, setting: function () { acts.ritual('new'); ritualAt(); }, gathering: function () { acts.ritual('full'); ritualAt(); },
       card: function () { var m = currentMoon(); if (m) sheetKeepsake(m, false); }, kin: function () { acts.kinMsg('now'); },
       slot: function () { acts.slot((q.meal || 'breakfast') + '|' + ((+q.box || 1) - 1)); },
       anchor: function () { sheetAnchor(activeIds()[0]); }, savor: function () { sheetSavor(activeIds()[0]); }
