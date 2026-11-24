@@ -2,8 +2,8 @@
   'use strict';
 
   var KEY = 'kin-rhythm-v1', DAY = 864e5;
-  var STEPS = ['welcome', 'brain', 'name', 'stage', 'cup', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'values', 'tender', 'rhythm', 'weight', 'cards', 'reveal', 'bloom'];
-  var CHAPTERS = [['You', 1, 4], ['Your pattern', 5, 10], ['What matters', 11, 12], ['Your cycle', 13, 15], ['Your path', 16, 17]];
+  var STEPS = ['welcome', 'brain', 'name', 'stage', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'values', 'tender', 'rhythm', 'weight', 'cards', 'reveal', 'bloom'];
+  var CHAPTERS = [['You', 1, 3], ['Your pattern', 4, 9], ['What matters', 10, 11], ['Your cycle', 12, 14], ['Your path', 15, 16]];
   var NEIGHBOR = { sun: 'wind', wind: 'sun', hearth: 'tide', tide: 'frost', frost: 'tide' };
   var ui = { sheet: null, pause: null, phaseView: null, rhythmView: null, suit: 'major', pick: '', timer: null, lastScreen: '' };
   var state = load();
@@ -16,7 +16,7 @@
       pattern: '', options: [], phase: 0, tended: {}, capacity: {}, second: [], glimmers: [], pauses: 0,
       staples: {}, heritage: [], allergies: [], coachNotify: false, place: null, dayOffset: 0,
       cues: {}, reps: [], pauseLog: [], rituals: [], moonLoad: '', kin: { name: '', holding: [] },
-      table: {}, eats: {}, tableStart: '' };
+      table: {}, eats: {}, tableStart: '', why: '', cupMore: {}, audit: '' };
   }
   function load() {
     try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 1) return Object.assign(fresh(), s); } catch (e) {}
@@ -92,7 +92,13 @@
     option: function (title, sub, act, arg, on) {
       return '<button class="option' + (on ? ' on' : '') + '" data-act="' + act + '" data-arg="' + esc(arg) + '"><span class="option-title">' + esc(title) + '</span>' + (sub ? '<span class="option-sub">' + esc(sub) + '</span>' : '') + '</button>';
     },
-    label: function (t) { return '<p class="label">' + t + '</p>'; }
+    label: function (t) { return '<p class="label">' + t + '</p>'; },
+    /* one field for anything she says in her own words: she can talk, and it is written down for her, or she can type */
+    say: function (id, hint, value, bind) {
+      return '<div class="say"><textarea id="' + id + '" rows="3" placeholder="' + hint + '"' + (bind ? ' data-bind="' + bind + '"' : '') + '>' + esc(value || '') + '</textarea>' +
+        '<button class="say-mic" data-act="say" data-arg="' + id + '"><img src="assets/icon-mic.svg" alt=""><span>Talk</span></button></div>' +
+        '<p class="say-note">Talking uses your browser\'s dictation. What you say is kept only on this device.</p>';
+    }
   };
 
   /* ---------- quiz scoring ---------- */
@@ -226,11 +232,11 @@
 
   var ob = {
     welcome: function () {
-      setFoot(el.btn('Begin', 'next') + '<p class="foot-note">About four minutes. No wrong answers.</p>');
+      setFoot(el.btn('Begin', 'next') + '<p class="foot-note">About three minutes. No wrong answers.</p>');
       return '<div class="ob welcome"><div class="welcome-art"><img src="assets/sprig-sage.svg" class="sprig-l" alt=""><img src="assets/logo.svg" class="welcome-logo" alt=""><img src="assets/sprig-sage.svg" class="sprig-r" alt=""></div>' +
         el.label(APP.name) + '<h1 class="display xl">Before we talk about food, let\'s find your rhythm.</h1>' +
         '<p class="lead">You are not behind, and you are not broken. Most plans ask you to change how you eat while you are running on empty. We start somewhere else.</p>' +
-        '<ol class="trio"><li><b>What fills your cup</b><span>The small things that make you feel like you.</span></li><li><b>The pattern you have been living in</b><span>Six honest moments. A state, not a label.</span></li><li><b>A path you choose</b><span>Matched to your body, at your pace.</span></li></ol></div>';
+        '<ol class="trio"><li><b>Why you are here</b><span>In your own words, said or typed.</span></li><li><b>The pattern you have been living in</b><span>Six honest moments. A state, not a label.</span></li><li><b>A path you choose</b><span>Matched to your body, at your pace.</span></li></ol></div>';
     },
     brain: function () {
       setFoot(el.btn('Continue', 'next'));
@@ -248,16 +254,6 @@
       return '<div class="ob">' + obHead('', 'Where is your body right now?', 'This tells us whether to follow your cycle or the moon. Every answer has a path.') +
         '<div class="options">' + STAGES.map(function (s) { return el.option(s.label, s.sub, 'pick', 'stage|' + s.id, state.stage === s.id); }).join('') + '</div></div>';
     },
-    cup: function () {
-      setFoot(el.btn('Continue', 'next', null, 'btn-primary' + (state.cup.length || (state.emptyCup && state.spark) ? '' : ' is-quiet')));
-      var groups = CUP.map(function (g) {
-        return '<p class="group-label">' + g.label + '</p><div class="chips">' + g.options.map(function (o) { return el.chip(o, 'cup', o, state.cup.indexOf(o) >= 0); }).join('') + '</div>';
-      }).join('');
-      var empty = '<div class="chips solo">' + el.chip('Honestly, nothing right now', 'emptyCup', '1', state.emptyCup) + '</div>';
-      if (state.emptyCup) empty += '<div class="card soft"><p class="card-title">That is honest, and very common.</p><p class="small">It usually means the cup has been empty for a while. Pick one tiny spark to try. That is where your path will start.</p><div class="options tight">' +
-        SPARKS.map(function (s) { return el.option(s, '', 'spark', s, state.spark === s); }).join('') + '</div></div>';
-      return '<div class="ob">' + obHead('', 'What fills your cup?', 'Tap anything that helps you feel like yourself. A few is plenty.') + (state.emptyCup ? '' : groups) + empty + '</div>';
-    },
     quiz: function (i) {
       setFoot('');
       var q = QUIZ[i], ids = PATTERNS.map(function (p) { return p.id; }), shift = (i * 2) % 5;
@@ -266,9 +262,10 @@
         '<div class="options">' + ids.map(function (id) { return el.option(q.a[id], '', 'quiz', i + '|' + id, state.quiz[i] === id); }).join('') + '</div></div>';
     },
     values: function () {
-      setFoot(el.btn('Continue', 'next', null, 'btn-primary' + (state.values.length ? '' : ' is-quiet')));
-      return '<div class="ob">' + obHead('', 'What is this for?', 'Choose up to two. When a day gets hard, this is what we will point you back to.') +
-        '<div class="options">' + VALUES.map(function (v) { return el.option(v, '', 'value', v, state.values.indexOf(v) >= 0); }).join('') + '</div></div>';
+      setFoot(el.btn('Continue', 'next', null, 'btn-primary' + (state.why || state.values.length ? '' : ' is-quiet')));
+      return '<div class="ob">' + obHead('', 'Why do you want this change?', 'Say it out loud or type it, in your own words. On a hard day, this is what we will point you back to.') +
+        el.say('f-why', 'Because I want…', state.why, 'why') +
+        '<p class="group-label">Or start from one of these</p><div class="options tight">' + VALUES.map(function (v) { return el.option(v, '', 'value', v, state.values.indexOf(v) >= 0); }).join('') + '</div></div>';
     },
     tender: function () {
       setFoot('');
@@ -372,16 +369,18 @@
       '<input class="field" id="f-glimmer" type="text" placeholder="' + (ui.draftImg ? 'A few words, if you like' : 'Snap it, or say it') + '"><button class="btn btn-small" data-act="glimmer">Keep</button></div>' +
       (state.glimmers.length ? '<button class="link" data-act="grid">Open your glimmer grid · ' + state.glimmers.length + '</button>' : '') + '</div>';
 
+    var auditCall = state.audit ? '' : '<div class="card tinted audit-call"><p class="label">Your audit</p><p class="card-title">What fills your cup?</p><p class="small">Five questions about what restores you. Talk or tap. Your path is built from what you say.</p>' + el.btn(cupFilled().length ? 'Pick up where you left off' : 'Start', 'auditOpen', '0', 'btn-small') + '</div>';
+
     return '<div class="page">' + arrange('today', {
       greet: '<div class="greet"><h1 class="display">' + hello + (state.name ? ', ' + esc(state.name) : '') + '.</h1><p class="lead">' + sunLine + '</p></div>',
       strip: '<button class="rhythm-strip" data-act="tab" data-arg="rhythm"><img src="' + r.moon.art + '" alt=""><span><span class="label">' + s.name + ' · ' + (r.mode === 'cycle' ? r.label.toLowerCase() : r.moon.name.toLowerCase()) + '</span><span class="strip-text">Today asks for ' + lower(s.asks) + '</span></span><img src="assets/icon-next.svg" class="chev" alt=""></button>',
       moon: ms.due ? moonCall(ms) : '',
       kin: askKin,
-      nudge: nudge,
+      nudge: nudge + auditCall,
       touch: '<p class="section-title">Today\'s touch <span>' + (state.moonLoad === 'low' ? 'One rhythm this moon' : 'Ten seconds') + '</span></p>' + capRow + anchors + closing,
       cards: cards ? '<p class="section-title">Ritual</p>' + cards : '',
       glimmer: '<p class="section-title">Romance the ordinary</p>' + glimmer,
-      why: state.values.length ? '<p class="why">You are here for <b>' + state.values.map(lower).join('</b> and <b>') + '</b>.</p>' : ''
+      why: state.why ? '<p class="why">In your words: <b>“' + esc(state.why) + '”</b></p>' : state.values.length ? '<p class="why">You are here for <b>' + state.values.map(lower).join('</b> and <b>') + '</b>.</p>' : ''
     }, ['greet', 'strip', 'moon', 'kin', 'nudge', 'touch', 'cards', 'glimmer', 'why']) + '</div>';
   }
 
@@ -424,7 +423,7 @@
       head: '<h1 class="display">Your almanac</h1><p class="lead">A record of your own weather. It gets truer the longer you keep it.</p>',
       seg: seg,
       wheel: wheel + legend + '<p class="hint">Each light on the ring is a day you checked in. Bigger means you had more to give.</p>',
-      notes: almanacNotes(),
+      notes: almanacNotes() + saidList(3),
       glimmers: glimmerSection(),
       moons: moonSection(),
       season: '<p class="section-title">This season</p><div class="card season"><p class="label">' + (mode === 'cycle' ? s.cycle : s.moon) + '</p><p class="display sm">' + s.name + ' asks for ' + lower(s.asks) + '</p>' +
@@ -477,15 +476,15 @@
       '<p class="small">Not tracking. That is a complete answer.</p><button class="link" data-act="weightToggle">Turn on a private log</button>';
     var ritual = state.cards.on ?
       '<div class="row"><img src="' + dk.art + '" class="deck-thumb" alt=""><div><p class="card-title">' + dk.name + '</p><p class="small muted">' + (state.cards.arrived ? 'With you. You pull, we listen.' : 'On its way. About three weeks.') + '</p></div></div><button class="link" data-act="cardsToggle">Turn the card ritual off</button>' :
-      '<p class="small">Off. Breath and body rituals are always under Pause.</p><button class="link" data-act="cardsToggle">Choose a deck</button>';
+      '<p class="small">Off. A breath or body reset is always there to try under Pause.</p><button class="link" data-act="cardsToggle">Choose a deck</button>';
     var glimmers = state.glimmers.length ? '<div class="tiles">' + latestTiles(6) + '</div><button class="link" data-act="grid">Open the whole grid</button>' : '<p class="small muted">The small beautiful things you keep will gather here.</p>';
     var r = rhythmNow();
     return '<div class="page">' +
       '<div class="profile"><img src="' + p.art + '" alt=""><div><h1 class="display">' + esc(state.name || 'You') + '</h1><p class="small">In a <b>' + p.name + '</b> pattern, walking toward ' + lower(p.direction) + '.</p></div></div>' +
       '<div class="card"><p class="label">Your pattern</p><p class="card-title">' + p.name + ' · ' + lower(p.state) + '</p><p class="small">' + p.line + ' It is a state, not an identity, and it can change.</p><p class="mantra">“' + p.anchorLine + '”</p><div class="link-row"><button class="link" data-act="pathsSheet">Change my path</button><button class="link" data-act="retake">Retake the six moments</button></div></div>' +
       '<div class="card"><p class="label">Kin</p>' + kinCard() + '</div>' +
-      '<div class="card"><p class="label">What this is for</p>' + chips(VALUES, 'value', state.values) + '</div>' +
-      '<div class="card"><p class="label">What fills your cup</p>' + (state.cup.length ? '<div class="chips">' + state.cup.map(function (c) { return '<span class="chip on static">' + esc(c) + '</span>'; }).join('') + '</div>' : '<p class="small">Starting with one spark: ' + lower(sparkName()) + '.</p>') + '</div>' +
+      '<div class="card"><p class="label">Why you are here</p>' + (state.why ? '<p class="said">“' + esc(state.why) + '”</p>' : '') + chips(VALUES, 'value', state.values) + '</div>' +
+      '<div class="card"><p class="label">What fills your cup</p>' + (state.audit ? '<p class="card-title">' + cupFilled().length + ' of ' + CUP.length + ' outlets filled</p><p class="small muted">' + (cupFilled().map(function (g) { return g.label; }).join(' · ') || 'Starting with one spark: ' + lower(sparkName())) + '</p>' : '<p class="small">Not answered yet. Five questions, by voice or by tap.</p>') + '<button class="link" data-act="auditOpen" data-arg="' + (state.audit ? 'summary' : '0') + '">' + (state.audit ? 'Open your cup' : 'Start the audit') + '</button></div>' +
       '<div class="card"><p class="label">Cycle</p><p class="card-title">' + (hasCycle() ? 'Following your cycle' : 'Following the moon') + '</p><p class="small muted">' + SEASONS[r.season].name + ' today.' + (hasCycle() ? ' ' + state.rhythm.len + '-day cycle, last period ' + Rhythm.fromISO(state.rhythm.start).toLocaleDateString([], { month: 'short', day: 'numeric' }) + '.' : '') + '</p><button class="link" data-act="rhythmSheet">Change</button></div>' +
       '<div class="card"><p class="label">Card ritual</p>' + ritual + '</div>' +
       '<div class="card"><p class="label">Weight</p>' + weight + '</div>' +
@@ -513,7 +512,7 @@
     $('sheet-body').innerHTML = '<button class="sheet-close" data-act="closeSheet" aria-label="Close"><img src="assets/icon-close.svg" alt=""></button>' + html;
     $('sheet').hidden = false;
   }
-  function closeSheet() { clearTimeout(ui.timer); ui.sheet = null; ui.pause = null; ui.ritual = null; $('sheet').hidden = true; }
+  function closeSheet() { clearTimeout(ui.timer); sayStop(); ui.sheet = null; ui.pause = null; ui.ritual = null; ui.audit = null; $('sheet').hidden = true; }
 
   function sheetAnchor(id) {
     var a = anchor(id), second = state.second.indexOf(id) >= 0;
@@ -627,6 +626,13 @@
     html += ins.list.map(function (x) { return '<div class="card insight"><p class="label">' + x[0] + '</p><p>' + x[1] + '</p></div>'; }).join('');
     return html + '<div class="stats"><span><b>' + state.reps.length + '</b>reps</span><span><b>' + state.pauses + '</b>pauses</span><span><b>' + state.glimmers.length + '</b>glimmers</span></div>';
   }
+  /* her own words from hard moments, handed back exactly as she said them */
+  function saidList(n) {
+    var all = state.pauseLog.filter(function (x) { return x.said; });
+    return all.length ? '<p class="section-title">In your own words <span>' + all.length + ' kept</span></p>' + all.slice(-n).reverse().map(function (x) {
+      return '<div class="card words"><p class="label">' + fmt(x.d, { weekday: 'short', month: 'short', day: 'numeric' }) + ' · ' + hourLabel(x.h) + '</p><p class="said">“' + esc(x.said) + '”</p>' + (x.chose ? '<p class="small muted">You chose: ' + esc(lower(x.chose)) + '</p>' : '') + '</div>';
+    }).join('') : '';
+  }
   function moonCall(ms) {
     var k = MOON_RITUALS[ms.due.kind];
     return '<div class="moon-call"><img src="' + k.art + '" alt=""><div><p class="label">' + ms.when + '</p><p class="display sm">' + k.call + '</p><p class="small">' + k.sub + '</p>' + el.btn('Begin', 'ritual', ms.due.kind, 'btn-small') + '</div></div>';
@@ -672,6 +678,7 @@
     var p = pat(), done = ['breakfast', 'lunch', 'dinner'].filter(function (id) { return slots(id).some(Boolean); }).length;
     var chooser = '<div class="card start"><p class="small">' +
         (done === 3 ? 'You have a first rotation: one each for breakfast, lunch and dinner. Add more only if it makes life easier.' : 'Tap any open box to adjust something you already eat, or to find something new that fits your time, budget and table.') + '</p></div>';
+    if (state.audit && cupFilled().length < 2) chooser = '<div class="card soft"><p class="card-title">First, what fills you.</p><p class="small">Your cup has ' + (cupFilled().length ? 'one outlet' : 'no outlets') + ' filled right now, so your path starts there and not with food. Your table is still here whenever you want it.</p><button class="link" data-act="auditOpen" data-arg="0">Open your cup</button></div>' + chooser;
     var meals = MEALS.map(function (m) {
       var s = slots(m.id), n = s.filter(Boolean).length;
       return '<div class="meal" style="--meal:' + m.color + ';--meal-tint:' + m.tint + '"><div class="meal-head"><span>' + m.name + '</span><span>' + (n ? n + ' of 4' : m.hint) + '</span></div><div class="meal-grid">' + s.map(function (g, i) {
@@ -852,7 +859,7 @@
       });
       var sc = base[season] + kept * 0.2 + (rnd() - 0.5) * 0.3;
       if (rnd() < 0.86) s.capacity[key] = sc > 0.85 ? 'good' : sc > 0.48 ? 'okay' : 'low';
-      if (rnd() < 0.2) { s.pauseLog.push({ d: key, h: th + (rnd() < 0.7 ? 0 : 1), m: 'reach' }); s.pauses++; }
+      if (rnd() < 0.2) { var pe = { d: key, h: th + (rnd() < 0.7 ? 0 : 1), m: 'reach', chose: MOMENTS[0].choices[s.pauseLog.length % 3] }; if (s.pauseLog.length % 2 === 0) pe.said = SEED_SAID[(s.pauseLog.length / 2) % SEED_SAID.length]; s.pauseLog.push(pe); s.pauses++; }
       if (rnd() < 0.3) { var gi = s.glimmers.length % SEED_GLIMMERS.length; s.glimmers.push({ date: key, text: SEED_GLIMMERS[gi], img: SEED_GLIMMER_ART[gi] || '' }); }
     }
     var ev = Rhythm.moonEvents(today), lastNew = ev.last.kind === 'new' ? ev.last.date : new Date(ev.last.date.getTime() - 14.77 * DAY);
@@ -860,34 +867,80 @@
     s.moonLoad = 'okay';
   }
 
-  /* ---------- Pause ---------- */
+  /* ---------- talk instead of typing ---------- */
+  var Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function sayStop() { if (ui.rec) { try { ui.rec.stop(); } catch (e) {} ui.rec = null; } }
+  function sayStart(id, btn) {
+    var f = $(id);
+    if (ui.rec) return sayStop();
+    if (!Speech) { toast('Talking is not available in this browser. Typing works too.'); if (f) f.focus(); return; }
+    var rec = new Speech(), start = f.value ? f.value.replace(/\s+$/, '') + ' ' : '', label = btn.querySelector('span');
+    rec.lang = 'en-US'; rec.interimResults = true; rec.continuous = true;
+    rec.onresult = function (e) {
+      var text = '';
+      for (var i = 0; i < e.results.length; i++) text += e.results[i][0].transcript;
+      f.value = start + text;
+      f.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    rec.onerror = function (e) { if (e.error !== 'aborted' && e.error !== 'no-speech') toast('The microphone is not available here. Typing works too.'); };
+    rec.onend = function () { ui.rec = null; btn.classList.remove('on'); label.textContent = 'Talk'; };
+    ui.rec = rec; btn.classList.add('on'); label.textContent = 'Listening. Tap to stop';
+    try { rec.start(); } catch (e) { rec.onend(); }
+  }
+
+  /* ---------- the cup audit: five outlets, answered by tapping, searching or talking ---------- */
+  function outletMine(g) { return g.options.filter(function (o) { return state.cup.indexOf(o) >= 0; }).concat((state.cupMore[g.id] || '').trim() ? [state.cupMore[g.id].trim()] : []); }
+  function cupFilled() { return CUP.filter(function (g) { return outletMine(g).length; }); }
+  function auditKeep() { var f = $('f-outlet'); if (f && ui.audit && CUP[ui.audit.i]) state.cupMore[CUP[ui.audit.i].id] = f.value.trim(); }
+  function sheetAudit() {
+    var at = ui.audit, html;
+    if (at.i < CUP.length) {
+      var g = CUP[at.i];
+      html = el.label('Outlet ' + (at.i + 1) + ' of ' + CUP.length + ' · ' + g.label) + '<h2 class="display">' + g.q + '</h2><p class="small">' + g.hint + '</p>' +
+        '<input class="field" id="f-find" type="search" placeholder="Search, or tap what fits">' +
+        '<div class="chips" id="outlet-chips">' + g.options.map(function (o) { return el.chip(o, 'cup', o, state.cup.indexOf(o) >= 0); }).join('') + '</div>' +
+        '<p class="group-label">In your own words</p>' + el.say('f-outlet', 'Anything that is not on the list', state.cupMore[g.id]) +
+        el.btn(at.i < CUP.length - 1 ? 'Next' : 'See what you said', 'auditNext') +
+        '<div class="link-row spread">' + (at.i ? '<button class="link" data-act="auditBack">Back</button>' : '<span></span>') + '<button class="link" data-act="auditNext">Nothing comes to mind</button></div>';
+    } else {
+      var full = cupFilled(), empty = CUP.filter(function (g) { return full.indexOf(g) < 0; }), low = full.length < 2;
+      html = el.label('Your cup, as you described it') + '<h2 class="display">' + (full.length === CUP.length ? 'All five outlets have something in them.' : full.length + ' of ' + CUP.length + ' outlets ' + (full.length === 1 ? 'has' : 'have') + ' something in ' + (full.length === 1 ? 'it' : 'them') + '.') + '</h2>' +
+        '<div class="card">' + CUP.map(function (g) { var mine = outletMine(g); return '<div class="fact"><p class="label">' + g.label + '</p><p' + (mine.length ? '' : ' class="muted"') + '>' + (mine.length ? esc(mine.join(' · ')) : 'Nothing here right now.') + '</p></div>'; }).join('') + '</div>' +
+        (low ? '<div class="card soft"><p class="card-title">This comes first.</p><p class="small">With ' + (full.length ? 'one outlet' : 'no outlets') + ' filled, changing how you eat would be one more thing to carry. Your path starts with finding what fills you. Food comes after that, and it will still be here.</p><p class="small pad-top">Pick one small thing to try this week.</p><div class="options tight">' + SPARKS.map(function (s) { return el.option(s, '', 'spark', s, state.spark === s); }).join('') + '</div></div>' :
+          empty.length ? '<p class="small pad-top">' + empty.map(function (g) { return g.label; }).join(' and ') + ' ' + (empty.length === 1 ? 'is' : 'are') + ' empty for now. That is worth knowing. Come back and add to it whenever something turns up.</p>' : '') +
+        el.btn('Keep this', 'auditDone') + '<div class="link-row spread"><button class="link" data-act="auditBack">Back</button><span></span></div>';
+    }
+    openSheet('<div class="audit">' + html + '</div>', true);
+  }
+
+  /* ---------- Pause: say what is happening, then choose. A breath or body reset is there to try, not required. ---------- */
   function pauseRender() {
     var s = ui.pause, p = pat(), html = '';
     clearTimeout(ui.timer);
     if (s.step === 0) {
-      html = el.label('Pause') + '<h2 class="display">What is happening right now?</h2><p class="small">No need to explain it. Just the closest one.</p><div class="options">' +
-        MOMENTS.map(function (m) { return el.option(m.label, '', 'pauseMoment', m.id, false); }).join('') + '</div>';
-    } else if (s.step === 1) {
+      html = el.label('Pause') + '<h2 class="display">What is happening right now?</h2><p class="small">Say it out loud, or type it. Nobody hears this but you.</p>' +
+        el.say('f-said', 'Right now…', s.said) + el.btn('I have said it', 'pauseSaid') +
+        '<p class="group-label">Or tap the closest one</p><div class="options tight">' + MOMENTS.map(function (m) { return el.option(m.label, '', 'pauseMoment', m.id, false); }).join('') + '</div>';
+    } else if (s.step === 1 && s.trying) {
       var r = RITUALS[s.moment.ritual];
       html = el.label(r.name) + '<p class="small center">' + r.note + '</p>';
       if (r.kind === 'breath') html += '<div class="breath"><div class="breath-ring" id="b-ring"><span id="b-label">Ready</span></div><p class="small muted" id="b-count">' + r.rounds + ' slow rounds</p></div>';
       else html += '<div class="breath"><div class="breath-ring slow"><span>' + (s.sub + 1) + ' of ' + r.steps.length + '</span></div></div><p class="step-text">' + r.steps[s.sub] + '</p>' + el.btn(s.sub < r.steps.length - 1 ? 'Next' : 'Done', 'pauseStep');
-      html += el.btn('Skip ahead', 'pauseNext', null, 'btn-ghost');
-    } else if (s.step === 2) {
-      html = s.thought ?
-        el.label('Notice it') + '<h2 class="display">“I notice I am having the thought that ' + lower(esc(s.thought)) + '.”</h2><p>Say it once, slowly. A thought is weather passing through. It is not an order, and it is not the truth about you.</p>' + el.btn('Continue', 'pauseNext') :
-        el.label('Notice it') + '<h2 class="display">Is one thought louder than the rest?</h2><p class="small">You do not have to argue with it. Just name it.</p><div class="options">' + THOUGHTS.map(function (t) { return el.option(t, '', 'pauseThought', t, false); }).join('') + el.option('No thought. Just a feeling.', '', 'pauseNext', '', false) + '</div>';
-    } else if (s.step === 3) {
+      html += el.btn('That is enough', 'pauseNext', null, 'btn-ghost');
+    } else if (s.step === 1) {
       var v = state.values[0] ? lower(state.values[0]) : 'what matters to you';
       var choices = s.moment.choices.slice();
       if (s.moment.id === 'reach' && state.cup[0]) choices[2] = 'Ten minutes of ' + lower(state.cup[0]) + ', then decide';
       if (s.moment.id === 'heavy' && state.kin.name) choices[0] = 'Text ' + state.kin.name;
-      html = el.label('Choose') + '<h2 class="display">What would the you who cares about ' + v + ' do next?</h2><p class="small">Every option here is a good one.</p><div class="options">' + choices.map(function (c) { return el.option(c, '', 'pauseChoice', c, false); }).join('') + '</div>';
+      html = (s.said ? el.label('You said') + '<p class="said">“' + esc(s.said) + '”</p>' : el.label(s.moment.label)) +
+        '<h2 class="display">What would the you who cares about ' + v + ' do next?</h2><p class="small">Every option here is a good one.</p><div class="options">' + choices.map(function (c) { return el.option(c, '', 'pauseChoice', c, false); }).join('') + '</div>' +
+        '<button class="link center" data-act="pauseTry">Something to try first: ' + lower(RITUALS[s.moment.ritual].name) + '</button>';
     } else {
-      html = '<div class="pause-end"><img src="assets/sunburst.svg" alt=""><h2 class="display">You paused.</h2><p>That is the whole practice. Whatever comes next, you chose it.</p><p class="mantra">“' + p.anchorLine + '”</p></div>' + el.btn('Back to my day', 'closeSheet');
+      html = '<div class="pause-end"><img src="assets/sunburst.svg" alt=""><h2 class="display">You paused.</h2><p>That is the whole practice. Whatever comes next, you chose it.</p>' +
+        (s.said ? '<p class="small muted">Your words are kept in your Almanac, for the you who looks back.</p>' : '') + '<p class="mantra">“' + p.anchorLine + '”</p></div>' + el.btn('Back to my day', 'closeSheet');
     }
     openSheet('<div class="pause">' + html + '</div>', true);
-    if (s.step === 1 && RITUALS[s.moment.ritual].kind === 'breath') breathe(RITUALS[s.moment.ritual]);
+    if (s.step === 1 && s.trying && RITUALS[s.moment.ritual].kind === 'breath') breathe(RITUALS[s.moment.ritual]);
   }
 
   function breathe(r) {
@@ -900,7 +953,7 @@
       ui.timer = setTimeout(then, secs * 1000);
     }
     function cycle() {
-      if (round >= r.rounds) { ui.pause.step = 2; pauseRender(); return; }
+      if (round >= r.rounds) { ui.pause.trying = false; pauseRender(); return; }
       round++;
       count.textContent = 'Round ' + round + ' of ' + r.rounds;
       phase('Breathe in', r.inS, true, function () {
@@ -946,15 +999,24 @@
   var acts = {
     next: function () {
       var id = STEPS[state.step];
-      if (id === 'cup' && !state.cup.length && !(state.emptyCup && state.spark)) return toast('Pick one, or tap “nothing right now”');
-      if (id === 'values' && !state.values.length) return toast('Choose one that matters');
+      if (id === 'values' && !state.values.length && !state.why) return toast('Say it, type it, or choose one');
+      sayStop();
       go(1);
     },
     back: function () { go(-1); },
     pick: function (arg) { var p = arg.split('|'); state[p[0]] = p[1]; go(1); },
-    cup: function (v) { toggle(state.cup, v); render(); },
-    emptyCup: function () { state.emptyCup = !state.emptyCup; if (state.emptyCup) state.cup = []; else state.spark = ''; render(); },
-    spark: function (v) { state.spark = v; render(); },
+    say: function (id, btn) { sayStart(id, btn); },
+    cup: function (v, btn) { toggle(state.cup, v); save(); btn.classList.toggle('on'); },
+    spark: function (v) { state.spark = v; save(); sheetAudit(); },
+    auditOpen: function (arg) { ui.audit = { i: arg === 'summary' ? CUP.length : +arg || 0 }; sheetAudit(); },
+    auditNext: function () { auditKeep(); sayStop(); ui.audit.i++; save(); sheetAudit(); },
+    auditBack: function () { auditKeep(); sayStop(); ui.audit.i = Math.max(0, ui.audit.i - 1); sheetAudit(); },
+    auditDone: function () {
+      var low = cupFilled().length < 2;
+      if (low && !state.spark) return toast('Pick one small thing to try');
+      state.emptyCup = low; if (!low) state.spark = '';
+      state.audit = todayKey(); closeSheet(); toast('Kept. Your path is built from this.'); render();
+    },
     quiz: function (arg) { var p = arg.split('|'); state.quiz[+p[0]] = p[1]; go(1); },
     value: function (v) { toggle(state.values, v, 2); render(); },
     len: function (n) {
@@ -1125,12 +1187,17 @@
     deckOn: function (id) { state.cards.deck = id; state.cards.on = true; closeSheet(); toast('Your deck is on its way.'); render(); },
     coach: function () { state.coachNotify = !state.coachNotify; render(); },
 
-    pauseOpen: function () { ui.pause = { step: 0, moment: null, sub: 0, thought: '' }; pauseRender(); },
-    pauseMoment: function (id) { ui.pause.moment = MOMENTS.filter(function (m) { return m.id === id; })[0]; ui.pause.step = 1; pauseRender(); },
-    pauseStep: function () { var r = RITUALS[ui.pause.moment.ritual]; if (ui.pause.sub < r.steps.length - 1) ui.pause.sub++; else ui.pause.step = 2; pauseRender(); },
-    pauseThought: function (t) { ui.pause.thought = t; pauseRender(); },
-    pauseNext: function () { ui.pause.step++; pauseRender(); },
-    pauseChoice: function () { ui.pause.step = 4; state.pauses++; state.pauseLog.push({ d: todayKey(), h: now().getHours(), m: ui.pause.moment.id }); save(); pauseRender(); },
+    pauseOpen: function () { ui.pause = { step: 0, moment: null, sub: 0, said: '', trying: false }; pauseRender(); },
+    pauseSaid: function () { var f = $('f-said'), t = f ? f.value.trim() : ''; if (!t) return toast('Say it, type it, or tap the closest one'); sayStop(); ui.pause.said = t; ui.pause.moment = MOMENT_OPEN; ui.pause.step = 1; pauseRender(); },
+    pauseMoment: function (id) { var f = $('f-said'); if (f && f.value.trim()) ui.pause.said = f.value.trim(); sayStop(); ui.pause.moment = MOMENTS.filter(function (m) { return m.id === id; })[0]; ui.pause.step = 1; pauseRender(); },
+    pauseTry: function () { ui.pause.trying = true; ui.pause.sub = 0; pauseRender(); },
+    pauseStep: function () { var r = RITUALS[ui.pause.moment.ritual]; if (ui.pause.sub < r.steps.length - 1) ui.pause.sub++; else ui.pause.trying = false; pauseRender(); },
+    pauseNext: function () { ui.pause.trying = false; pauseRender(); },
+    pauseChoice: function (c) {
+      var entry = { d: todayKey(), h: now().getHours(), m: ui.pause.moment.id, chose: c };
+      if (ui.pause.said) entry.said = ui.pause.said;
+      ui.pause.step = 2; state.pauses++; state.pauseLog.push(entry); save(); pauseRender();
+    },
 
     /* a reviewer's note about whatever is on screen, sent to the private inbox */
     note: function () {
@@ -1149,7 +1216,7 @@
     persona: function (id) {
       var p = PERSONAS[id], s = fresh();
       closeSheet();
-      Object.assign(s, { onboarded: true, name: p.name, stage: p.stage, pattern: p.pattern, options: p.options, cup: p.cup, emptyCup: !p.cup.length, spark: p.cup.length ? '' : SPARKS[0], values: p.values, tender: p.tender, phase: p.phase, heritage: p.heritage });
+      Object.assign(s, { onboarded: true, name: p.name, stage: p.stage, pattern: p.pattern, options: p.options, cup: p.cup, cupMore: p.cupMore || {}, why: p.why || '', audit: p.audit ? Rhythm.iso(new Date()) : '', emptyCup: false, spark: '', values: p.values, tender: p.tender, phase: p.phase, heritage: p.heritage });
       s.rhythm = p.rhythm.mode === 'cycle' ? { mode: 'cycle', len: p.rhythm.len, start: Rhythm.iso(Rhythm.addDays(new Date(), -p.rhythm.dayAgo)) } : { mode: 'moon', start: '', len: 28 };
       s.cards = { on: p.cards.on, deck: p.cards.deck, arrived: p.cards.arrived, pulls: {}, notes: {} };
       s.weight = { on: p.weight, entries: [] };
@@ -1173,6 +1240,10 @@
     readPhoto(e.target.files[0], function (url) { ui.draftImg = url; render(); });
   });
   document.addEventListener('input', function (e) {
+    if (e.target.id === 'f-find') {
+      var find = e.target.value.trim().toLowerCase();
+      return Array.prototype.forEach.call(document.querySelectorAll('#outlet-chips .chip'), function (c) { c.hidden = !!find && c.textContent.toLowerCase().indexOf(find) < 0; });
+    }
     var k = e.target.getAttribute('data-bind');
     if (k) { state[k] = e.target.value.trim(); save(); }
   });
@@ -1215,9 +1286,13 @@
     }
     var open = {
       pause: function () {
-        acts.pauseOpen(); if (q.moment) acts.pauseMoment(q.moment);
-        if (q.pstep) { ui.pause.thought = q.thought || ''; ui.pause.step = +q.pstep; pauseRender(); }
+        acts.pauseOpen();
+        if (q.said) ui.pause.said = q.said;
+        if (q.moment || q.pstep) { ui.pause.moment = MOMENTS.filter(function (m) { return m.id === q.moment; })[0] || MOMENT_OPEN; ui.pause.step = 1; }
+        if (q.pstep === 'try') ui.pause.trying = true; else if (+q.pstep) ui.pause.step = +q.pstep;
+        pauseRender();
       },
+      audit: function () { acts.auditOpen(q.outlet || '0'); },
       grid: sheetGrid, setting: function () { acts.ritual('new'); ritualAt(); }, gathering: function () { acts.ritual('full'); ritualAt(); },
       card: function () { var m = currentMoon(); if (m) sheetKeepsake(m, false); }, kin: function () { acts.kinMsg('now'); },
       slot: function () { acts.slot((q.meal || 'breakfast') + '|' + ((+q.box || 1) - 1)); },

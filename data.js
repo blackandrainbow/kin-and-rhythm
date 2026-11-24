@@ -114,12 +114,18 @@ var STAGES = [
   { id: 'none', label: 'I do not have a cycle', sub: 'Menopause, IUD, or another reason' }
 ];
 
+/* The five outlets of the cup audit. She answers by tapping, searching, or in her own words. */
 var CUP = [
-  { id: 'move', label: 'Body', options: ['Walking outside', 'Dancing in the kitchen', 'Yoga or stretching', 'Lifting something heavy', 'Gardening', 'Swimming'] },
-  { id: 'kin', label: 'Kin', options: ['Voice notes with a friend', 'Coffee with one person', 'The family table', 'Time with my partner', 'A mom group or book club', 'The dog'] },
-  { id: 'calm', label: 'Calm', options: ['A hot shower, door locked', 'Fiction', 'Music or a podcast', 'Sitting outside', 'Breath or prayer', 'A cup of tea'] },
-  { id: 'play', label: 'Play', options: ['Cooking for fun', 'Making the house pretty', 'Flowers', 'Journaling', 'Craft, paint or knit', 'Playlists'] },
-  { id: 'spirit', label: 'Spirit', options: ['Audiobooks', 'Learning something new', 'Tarot or reflection', 'Puzzles', 'Therapy or coaching', 'Time in nature'] }
+  { id: 'move', label: 'Body & Energy', q: 'How do you enjoy moving your body?', hint: 'Not exercise you dread. Any movement that feels natural or clears your head.',
+    options: ['Walking outside', 'Dancing in the kitchen', 'Yoga or stretching', 'Lifting something heavy', 'Gardening', 'Swimming', 'A bike ride'] },
+  { id: 'kin', label: 'Kin & Community', q: 'What helps you feel genuinely connected?', hint: 'Who or what reminds you that you are supported, and not carrying everything solo?',
+    options: ['Voice notes with a friend', 'Coffee with one person', 'The family table', 'Time with my partner', 'A mom group or book club', 'The dog'] },
+  { id: 'calm', label: 'Nervous System', q: 'How do you find stillness, or exhale?', hint: 'When the house is loud or your brain is buzzing, what helps your shoulders drop?',
+    options: ['A hot shower, door locked', 'A bath', 'Fiction', 'Music or a podcast', 'Sitting outside', 'Breath or prayer', 'A cup of tea'] },
+  { id: 'play', label: 'Play & Expression', q: 'Where do you spark creativity or play?', hint: 'Something you do purely for the joy of making or tinkering. Zero productivity required.',
+    options: ['Cooking for fun', 'Making the house pretty', 'Flowers', 'Journaling', 'Craft, paint or knit', 'Playlists', 'Video games'] },
+  { id: 'spirit', label: 'Curiosity & Spirit', q: 'What feeds your curiosity or sense of growth?', hint: 'Ways you like learning, reflecting, or feeling like your own person outside of caregiving.',
+    options: ['Audiobooks', 'Learning something new', 'Tarot or reflection', 'Puzzles', 'Therapy or coaching', 'Time in nature'] }
 ];
 var SPARKS = ['A ten-minute walk at sunset', 'A hot shower with the door locked', 'One voice note to one friend', 'A cup of tea, sitting down', 'Five minutes of stretching before the house wakes'];
 
@@ -255,6 +261,9 @@ var MOMENTS = [
   { id: 'heavy', label: 'Everything feels too heavy', ritual: 'hold',
     choices: ['Text one person', 'Lie down for ten minutes, on purpose', 'Do the smallest version of one rhythm'] }
 ];
+/* when she says it in her own words and does not pick one of the five */
+var MOMENT_OPEN = { id: 'said', label: 'In my own words', ritual: 'exhale',
+  choices: ['Step away for two minutes', 'Have it, sitting down, and enjoy it', 'Carry on, slower and quieter'] };
 var RITUALS = {
   exhale: { name: 'The long exhale', kind: 'breath', inS: 4, holdS: 0, outS: 6, rounds: 6, note: 'Breathing out for longer than you breathe in tells your body it can stand down.' },
   wave: { name: 'Ride the wave', kind: 'breath', inS: 4, holdS: 2, outS: 6, rounds: 5, note: 'An urge rises, peaks and passes, like a wave. You do not have to fight it or obey it. Breathe and watch it move.' },
@@ -265,7 +274,6 @@ var RITUALS = {
   hold: { name: 'A steady hold', kind: 'steps', note: 'Nothing to fix. Just company for a moment.',
     steps: ['Put one hand on your chest and one on your belly.', 'Feel the weight and warmth of your own hands.', 'Tap your shoulders slowly, left then right, ten times.', 'Say, quietly: this is a hard moment, and it will pass.'] }
 };
-var THOUGHTS = ['I deserve this', 'I have already blown it', 'I can\'t cope', 'Nobody helps me', 'I should be better at this', 'What is the point'];
 
 /* ---------- Cards ---------- */
 var MAJORS = [
@@ -385,6 +393,7 @@ var PLANS = ['do the smallest version and call it done', 'pause before I decide 
 var WORDS = ['Soften', 'Steady', 'Begin', 'Enough', 'Receive', 'Slow', 'Brave', 'Play'];
 var SEED_GLIMMERS = ['The steam coming off my first cup', 'Her hand finding mine in the parking lot', 'Four o\'clock light on the kitchen floor', 'A whole song with nobody talking', 'Clean sheets', 'The dog asleep on my feet', 'Basil from the windowsill', 'Rain on the car roof at pickup', 'He made the tea without being asked', 'Bare feet on a warm step', 'The first quiet minute after bedtime', 'A text from my sister', 'Bread, still warm', 'The sky going pink over the school', 'Laughing until I had to sit down', 'My own handwriting on a list I finished'];
 
+var SEED_SAID = ['It is 5:40, dinner is not started and everyone needs me at once.', 'I am standing in the pantry and I am not even hungry. I just want five minutes that are mine.', 'Bedtime took an hour and I have nothing left for the dishes.', 'I said yes to the bake sale and I do not have it in me.'];
 var SEED_GLIMMER_ART = { 0: 'assets/glimmer-cup.svg', 2: 'assets/glimmer-light.svg', 4: 'assets/glimmer-sheets.svg', 6: 'assets/glimmer-basil.svg' };
 
 /* ---------- The table: a small rotation of go-to meals ----------
@@ -465,11 +474,11 @@ var MEALS = [
 /* Demo mothers for the presenter bar */
 var PERSONAS = {
   maya: { name: 'Maya', stage: 'cycling', pattern: 'hearth', options: ['hearth', 'sun', 'tide'], cup: ['The family table', 'Voice notes with a friend', 'Cooking for fun'],
-    values: ['Calm evenings', 'An easy relationship with food'], tender: 'crunch', rhythm: { mode: 'cycle', len: 28, dayAgo: 21 },
+    values: ['Calm evenings', 'An easy relationship with food'], why: 'I want evenings where I am not running on fumes, and I want food to stop being a fight with myself.', cupMore: { kin: 'Sunday dinner at my mother\'s' }, audit: true, tender: 'crunch', rhythm: { mode: 'cycle', len: 28, dayAgo: 21 },
     cards: { on: true, deck: 'hearth', arrived: true }, weight: false, phase: 1, heritage: ['Italian-American', 'Mediterranean'], history: 44, kin: 'Jess', holding: [{ name: 'Priya', word: 'Brave' }],
     tableStart: 'empty', eats: { breakfast: ['cereal'], lunch: ['kids'], dinner: ['pasta'] }, table: { breakfast: ['u:cereal'], lunch: ['u:kids'], dinner: ['u:pasta', 'i:0'] } },
   elena: { name: 'Elena', stage: 'irregular', pattern: 'tide', options: ['tide', 'frost'], cup: ['Sitting outside', 'Fiction'],
-    values: ['Feeling like myself again', 'Steady energy for my kids'], tender: 'slump', rhythm: { mode: 'moon' },
+    values: ['Feeling like myself again', 'Steady energy for my kids'], why: 'I miss who I was before I was this tired.', audit: true, tender: 'slump', rhythm: { mode: 'moon' },
     cards: { on: true, deck: 'nightsky', arrived: false }, weight: false, phase: 0, heritage: ['Latin American'], history: 11, eats: { breakfast: ['coffee', 'cereal'] } },
   casey: { name: 'Casey', stage: 'postpartum', pattern: 'wind', options: ['wind', 'sun', 'hearth'], cup: [],
     values: ['Being present, not just there'], tender: 'after', rhythm: { mode: 'moon' },
