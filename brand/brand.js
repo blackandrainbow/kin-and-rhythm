@@ -1,4 +1,4 @@
-/* Brand presentation. Colours, fonts, names and art are read from the skin files themselves,
+/* Brand presentation. Colors, fonts, names and art are read from the skin files themselves,
    so this page shows whatever the skins currently are. */
 
 var BRAND = {};

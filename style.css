@@ -114,7 +114,7 @@ body.embed .demo { display: none; }
 .foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; padding: 12px 20px 22px; background: var(--canvas); border-top: 1px solid var(--line); }
 .foot-note { font-size: 12px; color: var(--ink-3); text-align: center; }
 
-.tabs { flex-shrink: 0; display: grid; grid-template-columns: repeat(5, 1fr); align-items: start; padding: 8px 8px 20px; background: var(--surface); border-top: 1px solid var(--line); }
+.tabs { position: relative; z-index: 5; flex-shrink: 0; display: grid; grid-template-columns: repeat(5, 1fr); align-items: start; padding: 8px 8px 20px; background: var(--surface); border-top: 1px solid var(--line); }
 .tab, .tab-pause { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 600; color: var(--ink-2); }
 .tab img { width: 24px; height: 24px; opacity: .45; transition: opacity .2s; }
 .tab.on { color: var(--primary); font-weight: 700; }

@@ -6,7 +6,7 @@ Skin.use({
   fonts: 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700;800&display=swap',
   desk: '#17151C',
 
-  /* Pattern policy: one element. Cobalt, tomato and butter stay; her pattern colours her own chip and her sticker's block. */
+  /* Pattern policy: one element. Cobalt, tomato and butter stay; her pattern colors her own chip and her sticker's block. */
   patterns: {
     sun: { accent: '#FFC233' },
     wind: { accent: '#7FB2FF' },

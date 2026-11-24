@@ -6,7 +6,7 @@ Skin.use({
   fonts: 'https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap',
   desk: '#081410',
 
-  /* Pattern policy: glow only. The night stays; her pattern colours the moon's halo and the fine lines. */
+  /* Pattern policy: glow only. The night stays; her pattern colors the moon's halo and the fine lines. */
   patterns: {
     sun: { accent: '#EDB04A', tint: '#3D3A1B' },
     wind: { accent: '#93B7EA', tint: '#1F3B49' },

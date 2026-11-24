@@ -1,5 +1,5 @@
-/* Skin kit. Lifts the colours style.css writes by hand into tokens, so a skin only sets values.
-   Defaults repeat the base look. Season colours are published by kit.js from the skin's SEASONS. */
+/* Skin kit. Lifts the colors style.css writes by hand into tokens, so a skin only sets values.
+   Defaults repeat the base look. Season colors are published by kit.js from the skin's SEASONS. */
 
 :root {
   --bezel: #0E110F;
@@ -52,7 +52,7 @@
 .deck-nightsky { background: var(--deck-nightsky); }
 .deck-hearth { background: var(--deck-hearth); }
 
-/* glimmer tiles take their wash from the season colours */
+/* glimmer tiles take their wash from the season colors */
 .tile.winter { background: color-mix(in srgb, var(--season-winter) var(--tile-mix), var(--surface)); }
 .tile.spring { background: color-mix(in srgb, var(--season-spring) var(--tile-mix), var(--surface)); }
 .tile.summer { background: color-mix(in srgb, var(--season-summer) var(--tile-mix), var(--surface)); }

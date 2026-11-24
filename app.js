@@ -4,7 +4,7 @@
   var KEY = 'kin-rhythm-v1', DAY = 864e5;
   var STEPS = ['welcome', 'brain', 'name', 'stage', 'cup', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'values', 'tender', 'rhythm', 'weight', 'cards', 'reveal', 'bloom'];
   var CHAPTERS = [['You', 1, 4], ['Your pattern', 5, 10], ['What matters', 11, 12], ['Your cycle', 13, 15], ['Your path', 16, 17]];
-  var NEIGHBOUR = { sun: 'wind', wind: 'sun', hearth: 'tide', tide: 'frost', frost: 'tide' };
+  var NEIGHBOR = { sun: 'wind', wind: 'sun', hearth: 'tide', tide: 'frost', frost: 'tide' };
   var ui = { sheet: null, pause: null, phaseView: null, rhythmView: null, suit: 'major', pick: '', timer: null, lastScreen: '' };
   var state = load();
 
@@ -101,7 +101,7 @@
     state.quiz.forEach(function (id) { if (id) count[id] = (count[id] || 0) + 1; });
     var ids = Object.keys(count).sort(function (a, b) { return count[b] - count[a]; }).slice(0, 3);
     if (!ids.length) ids = ['tide'];
-    if (ids.length === 1) ids.push(NEIGHBOUR[ids[0]]);
+    if (ids.length === 1) ids.push(NEIGHBOR[ids[0]]);
     state.options = ids;
     return count;
   }
@@ -1098,7 +1098,7 @@
     tfFlag: function (k) { var y = $('sheet-body').scrollTop; ui.tf[k] = !ui.tf[k]; sheetFill(); $('sheet-body').scrollTop = y; },
     goTweak: function (uid) { placeGo(tweakGo(mealOf(ui.slot.meal), uid)); },
     goIdea: function (i) { var m = mealOf(ui.slot.meal); placeGo(ideaGo(ideaObj(m, +i), false)); },
-    goOwn: function () { var f = $('f-own'); if (!f || !f.value.trim()) return toast('Give it a name'); placeGo({ title: f.value.trim(), desc: 'A family favourite.', tag: 'Yours', from: '', seed: false }); },
+    goOwn: function () { var f = $('f-own'); if (!f || !f.value.trim()) return toast('Give it a name'); placeGo({ title: f.value.trim(), desc: 'A family favorite.', tag: 'Yours', from: '', seed: false }); },
     goOpen: function (arg) {
       var p = arg.split('|'), m = mealOf(p[0]), g = slots(p[0])[+p[1]];
       ui.slot = { meal: p[0], i: +p[1] };

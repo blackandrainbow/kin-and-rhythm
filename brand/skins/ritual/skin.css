@@ -1,8 +1,8 @@
 /* Moonkept: forest night.
    Value: dark. A deep forest canvas, cream type, one luminous moon.
-   Shape: arches and circles, gold hairlines, no filled cards, everything centred.
+   Shape: arches and circles, gold hairlines, no filled cards, everything centered.
    Density: sparse. One idea per screen-height. The halo swells once, slowly, as Today opens.
-   Pattern policy: glow only (see skin.js). Her pattern colours the halo and the hairlines, never the night. */
+   Pattern policy: glow only (see skin.js). Her pattern colors the halo and the hairlines, never the night. */
 
 :root {
   --font-display: 'Alegreya', Georgia, serif;
@@ -61,7 +61,7 @@ body { font-size: 16.5px; line-height: 1.5; }
 .field::placeholder { color: var(--ink-3); }
 .match { color: var(--ink-3); }
 
-/* ---------- header: the mark and the name, centred ---------- */
+/* ---------- header: the mark and the name, centered ---------- */
 .top { justify-content: center; padding-top: 12px; }
 .top-brand { gap: 10px; font-size: 21px; letter-spacing: .01em; }
 .top-brand img { width: 30px; height: 30px; }
@@ -79,7 +79,7 @@ body { font-size: 16.5px; line-height: 1.5; }
 .moon-next b { color: var(--accent); font-weight: 700; }
 .view.enter > * { animation-duration: .9s; }
 
-/* ---------- sections: a small-caps line above an italic title, centred ---------- */
+/* ---------- sections: a small-caps line above an italic title, centered ---------- */
 .section-title { flex-direction: column; align-items: center; gap: 6px; margin: 52px 0 16px; text-align: center; font-weight: 400; font-style: italic; font-size: 27px; }
 .section-title span { order: -1; font-style: normal; font-size: 11.5px; letter-spacing: .2em; font-weight: 500; color: var(--accent); }
 .section-title::after { content: ''; width: 34px; height: 1px; margin-top: 6px; background: var(--hair); }

@@ -65,8 +65,8 @@ var PATTERNS = [
     line: 'The tide has gone all the way out. It always comes back.',
     looks: 'A burst of effort, then nothing left. You lie down and wake up just as tired. Plans wait.',
     gift: 'Depth, sensitivity, and noticing what everyone else misses.',
-    asks: 'Warmth and patience. Small steps that count, and rest you do not have to apologise for.',
-    shifts: [['Rest when there was nothing left', 'A lie-down before you are empty'], ['Coffee until lunch', 'A warm breakfast before ten'], ['Afternoons without food', 'Something to eat at three']],
+    asks: 'Warmth and patience. Small steps that count, and rest you do not have to apologize for.',
+    shifts: [['Rest when there was nothing left', 'Lying down before you are empty'], ['Coffee until lunch', 'A warm breakfast before ten'], ['Afternoons without food', 'Something to eat at three']],
     nourish: 'Warm, cooked, easy meals. Soups, stews, eggs, oats. Food that asks very little of you to make.',
     move: 'Gentle first: slow walks, stretching on the floor, water. Build only when it leaves you with more, not less.',
     anchorLine: 'I am coming back slowly, and slowly counts.',
@@ -81,7 +81,7 @@ var PATTERNS = [
     gift: 'Calm in a crisis, perspective, and a deep inner world.',
     asks: 'Gentle warmth and small sensations. Nothing sudden. One sign of life at a time.',
     shifts: [['Days that ran themselves', 'Three check-ins: what do I feel, what do I need?'], ['Mornings indoors', 'Ten minutes of morning light'], ['Breakfast when it happened', 'A warm breakfast before ten']],
-    nourish: 'Flavour and warmth to wake the senses: spices, citrus, broth, something you choose rather than default to.',
+    nourish: 'Flavor and warmth to wake the senses: spices, citrus, broth, something you choose rather than default to.',
     move: 'Small and sensory: morning light, shaking out your hands, a short walk where you name what you see.',
     anchorLine: 'I can feel a little, and that is enough for today.',
     tender: { season: 'winter', text: 'Quiet days can slide into numb ones. Add one small sensation: hot tea, cold air, a song.' },
@@ -100,7 +100,7 @@ var QUIZ = [
   { q: 'When food becomes about more than hunger, it is usually…',
     a: { sun: 'I forget to eat, then inhale something standing up.', wind: 'Grazing while I do other things. I barely notice.', hearth: 'The kids\' leftovers, and whatever is left after everyone is served.', tide: 'Something sweet or salty at night, for the lift.', frost: 'Whatever is easiest. Nothing sounds good.' } },
   { q: 'A hard week tends to end with you…',
-    a: { sun: 'Snapping at someone I love, then feeling awful.', wind: 'Starting a brand-new plan to fix everything.', hearth: 'Resentful that nobody noticed how much I did.', tide: 'On the couch, having cancelled on everyone.', frost: 'On autopilot. I could not tell you how it went.' } },
+    a: { sun: 'Snapping at someone I love, then feeling awful.', wind: 'Starting a brand-new plan to fix everything.', hearth: 'Resentful that nobody noticed how much I did.', tide: 'On the couch, having canceled on everyone.', frost: 'On autopilot. I could not tell you how it went.' } },
   { q: 'What do you most wish someone would say to you?',
     a: { sun: '"You can put it down. It will still be there."', wind: '"You don\'t have to outrun it."', hearth: '"What do you want?"', tide: '"You\'re not lazy. You\'re depleted."', frost: '"Take your time. I\'m not going anywhere."' } }
 ];
@@ -190,18 +190,18 @@ var ANCHORS = {
     why: 'Morning light sets your body clock, which helps tonight\'s sleep before the day has begun.',
     swaps: ['Stand on the step with your coffee', 'Walk the kids the long way to the car', 'Open every blind before you check your phone'] },
   walk: { pillar: 'move', title: 'A twelve-minute walk, stopped on an odd minute', easier: 'Walk to the end of the street and back',
-    why: 'Short and unfinished on purpose. You are practising showing up, not hitting a number.',
+    why: 'Short and unfinished on purpose. You are practicing showing up, not hitting a number.',
     swaps: ['Loop the field during practice', 'Walk while you take a call', 'Rainy day: two laps of a bookshop'] },
-  strength: { pillar: 'move', title: 'Two five-minute strength snacks this week', easier: 'Five slow squats while the kettle boils',
+  strength: { pillar: 'move', title: 'Two five-minute strength snacks this week', easier: 'Five slow squats while the coffee brews',
     why: 'Strength is what lets you keep carrying the people and things you love for decades.',
-    swaps: ['Push-ups against the kitchen counter', 'Carry the shopping in one trip, on purpose', 'A short video you like, on the living room floor'] },
+    swaps: ['Push-ups against the kitchen counter', 'Carry the groceries in one trip, on purpose', 'A short video you like, on the living room floor'] },
   play: { pillar: 'move', title: 'Move for fun once this week', easier: 'One song, danced to, in the kitchen',
     why: 'Joy is a reason to move that never runs out. No tracking, no target.',
     swaps: ['Dance while dinner cooks', 'Join the kids on the trampoline', 'A swim with no laps counted'] },
   windDown: { pillar: 'rest', title: 'Twenty-five screen-free minutes before bed', easier: 'Charge your phone outside the bedroom tonight',
     why: 'Sleep does more for cravings and patience than willpower ever will.',
     swaps: ['Four pages of fiction', 'Tea by lamp light', 'A hot shower, then straight to bed'] },
-  lieDown: { pillar: 'rest', title: 'A ten-minute lie-down that is not earned', easier: 'Sit down for two minutes before the next thing',
+  lieDown: { pillar: 'rest', title: 'Ten minutes lying down, not earned', easier: 'Sit down for two minutes before the next thing',
     why: 'Rest taken before you are empty refills more than rest taken after.',
     swaps: ['Legs up the wall while the kids watch a show', 'Lie on the floor with a timer', 'Sit in the parked car for one song'] },
   oneNo: { pillar: 'mind', title: 'One small no this week', easier: 'Say "let me get back to you" once',
@@ -289,7 +289,7 @@ var MAJORS = [
   ['The Star', 'Hope', 'Things can get lighter.', 'Drink water. Step outside after dark and look up.', 'Write one thing you are looking forward to.'],
   ['The Moon', 'Feel it', 'Not everything needs solving tonight.', 'Wind down early and dim the lights.', 'Let a feeling pass through without a story.'],
   ['The Sun', 'Joy', 'Joy does not have to be earned.', 'Get morning light on your face.', 'Do one thing purely because it is fun.'],
-  ['Judgement', 'Wake up', 'You can answer differently this time.', 'Notice one signal from your body and respond to it.', 'Forgive yesterday\'s version of you.'],
+  ['Judgment', 'Wake up', 'You can answer differently this time.', 'Notice one signal from your body and respond to it.', 'Forgive yesterday\'s version of you.'],
   ['The World', 'Whole', 'Look how far the circle has come.', 'Cook a meal to celebrate nothing in particular.', 'Thank your body for one thing.']
 ];
 var SUITS = [
@@ -319,31 +319,31 @@ var RANKS = [
 var STAPLES = [
   { id: 'oatmeal', title: 'Oatmeal or a warm bowl', blocks: [
     { label: 'Rolled oats' },
-    { label: 'Chia or flax seeds', role: 'Fibre', tip: 'Stir in a spoonful of chia or ground flax for staying power.' },
+    { label: 'Chia or flax seeds', role: 'Fiber', tip: 'Stir in a spoonful of chia or ground flax for staying power.' },
     { label: 'Greek yogurt or cottage cheese', role: 'Protein', tip: 'Swirl in a few spoons while it is hot. It turns creamy and keeps you full.' },
     { label: 'Berries, banana or apple', role: 'Plants', tip: 'Fold in frozen berries or grated apple with cinnamon.' },
     { label: 'Butter or nut butter', role: 'Fat', tip: 'A spoon of butter or almond butter carries you to lunch.' } ] },
   { id: 'smoothie', title: 'A morning smoothie', blocks: [
     { label: 'Frozen fruit' },
     { label: 'Protein powder or yogurt', role: 'Protein', tip: 'A scoop of protein or yogurt makes it a meal, not a drink.' },
-    { label: 'Chia, hemp or oats', role: 'Fibre', tip: 'A spoon of seeds or oats thickens it and slows it down.' },
+    { label: 'Chia, hemp or oats', role: 'Fiber', tip: 'A spoon of seeds or oats thickens it and slows it down.' },
     { label: 'A handful of spinach', role: 'Plants', tip: 'A big handful of spinach disappears completely.' },
     { label: 'Avocado or nut butter', role: 'Fat', tip: 'A quarter avocado or a spoon of nut butter makes it satisfying.' } ] },
   { id: 'pasta', title: 'Pasta night', blocks: [
     { label: 'Pasta' }, { label: 'Jarred red sauce' },
     { label: 'Meatballs or chicken', role: 'Protein', tip: 'Brown some extra meat, or start with a few meatballs before the pasta.' },
-    { label: 'Lentils or white beans', role: 'Protein and fibre', tip: 'Half a tin of beans simmered into the sauce vanishes into it.' },
+    { label: 'Lentils or white beans', role: 'Protein and fiber', tip: 'Half a can of beans simmered into the sauce vanishes into it.' },
     { label: 'Spinach, mushrooms or zucchini', role: 'Plants', tip: 'Tip a bag of frozen spinach straight into the pot.' },
-    { label: 'Olive oil and parmesan', role: 'Fat', tip: 'Finish with good olive oil and real parmesan. Flavour is part of feeling fed.' } ] },
+    { label: 'Olive oil and parmesan', role: 'Fat', tip: 'Finish with good olive oil and real parmesan. Flavor is part of feeling fed.' } ] },
   { id: 'coffee', title: 'Coffee or tea', blocks: [
     { label: 'Coffee or matcha' }, { label: 'Oat or almond milk' },
     { label: 'Whole milk or half-and-half', role: 'Fat', tip: 'Real milk is simple and satisfying.' },
     { label: 'Collagen or protein milk', role: 'Protein', tip: 'Froth some protein into your latte for an easy head start.' },
-    { label: 'Cinnamon or honey', role: 'Flavour', tip: 'A dusting of cinnamon or a little honey, because you like it.' } ] },
+    { label: 'Cinnamon or honey', role: 'Flavor', tip: 'A dusting of cinnamon or a little honey, because you like it.' } ] },
   { id: 'tacos', title: 'Taco night', blocks: [
     { label: 'Tortillas' },
     { label: 'Seasoned beef, chicken or fish', role: 'Protein', tip: 'Build the first taco heavy on the filling.' },
-    { label: 'Black or pinto beans', role: 'Protein and fibre', tip: 'Warm a tin of beans with cumin and fold half into the meat.' },
+    { label: 'Black or pinto beans', role: 'Protein and fiber', tip: 'Warm a can of beans with cumin and fold half into the meat.' },
     { label: 'Slaw, peppers, salsa', role: 'Plants', tip: 'Bagged slaw and salsa add crunch with no extra cooking.' },
     { label: 'Avocado or sour cream', role: 'Fat', tip: 'Avocado or sour cream is what makes two tacos enough.' } ] }
 ];
@@ -351,7 +351,7 @@ var STAPLES = [
 var PRACTICES = [
   { id: 'wasting', title: 'Leaving food behind', summary: 'Years of dieting can teach your body that food is scarce. Small acts of leaving some behind teach it otherwise.',
     steps: ['Put the serving spoon straight in the sink instead of scraping the pot.', 'Throw away the broken crumbs at the bottom of the bag.', 'Take your own fresh plate. The kids\' crusts can go to the birds.'] },
-  { id: 'imperfect', title: 'Practising imperfection', summary: 'A plan only works if it survives real life. Breaking tiny rules on purpose builds that muscle.',
+  { id: 'imperfect', title: 'Practicing imperfection', summary: 'A plan only works if it survives real life. Breaking tiny rules on purpose builds that muscle.',
     steps: ['Leave the measuring spoons in the drawer and use your eye.', 'If the walk is meant to be thirty minutes, stop at twenty-six.', 'One unplanned meal is information. The next plate is a fresh start.'] },
   { id: 'slow', title: 'Being inefficient on purpose', summary: 'Rushing keeps your body braced. Slowing one small thing lets it notice when it has had enough.',
     steps: ['Sit down fully before you unwrap or take the first bite.', 'Take four unhurried bites before you look at anything else.'] },
@@ -365,8 +365,8 @@ var ALLERGIES = ['Dairy', 'Gluten', 'Nuts', 'Shellfish', 'Soy', 'Eggs'];
 /* ---------- Wiring it in: a cue, a rep, a moment to feel it ---------- */
 var CUES = ['After I pour my first cup', 'When the kids are buckled in', 'After I close my laptop', 'When dinner goes in the oven', 'After bedtime stories', 'When I brush my teeth'];
 var ANCHOR_CUE = {
-  warmBreakfast: 'After I pour my first cup', ownPlate: 'When I serve lunch', bridge: 'When the school run ends', addFirst: 'When dinner goes in the oven',
-  light: 'After I pour my first cup', walk: 'After I close my laptop', strength: 'While the kettle boils', play: 'When dinner goes in the oven',
+  warmBreakfast: 'After I pour my first cup', ownPlate: 'When I serve lunch', bridge: 'After school pickup', addFirst: 'When dinner goes in the oven',
+  light: 'After I pour my first cup', walk: 'After I close my laptop', strength: 'While the coffee brews', play: 'When dinner goes in the oven',
   windDown: 'After bedtime stories', lieDown: 'After lunch is cleared', oneNo: 'When someone asks for my time', spark: 'After bedtime stories',
   setDown: 'When I brush my teeth', ask: 'When I feel the list growing', oneThing: 'After I close my laptop', feel: 'When I wash my hands', glimmer: 'When I step outside'
 };
@@ -383,7 +383,7 @@ var MOON_RITUALS = {
 var OBSTACLES = ['I run out of energy by evening', 'everyone else needs me first', 'I forget until the day is over', 'a hard day knocks me off course', 'I talk myself out of it'];
 var PLANS = ['do the smallest version and call it done', 'pause before I decide anything', 'ask for one specific thing', 'begin again at the very next meal', 'look at my moon card'];
 var WORDS = ['Soften', 'Steady', 'Begin', 'Enough', 'Receive', 'Slow', 'Brave', 'Play'];
-var SEED_GLIMMERS = ['The steam coming off my first cup', 'Her hand finding mine in the car park', 'Four o\'clock light on the kitchen floor', 'A whole song with nobody talking', 'Clean sheets', 'The dog asleep on my feet', 'Basil from the windowsill', 'Rain on the car roof at pickup', 'He made the tea without being asked', 'Bare feet on a warm step', 'The first quiet minute after bedtime', 'A text from my sister', 'Bread, still warm', 'The sky going pink over the school', 'Laughing until I had to sit down', 'My own handwriting on a list I finished'];
+var SEED_GLIMMERS = ['The steam coming off my first cup', 'Her hand finding mine in the parking lot', 'Four o\'clock light on the kitchen floor', 'A whole song with nobody talking', 'Clean sheets', 'The dog asleep on my feet', 'Basil from the windowsill', 'Rain on the car roof at pickup', 'He made the tea without being asked', 'Bare feet on a warm step', 'The first quiet minute after bedtime', 'A text from my sister', 'Bread, still warm', 'The sky going pink over the school', 'Laughing until I had to sit down', 'My own handwriting on a list I finished'];
 
 var SEED_GLIMMER_ART = { 0: 'assets/glimmer-cup.svg', 2: 'assets/glimmer-light.svg', 4: 'assets/glimmer-sheets.svg', 6: 'assets/glimmer-basil.svg' };
 
@@ -394,20 +394,20 @@ var MEALS = [
   { id: 'breakfast', name: 'Breakfast', ask: 'for breakfast', hint: 'Before ten', color: '#7A3050', tint: '#F6E6EC',
     usual: [
       { id: 'coffee', label: 'Coffee or tea, and not much else', tweak: ['Coffee plus protein', 'Keep the coffee ritual. Pair it with two eggs, or cottage cheese and berries.', 'Protein'] },
-      { id: 'cereal', label: 'A bowl of cereal or oats', tweak: ['Upgraded oat and chia bowl', 'Keep your bowl. Stir in chia seeds, Greek yogurt and a spoon of nut butter.', 'Fibre + fat'] },
+      { id: 'cereal', label: 'A bowl of cereal or oats', tweak: ['Upgraded oat and chia bowl', 'Keep your bowl. Stir in chia seeds, Greek yogurt and a spoon of nut butter.', 'Fiber + fat'] },
       { id: 'toast', label: 'Toast or a pastry', tweak: ['Toast with something on it', 'Keep the toast. Add an egg, avocado or nut butter so it lasts until lunch.', 'Protein + fat'] },
       { id: 'kids', label: 'Whatever the kids leave', tweak: ['Your own plate of theirs', 'Make one more portion of what they are having, and sit down with it.', 'Your own plate'] },
       { id: 'skip', label: 'I usually skip it', tweak: ['Something small before ten', 'A yogurt, a boiled egg, or a banana with nut butter. Small counts.', 'A start'] }
     ],
     ideas: [
       ['Five-minute skillet eggs and greens', 'Two eggs in olive oil or butter with a handful of spinach.', 5, 'Protein', 'kw', ['Eggs']],
-      ['Greek yogurt and chia parfait', 'Full-fat Greek yogurt, chia seeds, walnuts and fruit.', 2, 'Protein + fibre', 'k', ['Dairy', 'Nuts']],
+      ['Greek yogurt and chia parfait', 'Full-fat Greek yogurt, chia seeds, walnuts and fruit.', 2, 'Protein + fiber', 'k', ['Dairy', 'Nuts']],
       ['Smashed avocado and egg toast', 'Sourdough, half an avocado, a fried egg and flaky salt.', 10, 'Staying power', '', ['Eggs', 'Gluten']],
-      ['Warm spiced oatmeal', 'Rolled oats with cinnamon, ground flax, berries and a spoon of butter.', 10, 'Fibre + fat', 'bkw', ['Dairy']],
+      ['Warm spiced oatmeal', 'Rolled oats with cinnamon, ground flax, berries and a spoon of butter.', 10, 'Fiber + fat', 'bkw', ['Dairy']],
       ['Overnight oats, two jars', 'Oats, milk, chia and fruit, made the night before for two mornings.', 2, 'Made ahead', 'bk', ['Dairy']],
       ['Blender smoothie for the car', 'Frozen berries, spinach, yogurt or protein, and nut butter.', 5, 'Drinkable', 'k', ['Dairy', 'Nuts']],
       ['Last night\'s dinner, warmed up', 'Breakfast does not have to look like breakfast.', 2, 'No effort', 'bw', []],
-      ['Eggs, beans and a warm tortilla', 'Scrambled eggs, black beans, salsa and a corn tortilla.', 10, 'Protein + fibre', 'bw', ['Eggs'], 'Latin American']
+      ['Eggs, beans and a warm tortilla', 'Scrambled eggs, black beans, salsa and a corn tortilla.', 10, 'Protein + fiber', 'bw', ['Eggs'], 'Latin American']
     ] },
   { id: 'lunch', name: 'Lunch', ask: 'for lunch', hint: 'Sitting down', color: '#27473A', tint: '#E3EEE8',
     usual: [
@@ -419,12 +419,12 @@ var MEALS = [
     ],
     ideas: [
       ['Dinner leftovers, on purpose', 'Cook one more portion at dinner and box it before you serve.', 2, 'No effort', 'bw', []],
-      ['Tuna, white bean and lemon bowl', 'A tin of tuna, a tin of white beans, olive oil, lemon and any greens.', 5, 'Protein + fibre', 'b', [], 'Mediterranean'],
+      ['Tuna, white bean and lemon bowl', 'A can of tuna, a can of white beans, olive oil, lemon and any greens.', 5, 'Protein + fiber', 'b', [], 'Mediterranean'],
       ['Egg and avocado wrap', 'Two scrambled eggs, avocado and salsa in a warm wrap.', 10, 'Staying power', 'kw', ['Eggs', 'Gluten']],
       ['Big soup, small bread', 'A pot of lentil or chicken soup made once and eaten three times.', 20, 'Made ahead', 'bw', []],
       ['Snack-plate lunch', 'Cheese, crackers, fruit, nuts, something pickled. Sit down with it.', 2, 'One plate', 'k', ['Dairy', 'Gluten', 'Nuts']],
       ['Rice bowl with a fried egg', 'Leftover rice, a fried egg, frozen edamame, soy sauce and sesame.', 10, 'Protein', 'bw', ['Eggs', 'Soy'], 'East Asian'],
-      ['Chicken salad with crunch', 'Shop-bought roast chicken, bagged slaw, olive oil and vinegar.', 5, 'Protein + plants', '', []]
+      ['Chicken salad with crunch', 'Store-bought roast chicken, bagged slaw, olive oil and vinegar.', 5, 'Protein + plants', '', []]
     ] },
   { id: 'dinner', name: 'Dinner', ask: 'for dinner', hint: 'The family table', color: '#8E4420', tint: '#F5E6DA',
     usual: [
@@ -441,8 +441,8 @@ var MEALS = [
       ['Lemon garlic salmon and couscous', 'Salmon, lemon, garlic and oregano with couscous, cucumber and tomato.', 15, 'Protein', 'w', ['Gluten'], 'Mediterranean'],
       ['Breakfast for dinner', 'Eggs, toast and fruit. Ten minutes and everyone eats.', 10, 'No deciding', 'bkw', ['Eggs', 'Gluten']],
       ['Slow-cooker stew', 'Ten minutes in the morning, and dinner makes itself by six.', 10, 'Made ahead', 'bw', []],
-      ['Dal and rice', 'Red lentils simmered with onion, garlic and turmeric, over rice.', 20, 'Protein + fibre', 'bw', [], 'South Asian'],
-      ['Roast chicken plate, no cooking', 'A shop-bought chicken, bagged salad and good bread.', 2, 'No effort', 'k', ['Gluten']]
+      ['Dal and rice', 'Red lentils simmered with onion, garlic and turmeric, over rice.', 20, 'Protein + fiber', 'bw', [], 'South Asian'],
+      ['Roast chicken plate, no cooking', 'A store-bought chicken, bagged salad and good bread.', 2, 'No effort', 'k', ['Gluten']]
     ] },
   { id: 'snack', name: 'The three o\'clock bridge', ask: 'around three', hint: 'To carry you to dinner', color: '#8A6412', tint: '#F6EBCF',
     usual: [
@@ -452,11 +452,11 @@ var MEALS = [
       { id: 'nothing', label: 'Nothing until dinner', tweak: ['A real snack at three', 'Choose one thing and put it where you will see it at three.', 'A start'] }
     ],
     ideas: [
-      ['Apple and cheese', 'One apple, a few slices of cheese, a plate.', 2, 'Protein + fibre', 'k', ['Dairy']],
+      ['Apple and cheese', 'One apple, a few slices of cheese, a plate.', 2, 'Protein + fiber', 'k', ['Dairy']],
       ['Yogurt with seeds', 'Greek yogurt with pumpkin or sunflower seeds and honey.', 2, 'Protein', '', ['Dairy']],
       ['Toast with nut butter', 'One slice, thick with peanut or almond butter.', 5, 'Staying power', 'bkw', ['Gluten', 'Nuts']],
       ['Boiled eggs, made on Sunday', 'A bowl of them in the fridge, with salt.', 2, 'Protein', 'b', ['Eggs']],
-      ['Hummus and whatever crunches', 'Carrots, cucumber, crackers or pita.', 2, 'Fibre', 'bk', [], 'Middle Eastern'],
+      ['Hummus and whatever crunches', 'Carrots, cucumber, crackers or pita.', 2, 'Fiber', 'bk', [], 'Middle Eastern'],
       ['Nuts and something sweet you like', 'A handful of each, on a plate, sitting down.', 2, 'Staying power', '', ['Nuts']],
       ['Warm milk or cocoa and a banana', 'Five quiet minutes with a mug.', 5, 'Warmth', 'kw', ['Dairy']]
     ] }

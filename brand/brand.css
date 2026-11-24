@@ -1,4 +1,4 @@
-/* Brand presentation. A quiet frame so the three plays carry the colour.
+/* Brand presentation. A quiet frame so the three plays carry the color.
    Inside a [data-play] block, brand.js sets that play's own tokens and fonts, read from its skin files. */
 
 :root {

@@ -1,8 +1,8 @@
 /* Small Almanac: print.
-   Value: paper-white, black ink, one spot colour.
+   Value: paper-white, black ink, one spot color.
    Shape: squares, rules and columns. No radius, no shadow, left-aligned.
    Density: dense. Tables, tabular numerals, small mono labels.
-   Pattern policy: one spot ink (see skin.js). Her pattern swaps the spot colour; paper and black never move. */
+   Pattern policy: one spot ink (see skin.js). Her pattern swaps the spot color; paper and black never move. */
 
 :root {
   --font-display: 'Besley', Georgia, serif;
@@ -193,7 +193,7 @@ body { font-size: 14px; line-height: 1.45; }
 .trail-bar i { background: var(--ink); }
 .gather i { background: var(--ink); }
 
-/* ---------- tab bar: a ruled strip, the pause is the spot colour ---------- */
+/* ---------- tab bar: a ruled strip, the pause is the spot color ---------- */
 .tabs { align-items: stretch; padding: 0; border-top: 2px solid var(--ink); background: var(--canvas); }
 .tab, .tab-pause { justify-content: center; gap: 4px; padding: 9px 0 max(10px, env(safe-area-inset-bottom)); font-size: 9px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .tab + .tab, .tab-pause, .tab-pause + .tab { border-left: 1px solid var(--line); }
@@ -203,7 +203,7 @@ body { font-size: 14px; line-height: 1.45; }
 .tab-pause { background: var(--accent); color: #FFFFFF; font-weight: 600; }
 .tab-pause img { width: 20px; height: 20px; padding: 0; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 
-/* ---------- illustration: engravings, with one screened disc of the spot colour ---------- */
+/* ---------- illustration: engravings, with one screened disc of the spot color ---------- */
 .hero-art { width: 190px; }
 .path-art { width: 78px; height: 78px; }
 .plan-head, .profile { gap: 12px; }

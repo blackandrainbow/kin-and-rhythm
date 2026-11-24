@@ -1,8 +1,8 @@
-/* Kinhold: colour blocks.
+/* Kinhold: color blocks.
    Value: big flat fields of cobalt, tomato and butter on milk.
    Shape: large rounded blocks, pills and circles. No outlines, no shadows.
    Density: medium, with large touch targets.
-   Pattern policy: one element (see skin.js). Her pattern colours her own chip and her sticker's block; the brand colours stay. */
+   Pattern policy: one element (see skin.js). Her pattern colors her own chip and her sticker's block; the brand colors stay. */
 
 :root {
   --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
