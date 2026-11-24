@@ -202,6 +202,8 @@ body.embed .demo { display: none; }
 .fact { margin-top: 16px; }
 .fact:first-child { margin-top: 0; }
 .fact p:last-child { margin-top: 4px; }
+.shift { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.shift p:last-child { margin-top: 2px; }
 .row { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
 .kv { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-top: 1px solid var(--line); font-size: 14px; }
 .kv span { display: flex; align-items: center; gap: 10px; color: var(--ink-2); }

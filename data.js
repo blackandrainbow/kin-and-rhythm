@@ -18,13 +18,13 @@ function noteUrl(where, context, question) {
 /* ---------- Patterns: a state she has been living in, never an identity ---------- */
 var PATTERNS = [
   {
-    id: 'sun', name: 'High Sun', state: 'Pushing through', direction: 'Cool and soften',
+    id: 'sun', name: 'Sun', state: 'Pushing through', direction: 'Cool and soften',
     art: 'assets/pattern-sun.svg',
     line: 'You run bright and hot, and you carry it all yourself.',
-    looks: 'You power through the list with a tight jaw. Rest comes after everything is done, which is never.',
+    looks: 'You get through the list with your jaw set. Rest waits until everything is done, and there is always more.',
     gift: 'Drive, protectiveness, and the ability to make things happen.',
     asks: 'Shade. Setting things down before you are empty, and letting someone else hold a corner.',
-    vision: 'Evenings that end before you do. A softer voice at bedtime. Help you asked for and actually received.',
+    shifts: [['Rest came after the list', 'Ten minutes lying down, before the list is done'], ['The day ran until you stopped', 'Three things set down each evening'], ['You carried it yourself', 'One specific thing asked for']],
     nourish: 'Regular meals you sit down for, plenty of water, and cool, fresh things alongside the hearty ones.',
     move: 'Movement that lets heat out without a scoreboard: long walks, swimming, stretching.',
     anchorLine: 'I can set this down. It will keep.',
@@ -32,13 +32,13 @@ var PATTERNS = [
     theme: { canvas: '#FBF4E6', surface: '#FFFDF7', subtle: '#F4E6CC', primary: '#96481C', deep: '#74350F', accent: '#DFA13A', tint: '#F8E7CF' }
   },
   {
-    id: 'wind', name: 'Restless Wind', state: 'Staying in motion', direction: 'Land and ground',
+    id: 'wind', name: 'Wind', state: 'Staying in motion', direction: 'Land and ground',
     art: 'assets/pattern-wind.svg',
     line: 'You keep moving so nothing can catch you.',
     looks: 'Six tabs open, six tasks started. Your body sits down and your mind keeps running laps.',
     gift: 'Curiosity, quick thinking, and endless ideas.',
     asks: 'Ground. One thing at a time, and a body that gets to arrive where it already is.',
-    vision: 'A morning that starts slowly. Meals you remember eating. A mind that lets you sleep.',
+    shifts: [['Several things started at once', 'One thing at a time, for ten minutes'], ['Straight into the day', 'Ten minutes of morning light'], ['Meals on the move', 'A warm breakfast, sitting down']],
     nourish: 'Warm, grounding meals at steady times. Cooked food, root vegetables, something substantial at breakfast.',
     move: 'Rhythmic and repetitive: walking the same loop, slow strength work, anything with a steady beat.',
     anchorLine: 'I am here. This is the only thing right now.',
@@ -46,13 +46,13 @@ var PATTERNS = [
     theme: { canvas: '#F4F5F3', surface: '#FCFDFD', subtle: '#E4E8EE', primary: '#44557A', deep: '#33415F', accent: '#C7A24E', tint: '#E3E8F1' }
   },
   {
-    id: 'hearth', name: 'Open Hearth', state: 'Keeping everyone warm', direction: 'Refill and hold some back',
+    id: 'hearth', name: 'Hearth', state: 'Keeping everyone warm', direction: 'Refill and hold some back',
     art: 'assets/pattern-hearth.svg',
     line: 'You warm the whole house and burn your own wood to do it.',
     looks: 'Everyone is fed before you sit. You say "I\'m fine" and eat what is left on their plates.',
     gift: 'Generosity, attunement, and a home people want to come back to.',
     asks: 'A turn. Your own plate, your own wants, and a small no that keeps some fire for you.',
-    vision: 'A seat at your own table. One thing a week that is only yours. Being asked what you want, and knowing.',
+    shifts: [['You ate after everyone else', 'Your own plate, sitting down'], ['Yes was the default', 'One small no a week'], ['Your time went to everyone else', 'One thing a week that is only yours']],
     nourish: 'Your own full plate, eaten sitting down. Enough protein and fat that you are not running on crusts.',
     move: 'Movement that belongs to you alone: a class, a walk with your music, strength that makes you feel solid.',
     anchorLine: 'My needs fit at this table too.',
@@ -60,27 +60,27 @@ var PATTERNS = [
     theme: { canvas: '#FAF3EB', surface: '#FFFDF9', subtle: '#F2E3D6', primary: '#7C3A26', deep: '#5E2B1C', accent: '#D9966B', tint: '#F6E4DA' }
   },
   {
-    id: 'tide', name: 'Ebb Tide', state: 'Running on empty', direction: 'Warm and rebuild',
+    id: 'tide', name: 'Tide', state: 'Running on empty', direction: 'Warm and rebuild',
     art: 'assets/pattern-tide.svg',
     line: 'The tide has gone all the way out. It always comes back.',
-    looks: 'A burst of effort, then a crash. You lie down and wake up just as tired. Plans start and stall.',
+    looks: 'A burst of effort, then nothing left. You lie down and wake up just as tired. Plans wait.',
     gift: 'Depth, sensitivity, and noticing what everyone else misses.',
     asks: 'Warmth and patience. Small steps that count, and rest you do not have to apologise for.',
-    vision: 'Energy that returns a little earlier each week. One steady thing you kept. Joy turning up unannounced.',
+    shifts: [['Rest when there was nothing left', 'A lie-down before you are empty'], ['Coffee until lunch', 'A warm breakfast before ten'], ['Afternoons without food', 'Something to eat at three']],
     nourish: 'Warm, cooked, easy meals. Soups, stews, eggs, oats. Food that asks very little of you to make.',
     move: 'Gentle first: slow walks, stretching on the floor, water. Build only when it leaves you with more, not less.',
     anchorLine: 'I am coming back slowly, and slowly counts.',
-    tender: { season: 'autumn', text: 'This is where the crash usually lands. Protect two evenings and keep meals warm and simple.' },
+    tender: { season: 'autumn', text: 'This is often your lowest stretch. Protect two evenings and keep meals warm and simple.' },
     theme: { canvas: '#F2F6F4', surface: '#FBFEFD', subtle: '#DFEBE8', primary: '#1F5C66', deep: '#16454D', accent: '#D0A04A', tint: '#DCEAED' }
   },
   {
-    id: 'frost', name: 'Still Frost', state: 'Gone quiet', direction: 'Thaw and wake',
+    id: 'frost', name: 'Frost', state: 'Gone quiet', direction: 'Thaw and wake',
     art: 'assets/pattern-frost.svg',
     line: 'You went still to get through. Underneath, everything is alive.',
     looks: 'Autopilot. Nothing sounds good. You could not say whether you are tired, hungry or sad, only flat.',
     gift: 'Calm in a crisis, perspective, and a deep inner world.',
     asks: 'Gentle warmth and small sensations. Nothing sudden. One sign of life at a time.',
-    vision: 'Tasting your food again. Wanting something. A laugh that surprises you.',
+    shifts: [['Days that ran themselves', 'Three check-ins: what do I feel, what do I need?'], ['Mornings indoors', 'Ten minutes of morning light'], ['Breakfast when it happened', 'A warm breakfast before ten']],
     nourish: 'Flavour and warmth to wake the senses: spices, citrus, broth, something you choose rather than default to.',
     move: 'Small and sensory: morning light, shaking out your hands, a short walk where you name what you see.',
     anchorLine: 'I can feel a little, and that is enough for today.',
@@ -130,7 +130,7 @@ var VALUES = [
 
 var TENDER = [
   { id: 'morning', label: 'The morning rush', from: 6, to: 9 },
-  { id: 'slump', label: 'The mid-afternoon slump', from: 14, to: 16 },
+  { id: 'slump', label: 'The mid-afternoon dip', from: 14, to: 16 },
   { id: 'crunch', label: 'The 5 to 7 crunch', from: 17, to: 19 },
   { id: 'after', label: 'After bedtime, when it is finally quiet', from: 20, to: 23 },
   { id: 'night', label: 'The middle of the night', from: 0, to: 5 }
@@ -171,7 +171,7 @@ var SEASONS = {
 };
 var SEASON_ORDER = ['winter', 'spring', 'summer', 'autumn'];
 
-/* ---------- Anchors: the small steady things ---------- */
+/* ---------- Rhythms: the small steady things. She reads "rhythms"; the code still calls them anchors. ---------- */
 var PILLARS = { nourish: 'Nourish', move: 'Move', rest: 'Rest', mind: 'Mind' };
 var ANCHORS = {
   warmBreakfast: { pillar: 'nourish', title: 'A warm breakfast with protein before ten', easier: 'Add one thing to the breakfast you already eat',
@@ -180,7 +180,7 @@ var ANCHORS = {
   ownPlate: { pillar: 'nourish', title: 'Your own plate, sitting down, once a day', easier: 'Sit for the first three bites',
     why: 'You deserve a fresh plate, not the crusts. Sitting tells your body that this counts as a meal.',
     swaps: ['Serve yourself first for one meal', 'Eat lunch away from the counter and the screen', 'Use the nice bowl'] },
-  bridge: { pillar: 'nourish', title: 'A real snack at three, before the five o\'clock crash', easier: 'Put the snack where you will see it at three',
+  bridge: { pillar: 'nourish', title: 'A real snack at three, to carry you to dinner', easier: 'Put the snack where you will see it at three',
     why: 'Arriving at dinner starving makes every choice harder. A bridge keeps you steady through the crunch.',
     swaps: ['Apple and cheese', 'Yogurt with seeds', 'Toast with egg or nut butter', 'A handful of nuts and something sweet you like'] },
   addFirst: { pillar: 'nourish', title: 'Protein and plants first at dinner. Keep the pasta.', easier: 'Add one extra thing to the pot',
@@ -202,7 +202,7 @@ var ANCHORS = {
     why: 'Sleep does more for cravings and patience than willpower ever will.',
     swaps: ['Four pages of fiction', 'Tea by lamp light', 'A hot shower, then straight to bed'] },
   lieDown: { pillar: 'rest', title: 'A ten-minute lie-down that is not earned', easier: 'Sit down for two minutes before the next thing',
-    why: 'Rest taken before you are empty refills more than rest taken after the crash.',
+    why: 'Rest taken before you are empty refills more than rest taken after.',
     swaps: ['Legs up the wall while the kids watch a show', 'Lie on the floor with a timer', 'Sit in the parked car for one song'] },
   oneNo: { pillar: 'mind', title: 'One small no this week', easier: 'Say "let me get back to you" once',
     why: 'Every yes spends something. One no keeps a little back for you.',
@@ -227,10 +227,10 @@ var ANCHORS = {
     swaps: ['The steam off your cup', 'The light at four o\'clock', 'Your child\'s hand in yours'] }
 };
 
-/* Recovery is a cycle of four phases. Each pattern walks it with different anchors. */
+/* Recovery is a cycle of four phases. Each pattern walks it with different rhythms. */
 var PHASES = [
   { id: 'rest', name: 'Rest', season: 'winter', line: 'Settle first. Nothing changes until your body feels safe.' },
-  { id: 'rebuild', name: 'Rebuild', season: 'spring', line: 'Two steady anchors, repeated until they are boring.' },
+  { id: 'rebuild', name: 'Rebuild', season: 'spring', line: 'Two steady rhythms, repeated until they are boring.' },
   { id: 'rise', name: 'Rise', season: 'summer', line: 'A little more capacity, spent on what matters to you.' },
   { id: 'release', name: 'Release', season: 'autumn', line: 'Let go of what you no longer need, and keep what has become yours.' }
 ];
@@ -253,7 +253,7 @@ var MOMENTS = [
   { id: 'flat', label: 'I am stuck on the couch, scrolling', ritual: 'wake',
     choices: ['Stand up and stretch once', 'A glass of water and an open window', 'Stay here ten more minutes, on purpose'] },
   { id: 'heavy', label: 'Everything feels too heavy', ritual: 'hold',
-    choices: ['Text one person', 'Lie down for ten minutes, on purpose', 'Do the smallest version of one anchor'] }
+    choices: ['Text one person', 'Lie down for ten minutes, on purpose', 'Do the smallest version of one rhythm'] }
 ];
 var RITUALS = {
   exhale: { name: 'The long exhale', kind: 'breath', inS: 4, holdS: 0, outS: 6, rounds: 6, note: 'Breathing out for longer than you breathe in tells your body it can stand down.' },
@@ -444,12 +444,12 @@ var MEALS = [
       ['Dal and rice', 'Red lentils simmered with onion, garlic and turmeric, over rice.', 20, 'Protein + fibre', 'bw', [], 'South Asian'],
       ['Roast chicken plate, no cooking', 'A shop-bought chicken, bagged salad and good bread.', 2, 'No effort', 'k', ['Gluten']]
     ] },
-  { id: 'snack', name: 'The three o\'clock bridge', ask: 'around three', hint: 'Before the crash', color: '#8A6412', tint: '#F6EBCF',
+  { id: 'snack', name: 'The three o\'clock bridge', ask: 'around three', hint: 'To carry you to dinner', color: '#8A6412', tint: '#F6EBCF',
     usual: [
       { id: 'crunch', label: 'Chips or crackers', tweak: ['Crunch with company', 'Keep the crunch. Put cheese, hummus or nuts next to it.', 'Add one thing'] },
       { id: 'sweet', label: 'Something sweet', tweak: ['Sweet, with a partner', 'Keep the sweet thing. Have it with yogurt, nuts or a glass of milk.', 'Add one thing'] },
       { id: 'coffee', label: 'A second coffee', tweak: ['Coffee and a bite', 'Keep the coffee. Have something with protein alongside.', 'Protein'] },
-      { id: 'nothing', label: 'Nothing, and then I crash', tweak: ['A real snack at three', 'Choose one thing and put it where you will see it at three.', 'A start'] }
+      { id: 'nothing', label: 'Nothing until dinner', tweak: ['A real snack at three', 'Choose one thing and put it where you will see it at three.', 'A start'] }
     ],
     ideas: [
       ['Apple and cheese', 'One apple, a few slices of cheese, a plate.', 2, 'Protein + fibre', 'k', ['Dairy']],

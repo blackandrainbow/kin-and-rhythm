@@ -3,7 +3,7 @@
 
   var KEY = 'kin-rhythm-v1', DAY = 864e5;
   var STEPS = ['welcome', 'brain', 'name', 'stage', 'cup', 'q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'values', 'tender', 'rhythm', 'weight', 'cards', 'reveal', 'bloom'];
-  var CHAPTERS = [['You', 1, 4], ['Your pattern', 5, 10], ['What matters', 11, 12], ['Your rhythm', 13, 15], ['Your path', 16, 17]];
+  var CHAPTERS = [['You', 1, 4], ['Your pattern', 5, 10], ['What matters', 11, 12], ['Your cycle', 13, 15], ['Your path', 16, 17]];
   var NEIGHBOUR = { sun: 'wind', wind: 'sun', hearth: 'tide', tide: 'frost', frost: 'tide' };
   var ui = { sheet: null, pause: null, phaseView: null, rhythmView: null, suit: 'major', pick: '', timer: null, lastScreen: '' };
   var state = load();
@@ -230,7 +230,7 @@
       return '<div class="ob welcome"><div class="welcome-art"><img src="assets/sprig-sage.svg" class="sprig-l" alt=""><img src="assets/logo.svg" class="welcome-logo" alt=""><img src="assets/sprig-sage.svg" class="sprig-r" alt=""></div>' +
         el.label(APP.name) + '<h1 class="display xl">Before we talk about food, let\'s find your rhythm.</h1>' +
         '<p class="lead">You are not behind, and you are not broken. Most plans ask you to change how you eat while you are running on empty. We start somewhere else.</p>' +
-        '<ol class="trio"><li><b>What fills your cup</b><span>The small things that make you feel like you.</span></li><li><b>The pattern you have been living in</b><span>Six honest moments. A state, not a label.</span></li><li><b>A path you choose</b><span>Matched to your body\'s rhythm, at your pace.</span></li></ol></div>';
+        '<ol class="trio"><li><b>What fills your cup</b><span>The small things that make you feel like you.</span></li><li><b>The pattern you have been living in</b><span>Six honest moments. A state, not a label.</span></li><li><b>A path you choose</b><span>Matched to your body, at your pace.</span></li></ol></div>';
     },
     brain: function () {
       setFoot(el.btn('Continue', 'next'));
@@ -245,7 +245,7 @@
     },
     stage: function () {
       setFoot('');
-      return '<div class="ob">' + obHead('', 'Where is your body right now?', 'This tells us which rhythm to follow with you. Every answer has a path.') +
+      return '<div class="ob">' + obHead('', 'Where is your body right now?', 'This tells us whether to follow your cycle or the moon. Every answer has a path.') +
         '<div class="options">' + STAGES.map(function (s) { return el.option(s.label, s.sub, 'pick', 'stage|' + s.id, state.stage === s.id); }).join('') + '</div></div>';
     },
     cup: function () {
@@ -291,11 +291,11 @@
     weight: function () {
       setFoot('');
       return '<div class="ob">' + obHead('', 'Do you want to keep an eye on your weight?', 'Some moms do and many don\'t. Either is a complete answer. We never show it on your main screen, there is no goal number, and you can change your mind any time.') +
-        '<div class="options">' + el.option('No scale for me', 'We will follow energy, rest and rhythm instead.', 'weightPick', 'off', false) + el.option('Yes, privately', 'A quiet log in your profile, only when you choose to add to it.', 'weightPick', 'on', false) + '</div></div>';
+        '<div class="options">' + el.option('No scale for me', 'We will follow energy and rest instead.', 'weightPick', 'off', false) + el.option('Yes, privately', 'A quiet log in your profile, only when you choose to add to it.', 'weightPick', 'on', false) + '</div></div>';
     },
     cards: function () {
       setFoot(el.btn(state.cards.deck ? 'Send me this deck' : 'Choose a deck', 'cardsYes', null, 'btn-primary' + (state.cards.deck ? '' : ' is-quiet')) + el.btn('Not for me', 'cardsNo', null, 'btn-ghost'));
-      return '<div class="ob">' + obHead('Optional', 'Would you like a daily card ritual?', 'Choose a deck and we post it to you. Until it arrives we turn a card for you each morning. After that you pull your own and tell us what you drew. One card, one small anchor for mind, body and spirit.') +
+      return '<div class="ob">' + obHead('Optional', 'Would you like a daily card ritual?', 'Choose a deck and we post it to you. Until it arrives we turn a card for you each morning. After that you pull your own and tell us what you drew. One card, one small prompt for mind, body and spirit.') +
         '<div class="decks">' + DECKS.map(function (d) {
           return '<button class="deck' + (state.cards.deck === d.id ? ' on' : '') + '" data-act="deck" data-arg="' + d.id + '"><img src="' + d.art + '" alt=""><b>' + d.name + '</b><span>' + d.note + '</span></button>';
         }).join('') + '</div><p class="small muted">The hope is that one day the card is enough, and you need us a little less.</p></div>';
@@ -304,7 +304,7 @@
       var count = computeOptions();
       if (state.options.indexOf(ui.pick) < 0) ui.pick = state.options[0];
       setFoot(el.btn('This is me right now', 'choosePath'));
-      return '<div class="ob">' + obHead('Here is what we heard', 'Which of these sounds like right now?', 'These are not personalities. They are ways a body gets through a hard season. Each one comes with its own path, and you can change your mind later.') +
+      return '<div class="ob">' + obHead('Here is what we heard', 'Which of these sounds like you right now?', 'These are not personalities. They are ways a body gets through a hard season. Each one comes with its own path, and you can change your mind later.') +
         '<div class="paths">' + state.options.map(function (id) {
           var p = pat(id), n = count[id] || 0;
           return '<button class="path' + (ui.pick === id ? ' on' : '') + '" data-act="pickPath" data-arg="' + id + '"><img src="' + p.art + '" class="path-art" alt="">' +
@@ -315,9 +315,9 @@
     bloom: function () {
       var p = pat(), r = rhythmNow(), s = SEASONS[r.season];
       setFoot(el.btn('Step in', 'finish'));
-      return '<div class="ob bloom">' + '<img src="' + p.art + '" class="hero-art" alt="">' + el.label('You have been living in') + '<h1 class="display xl">' + p.name + '</h1><p class="lead">' + p.line + '</p>' +
+      return '<div class="ob bloom">' + '<img src="' + p.art + '" class="hero-art" alt="">' + el.label('Your pattern right now') + '<h1 class="display xl">' + p.name + '</h1><p class="lead">' + p.line + '</p>' +
         '<div class="card"><div class="fact"><p class="label">What it looks like</p><p>' + p.looks + '</p></div><div class="fact"><p class="label">Its gift</p><p>' + p.gift + '</p></div><div class="fact"><p class="label">What your body is asking for</p><p>' + p.asks + '</p></div></div>' +
-        '<div class="card tinted"><p class="label">Your path</p><p class="display sm">' + p.direction + '</p><p>' + p.vision + '</p></div>' +
+        '<div class="card tinted"><p class="label">Your path</p><p class="display sm">' + p.direction + '</p><p>It starts small. ' + (p.shifts || []).map(function (s) { return s[1]; }).join('. ') + '.</p></div>' +
         '<p class="section-title">You begin in the Rest phase</p><div class="card flush">' + anchorIds(0).map(function (id) { var a = anchor(id); return '<div class="mini-anchor"><span class="pill pill-' + a.pillar + '">' + PILLARS[a.pillar] + '</span><span>' + esc(a.title) + '</span></div>'; }).join('') + '</div>' +
         '<div class="card row-card"><img src="' + s.art + '" alt=""><div><p class="label">Today</p><p><b>' + s.name + '.</b> ' + s.asks + '</p></div></div>' +
         '<p class="small muted center">' + (state.name ? esc(state.name) + ', this' : 'This') + ' is a season you are in. It is not who you are.</p></div>';
@@ -341,7 +341,7 @@
 
     var ms = moonState(), ids = activeIds(), nextK = MOON_RITUALS[ms.next.kind];
     var anchors = ids.length ? ids.map(function (id) { return anchorRow(id, { gentle: gentle }); }).join('') :
-      '<div class="card tinted"><p><b>Every anchor in this phase is second nature.</b> You may be ready for what comes next. The full moon is a good night to decide.</p></div>';
+      '<div class="card tinted"><p><b>Every rhythm in this phase is second nature.</b> You may be ready for what comes next. The full moon is a good night to decide.</p></div>';
     var cm = currentMoon(), kinLine = cm && cm.witness ? '<p class="small muted">' + esc(cm.witness) + ' is holding “' + esc(cm.word) + '” with you.</p>' : '';
     var fullNear = (ms.due && ms.due.kind === 'full') || (ms.next.kind === 'full' && ms.until <= 1);
     var askKin = fullNear ? state.kin.holding.map(function (h) { return '<div class="nudge still"><img src="assets/icon-spark.svg" alt=""><span><b>Ask ' + esc(h.name) + '</b> how “' + esc(h.word) + '” went. The moon is full, and you are her witness.</span></div>'; }).join('') : '';
@@ -378,7 +378,7 @@
       moon: ms.due ? moonCall(ms) : '',
       kin: askKin,
       nudge: nudge,
-      touch: '<p class="section-title">Today\'s touch <span>' + (state.moonLoad === 'low' ? 'One anchor this moon' : 'Ten seconds') + '</span></p>' + capRow + anchors + closing,
+      touch: '<p class="section-title">Today\'s touch <span>' + (state.moonLoad === 'low' ? 'One rhythm this moon' : 'Ten seconds') + '</span></p>' + capRow + anchors + closing,
       cards: cards ? '<p class="section-title">Ritual</p>' + cards : '',
       glimmer: '<p class="section-title">Romance the ordinary</p>' + glimmer,
       why: state.values.length ? '<p class="why">You are here for <b>' + state.values.map(lower).join('</b> and <b>') + '</b>.</p>' : ''
@@ -405,7 +405,7 @@
     var legend = '<div class="legend">' + SEASON_ORDER.map(function (id) { return '<span class="legend-item' + (id === r.season ? ' on' : '') + '"><img src="' + SEASONS[id].art + '" alt="">' + SEASONS[id].word + '</span>'; }).join('') + '</div>';
 
     var tender = p.tender, tenderNote;
-    if (tender.season === r.season) tenderNote = '<div class="card tinted"><p class="label">For you, in ' + p.name + '</p><p>' + tender.text + '</p></div>';
+    if (tender.season === r.season) tenderNote = '<div class="card tinted"><p class="label">For your ' + p.name + ' pattern</p><p>' + tender.text + '</p></div>';
     else {
       var set = mode === 'cycle' ? state.rhythm : { mode: 'moon' }, n = Rhythm.daysUntil(set, d, tender.season);
       tenderNote = '<div class="card tinted"><p class="label">Your gentle season</p><p><b>' + SEASONS[tender.season].name + '</b>' + (n ? ', about ' + n + ' day' + (n === 1 ? '' : 's') + ' away. ' : '. ') + tender.text + '</p></div>';
@@ -437,7 +437,7 @@
   /* ---------- Path ---------- */
   function viewPlan() {
     var part = ui.pathPart || 'anchors';
-    var seg = '<div class="seg wide path-parts">' + [['anchors', 'Anchors'], ['table', 'Table'], ['practices', 'Practices']].map(function (x) { return '<button class="' + (part === x[0] ? 'on' : '') + '" data-act="pathPart" data-arg="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    var seg = '<div class="seg wide path-parts">' + [['anchors', 'Rhythms'], ['table', 'Table'], ['practices', 'Practices']].map(function (x) { return '<button class="' + (part === x[0] ? 'on' : '') + '" data-act="pathPart" data-arg="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</div>';
     return '<div class="page">' + seg + (part === 'table' ? tableView() : part === 'practices' ? practicesView() : anchorsView()) + '</div>';
   }
   function practicesView() {
@@ -456,10 +456,11 @@
       anchorIds(view).map(function (id) { return anchorRow(id); }).join('') + '</div>' +
       (isCurrent ? el.btn(state.phase === 3 ? 'Begin the circle again' : 'I am ready for ' + next.name, 'phaseNext', null, 'btn-outline') + '<p class="hint">Most of the time this is decided at the full moon gathering. There is no rush.</p>' : '');
 
-    var second = state.second.length ? state.second.map(function (id) { return '<div class="mini-anchor"><span class="pill pill-' + ANCHORS[id].pillar + '">' + PILLARS[ANCHORS[id].pillar] + '</span><span>' + esc(anchor(id).title) + '</span></div>'; }).join('') : '<p class="small muted pad">When an anchor stops needing effort, it moves here. That is the whole goal: needing us less.</p>';
+    var second = state.second.length ? state.second.map(function (id) { return '<div class="mini-anchor"><span class="pill pill-' + ANCHORS[id].pillar + '">' + PILLARS[ANCHORS[id].pillar] + '</span><span>' + esc(anchor(id).title) + '</span></div>'; }).join('') : '<p class="small muted pad">When a rhythm stops needing effort, it moves here. That is the whole goal: needing us less.</p>';
 
-    return '<div class="plan-head"><img src="' + p.art + '" alt=""><div>' + el.label('Your path') + '<h1 class="display">' + p.direction + '</h1><p class="small">You have been living in <b>' + p.name + '</b>. ' + p.asks + '</p></div></div>' +
-      '<div class="card"><div class="fact"><p class="label">The old path</p><p>' + p.looks + '</p></div><div class="fact"><p class="label">The one you are wearing in</p><p>' + p.vision + '</p></div><p class="small muted pad-top">Every rep wears the new path in a little more. A missed day does not grow it over.</p></div>' +
+    return '<div class="plan-head"><img src="' + p.art + '" alt=""><div>' + el.label('Your path') + '<h1 class="display">' + p.direction + '</h1><p class="small">Your pattern right now is <b>' + p.name + '</b>. ' + p.asks + '</p></div></div>' +
+      '<div class="card"><p class="label">What is shifting</p>' + (p.shifts || []).map(function (s) { return '<div class="shift"><p class="small muted">Before: ' + s[0] + '</p><p><b>Now: ' + s[1] + '</b></p></div>'; }).join('') +
+      '<p class="small muted pad-top">How you did it before got you through. Each rep makes the new way a little easier, and a missed day undoes nothing.</p></div>' +
       '<p class="section-title">The recovery circle</p>' + phases + phaseCard +
       '<p class="section-title">How to eat and move, for now</p><div class="card"><div class="fact"><p class="label">Nourish</p><p>' + p.nourish + '</p></div><div class="fact"><p class="label">Move</p><p>' + p.move + '</p></div></div>' +
       '<p class="section-title">Second nature</p><div class="card flush">' + second + '</div>' +
@@ -480,12 +481,12 @@
     var glimmers = state.glimmers.length ? '<div class="tiles">' + latestTiles(6) + '</div><button class="link" data-act="grid">Open the whole grid</button>' : '<p class="small muted">The small beautiful things you keep will gather here.</p>';
     var r = rhythmNow();
     return '<div class="page">' +
-      '<div class="profile"><img src="' + p.art + '" alt=""><div><h1 class="display">' + esc(state.name || 'You') + '</h1><p class="small">Living in <b>' + p.name + '</b>, walking toward ' + lower(p.direction) + '.</p></div></div>' +
+      '<div class="profile"><img src="' + p.art + '" alt=""><div><h1 class="display">' + esc(state.name || 'You') + '</h1><p class="small">In a <b>' + p.name + '</b> pattern, walking toward ' + lower(p.direction) + '.</p></div></div>' +
       '<div class="card"><p class="label">Your pattern</p><p class="card-title">' + p.name + ' · ' + lower(p.state) + '</p><p class="small">' + p.line + ' It is a state, not an identity, and it can change.</p><p class="mantra">“' + p.anchorLine + '”</p><div class="link-row"><button class="link" data-act="pathsSheet">Change my path</button><button class="link" data-act="retake">Retake the six moments</button></div></div>' +
       '<div class="card"><p class="label">Kin</p>' + kinCard() + '</div>' +
       '<div class="card"><p class="label">What this is for</p>' + chips(VALUES, 'value', state.values) + '</div>' +
       '<div class="card"><p class="label">What fills your cup</p>' + (state.cup.length ? '<div class="chips">' + state.cup.map(function (c) { return '<span class="chip on static">' + esc(c) + '</span>'; }).join('') + '</div>' : '<p class="small">Starting with one spark: ' + lower(sparkName()) + '.</p>') + '</div>' +
-      '<div class="card"><p class="label">Rhythm</p><p class="card-title">' + (hasCycle() ? 'Following your cycle' : 'Following the moon') + '</p><p class="small muted">' + SEASONS[r.season].name + ' today.' + (hasCycle() ? ' ' + state.rhythm.len + '-day cycle, last period ' + Rhythm.fromISO(state.rhythm.start).toLocaleDateString([], { month: 'short', day: 'numeric' }) + '.' : '') + '</p><button class="link" data-act="rhythmSheet">Change</button></div>' +
+      '<div class="card"><p class="label">Cycle</p><p class="card-title">' + (hasCycle() ? 'Following your cycle' : 'Following the moon') + '</p><p class="small muted">' + SEASONS[r.season].name + ' today.' + (hasCycle() ? ' ' + state.rhythm.len + '-day cycle, last period ' + Rhythm.fromISO(state.rhythm.start).toLocaleDateString([], { month: 'short', day: 'numeric' }) + '.' : '') + '</p><button class="link" data-act="rhythmSheet">Change</button></div>' +
       '<div class="card"><p class="label">Card ritual</p>' + ritual + '</div>' +
       '<div class="card"><p class="label">Weight</p>' + weight + '</div>' +
       '<div class="card"><p class="label">Your table</p><p class="small">So ideas fit the food your family already loves.</p>' + chips(HERITAGE, 'heritage', state.heritage) + '<p class="small pad-top">Leave out</p>' + chips(ALLERGIES, 'allergy', state.allergies) + '</div>' +
@@ -523,7 +524,7 @@
       '<div class="card tinted"><p class="label">On a low day</p><p>' + a.easier + '. That counts in full.</p></div>' +
       (a.swaps.length ? '<div class="fact"><p class="label">Make it yours</p><ul class="bullets">' + a.swaps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div>' : '') +
       el.btn(isTended(id) ? 'Tended today' : 'I tended this today', 'tend', id, isTended(id) ? 'btn-primary is-done' : 'btn-primary') +
-      el.btn(second ? 'Bring it back into my anchors' : 'This is second nature now', 'second', id, 'btn-ghost'));
+      el.btn(second ? 'Bring it back into my rhythms' : 'This is second nature now', 'second', id, 'btn-ghost'));
   }
 
   function sheetStaple(id) {
@@ -535,7 +536,7 @@
   }
 
   function sheetPaths() {
-    openSheet(el.label('Your paths') + '<h2 class="display">Which sounds like right now?</h2><p class="small">Patterns shift as life does. Changing path is not starting over. Your second-nature anchors come with you.</p><div class="paths">' +
+    openSheet(el.label('Your paths') + '<h2 class="display">Which sounds like right now?</h2><p class="small">Patterns shift as life does. Changing path is not starting over. Your second-nature rhythms come with you.</p><div class="paths">' +
       (state.options.length ? state.options : [state.pattern]).map(function (pid) {
         var p = pat(pid);
         return '<button class="path' + (state.pattern === pid ? ' on' : '') + '" data-act="switchPath" data-arg="' + pid + '"><img src="' + p.art + '" class="path-art" alt=""><span class="path-body"><span class="label">' + p.state + '</span><span class="path-name">' + p.name + '</span><span class="path-line">' + p.line + '</span><span class="path-dir">The path: ' + lower(p.direction) + '</span></span></button>';
@@ -543,7 +544,7 @@
   }
 
   function sheetRhythm() {
-    openSheet(el.label('Rhythm') + '<h2 class="display">What should we follow?</h2>' +
+    openSheet(el.label('Cycle') + '<h2 class="display">What should we follow?</h2>' +
       '<label class="field-label" for="f-start">First day of your last period</label><input class="field" id="f-start" type="date" max="' + todayKey() + '" value="' + esc(state.rhythm.start) + '">' +
       '<label class="field-label">Usual cycle length</label><div class="stepper"><button data-act="len" data-arg="-1">−</button><span><b>' + state.rhythm.len + '</b> days</span><button data-act="len" data-arg="1">+</button></div>' +
       el.btn('Follow my cycle', 'cycleSave') + el.btn('Follow the moon', 'moonOnly', null, 'btn-ghost'));
@@ -654,7 +655,7 @@
     }).map(function (x) {
       var mine = state.heritage.indexOf(x.cuisine) >= 0;
       x.score = (mine ? 2 : 0) + (warm && x.w ? 1 : 0);
-      x.why = mine ? 'From your table' : warm && x.w ? 'Warm, for ' + (cold ? SEASONS[r].name.toLowerCase() : pat().name) : '';
+      x.why = mine ? 'From your table' : warm && x.w ? 'Warm, which suits ' + (cold ? SEASONS[r].name.toLowerCase() : pat().name) : '';
       return x;
     }).sort(function (a, b) { return b.score - a.score || a.i - b.i; });
   }
@@ -782,7 +783,7 @@
     } else if (step === 'plan') {
       html = el.label('The plan') + '<h2 class="display">When ' + esc(d.obstacle || OBSTACLES[0]) + ', I will…</h2>' + opts('plan', PLANS.map(function (o) { return [o, cap1(o)]; }));
     } else if (step === 'load') {
-      html = el.label('The load') + '<h2 class="display">How much do you have for these two weeks?</h2><p class="small">Honest beats ambitious.</p>' + opts('load', [['low', 'Not much', 'One anchor only. That is a full plan.'], ['okay', 'Enough', 'Both anchors, smaller on low days.'], ['good', 'Plenty', 'Both anchors, in full.']]);
+      html = el.label('The load') + '<h2 class="display">How much do you have for these two weeks?</h2><p class="small">Honest beats ambitious.</p>' + opts('load', [['low', 'Not much', 'One rhythm only. That is a full plan.'], ['okay', 'Enough', 'Both rhythms, smaller on low days.'], ['good', 'Plenty', 'Both rhythms, in full.']]);
     } else if (step === 'word') {
       html = el.label('The word') + '<h2 class="display">One word to carry.</h2><div class="chips grid">' + WORDS.map(function (w) { return el.chip(w, 'rit', 'word|' + w, d.word === w); }).join('') + '</div>';
     } else if (step === 'witness') {
@@ -797,7 +798,7 @@
         '<div class="card"><div class="kv first"><span>Reps on the new path</span><b>' + since(state.reps, 'd') + '</b></div><div class="kv"><span>Times you paused instead</span><b>' + since(state.pauseLog, 'd') + '</b></div><div class="kv"><span>Days you checked in</span><b>' + days + '</b></div><div class="kv"><span>Small beautiful things kept</span><b>' + since(state.glimmers, 'date') + '</b></div></div>' +
         '<p class="small">Every one of these is a vote for who you are becoming. None of them can be taken back.</p>' + el.btn('Continue', 'ritNext');
     } else if (step === 'held') {
-      html = el.label('The anchors') + '<h2 class="display">How did each one hold?</h2><p class="small">All three answers are useful.</p>' + ids.map(function (id) {
+      html = el.label('The rhythms') + '<h2 class="display">How did each one hold?</h2><p class="small">All three answers are useful.</p>' + ids.map(function (id) {
         return '<div class="held"><p><b>' + esc(anchor(id).title) + '</b></p>' + trailBar(id) + '<div class="seg wide">' + [['held', 'Held'], ['some', 'Sometimes'], ['not', 'Not this moon']].map(function (o) { return '<button class="' + (d.held[id] === o[0] ? 'on' : '') + '" data-act="ritHeld" data-arg="' + id + '|' + o[0] + '">' + o[1] + '</button>'; }).join('') + '</div></div>';
       }).join('') + el.btn('Continue', 'ritNext');
     } else if (step === 'notice') {
@@ -805,9 +806,9 @@
       html = el.label('The noticing') + '<h2 class="display">What did you notice about yourself?</h2>' + (ins ? '<div class="card insight"><p class="label">From your almanac</p><p>' + ins[1] + '</p></div>' : '') +
         '<input class="field" id="f-rit" type="text" placeholder="One line is plenty">' + el.btn('Continue', 'ritText', 'notice');
     } else if (step === 'pattern') {
-      html = el.label('The pattern') + '<h2 class="display">Does ' + p.name + ' still sound like right now?</h2><p class="small">' + p.line + '</p>' + opts('pattern', [['yes', 'Yes, still here', 'Then the path is still the right one.'], ['soft', 'It is softening', 'That is the work, working.'], ['else', 'Something else has taken over', 'Patterns shift. We will look at your other paths.']]);
+      html = el.label('The pattern') + '<h2 class="display">Does the ' + p.name + ' pattern still sound like you right now?</h2><p class="small">' + p.line + '</p>' + opts('pattern', [['yes', 'Yes, still here', 'Then the path is still the right one.'], ['soft', 'It is softening', 'That is the work, working.'], ['else', 'Something else has taken over', 'Patterns shift. We will look at your other paths.']]);
     } else if (step === 'next') {
-      var nx = PHASES[(state.phase + 1) % 4], list = [['stay', 'Stay in ' + PHASES[state.phase].name, 'Same anchors. More reps.'], ['on', state.phase === 3 ? 'Begin the circle again' : 'Move on to ' + nx.name, nx.line]];
+      var nx = PHASES[(state.phase + 1) % 4], list = [['stay', 'Stay in ' + PHASES[state.phase].name, 'Same rhythms. More reps.'], ['on', state.phase === 3 ? 'Begin the circle again' : 'Move on to ' + nx.name, nx.line]];
       if (state.phase > 0) list.push(['back', 'Go back to Rest', 'Always allowed. Sometimes it is the wise move.']);
       html = el.label('The next stretch') + '<h2 class="display">Where to from here?</h2>' + opts('next', list);
     } else {
@@ -1041,7 +1042,7 @@
       state.dayOffset += ms.until; state.tab = 'today'; closeSheet(); render();
     },
     anchorSheet: function (id) { sheetAnchor(id); },
-    second: function (id) { toggle(state.second, id); closeSheet(); toast(state.second.indexOf(id) >= 0 ? 'Second nature. Well done.' : 'Back in your anchors'); render(); },
+    second: function (id) { toggle(state.second, id); closeSheet(); toast(state.second.indexOf(id) >= 0 ? 'Second nature. Well done.' : 'Back in your rhythms'); render(); },
     closeSheet: function () { closeSheet(); render(); },
 
     cardTurn: function () { state.cards.pulls[todayKey()] = dailyCard(); render(); },
@@ -1134,7 +1135,7 @@
     /* a reviewer's note about whatever is on screen, sent to the private inbox */
     note: function () {
       var names = { today: 'Today', rhythm: 'Almanac', plan: 'Path', you: 'You' }, sheet = !$('sheet').hidden && $('sheet-body').querySelector('.label, h2');
-      var where = state.onboarded ? names[state.tab] + (state.tab === 'plan' ? ' › ' + cap1(ui.pathPart || 'anchors') : '') : 'First run › ' + STEPS[state.step];
+      var where = state.onboarded ? names[state.tab] + (state.tab === 'plan' ? ' › ' + ({ anchors: 'Rhythms', table: 'Table', practices: 'Practices' })[ui.pathPart || 'anchors'] : '') : 'First run › ' + STEPS[state.step];
       if (sheet) where += ' › ' + sheet.textContent.trim();
       var ctx = ['Page: ' + document.title, state.pattern ? 'Pattern: ' + pat().name : '', state.dayOffset ? 'Day offset: ' + state.dayOffset : ''].filter(Boolean).join(' · ');
       window.open(noteUrl('App › ' + where, ctx), '_blank', 'noopener');
@@ -1233,9 +1234,9 @@
   (function () {
     var body = document.querySelector('.demo-body'), head = document.querySelector('.demo-head');
     if (!body || typeof noteUrl !== 'function' || body.querySelector('[data-act="note"]')) return;
-    body.insertAdjacentHTML('beforeend', '<p class="demo-label">Reviewing</p><div class="demo-row"><button class="demo-btn" data-act="note">Leave a note on this screen</button></div>');
     var deck = body.querySelector('.demo-home');
     (deck || body.lastElementChild).insertAdjacentHTML(deck ? 'beforebegin' : 'afterend', '<p class="demo-label">Show the table</p><div class="demo-row">' + [['empty', 'Blank'], ['one', 'One each'], ['full', 'Full']].map(function (t) { return '<button class="demo-btn" data-act="tableStart" data-arg="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>');
+    body.insertAdjacentHTML('beforeend', '<p class="demo-label">Reviewing</p><div class="demo-row"><button class="demo-btn" data-act="note">Leave a note on this screen</button></div>');
     if (head) head.insertAdjacentHTML('beforeend', '<button class="demo-toggle note-pill" data-act="note">Note</button>');
   })();
 

@@ -5,7 +5,7 @@
     ['app.html', 'The app', 'Open the prototype and walk through it yourself.'],
     ['concept.html', 'The concept', 'How it is put together, and what is still open.'],
     ['features.html', 'Features', 'What is in it, screen by screen, and why each piece exists.'],
-    ['loops.html', 'Core loops', 'The four rhythms that bring her back.'],
+    ['loops.html', 'Core loops', 'The four loops that bring her back.'],
     ['relationship.html', 'The relationship', 'What the app is to her, and what it will never do.'],
     ['thinking.html', 'The thinking', 'The ideas underneath it.'],
     ['notes.html', 'Leave a note', 'How to tell us what you think.']

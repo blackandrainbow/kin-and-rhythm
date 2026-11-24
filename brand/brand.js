@@ -9,7 +9,7 @@ var Skin = { use: function (cfg) { BRAND[cfg.id] = cfg; } };
   'use strict';
   var TOKENS = ['canvas', 'surface', 'subtle', 'primary', 'deep', 'accent', 'tint'];
   var ROOT = ['--font-display', '--font-sans', '--font-mono', '--ink', '--ink-2', '--ink-3', '--desk'];
-  var PATTERNS = { sun: 'High Sun', wind: 'Restless Wind', hearth: 'Open Hearth', tide: 'Ebb Tide', frost: 'Still Frost' };
+  var PATTERNS = { sun: 'Sun', wind: 'Wind', hearth: 'Hearth', tide: 'Tide', frost: 'Frost' };
   var SEASONS = { winter: 'Inner Winter', spring: 'Inner Spring', summer: 'Inner Summer', autumn: 'Inner Autumn' };
 
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
