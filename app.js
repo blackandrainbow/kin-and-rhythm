@@ -668,12 +668,9 @@
     });
   }
   function tableView() {
-    var p = pat(), mode = state.tableStart, done = ['breakfast', 'lunch', 'dinner'].filter(function (id) { return slots(id).some(Boolean); }).length;
-    var starts = [['empty', 'Blank', 'Blank boxes', 'I will build it myself, one box at a time.'], ['one', '1-1-1 start', 'A 1-1-1 start', 'One go-to each for breakfast, lunch and dinner, picked for me.'], ['full', 'Full example', 'A full example', 'Every box filled, so I can see where it goes and swap what does not fit.']];
-    var chooser = mode ?
-      '<div class="card start"><p class="label">Start from</p><div class="seg wide">' + starts.map(function (s) { return '<button class="' + (mode === s[0] ? 'on' : '') + '" data-act="tableStart" data-arg="' + s[0] + '">' + s[1] + '</button>'; }).join('') + '</div><p class="small">' +
-        (done === 3 ? 'You have a first rotation: one each for breakfast, lunch and dinner. Add more only if it makes life easier.' : 'Tap any open box to adjust something you already eat, or to find something new that fits your time, budget and table.') + '</p></div>' :
-      '<div class="card start"><p class="label">How do you want to start?</p><div class="options tight">' + starts.map(function (s) { return el.option(s[2], s[3], 'tableStart', s[0], false); }).join('') + '</div></div>';
+    var p = pat(), done = ['breakfast', 'lunch', 'dinner'].filter(function (id) { return slots(id).some(Boolean); }).length;
+    var chooser = '<div class="card start"><p class="small">' +
+        (done === 3 ? 'You have a first rotation: one each for breakfast, lunch and dinner. Add more only if it makes life easier.' : 'Tap any open box to adjust something you already eat, or to find something new that fits your time, budget and table.') + '</p></div>';
     var meals = MEALS.map(function (m) {
       var s = slots(m.id), n = s.filter(Boolean).length;
       return '<div class="meal" style="--meal:' + m.color + ';--meal-tint:' + m.tint + '"><div class="meal-head"><span>' + m.name + '</span><span>' + (n ? n + ' of 4' : m.hint) + '</span></div><div class="meal-grid">' + s.map(function (g, i) {
@@ -1080,7 +1077,8 @@
     phaseView: function (i) { ui.phaseView = +i; render(); },
     phaseNext: function () { state.phase = (state.phase + 1) % 4; ui.phaseView = null; toast(state.phase === 0 ? 'The circle turns. Back to rest.' : 'Welcome to ' + PHASES[state.phase].name + '.'); render(); },
     pathPart: function (p) { ui.pathPart = p; render(); },
-    tableStart: function (mode) { tableStart(mode); toast(mode === 'empty' ? 'Blank boxes. Yours to fill.' : mode === 'one' ? 'One each, picked for you. Swap anything.' : 'A full example. Keep what fits.'); render(); },
+    /* presenter control: show the table blank, with one go-to per meal, or full */
+    tableStart: function (mode) { tableStart(mode); state.tab = 'plan'; ui.pathPart = 'table'; toast(mode === 'empty' ? 'Blank boxes. Yours to fill.' : mode === 'one' ? 'One each, picked for you. Swap anything.' : 'A full example. Keep what fits.'); render(); },
     slot: function (arg) {
       var p = arg.split('|'), low = capacity() === 'low';
       ui.slot = { meal: p[0], i: +p[1] };
@@ -1236,6 +1234,8 @@
     var body = document.querySelector('.demo-body'), head = document.querySelector('.demo-head');
     if (!body || typeof noteUrl !== 'function' || body.querySelector('[data-act="note"]')) return;
     body.insertAdjacentHTML('beforeend', '<p class="demo-label">Reviewing</p><div class="demo-row"><button class="demo-btn" data-act="note">Leave a note on this screen</button></div>');
+    var deck = body.querySelector('.demo-home');
+    (deck || body.lastElementChild).insertAdjacentHTML(deck ? 'beforebegin' : 'afterend', '<p class="demo-label">Show the table</p><div class="demo-row">' + [['empty', 'Blank'], ['one', 'One each'], ['full', 'Full']].map(function (t) { return '<button class="demo-btn" data-act="tableStart" data-arg="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>');
     if (head) head.insertAdjacentHTML('beforeend', '<button class="demo-toggle note-pill" data-act="note">Note</button>');
   })();
 
